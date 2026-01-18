@@ -1,0 +1,385 @@
+####################################################################################################
+#                                                                                                  #
+#     Micro Series 8051 C-Compiler V4.01A/DOS                              16/Feb/93  05:24:26     #
+#                                                                                                  #
+#           Memory model  =  large                                                                 #
+#           Source file   =  ftecl.c                                                               #
+#           List file     =  ftecl.lst                                                             #
+#           Object file   =  ftecl.r03                                                             #
+#           ASM file      =  ftecl.s03                                                             #
+#           Command line  =  ftecl.c -ml -A -L -q                                                  #
+#                                                                                                  #
+#                                                                   (c) Copyright IAR Systems 1990 #
+####################################################################################################
+
+   \   0000                    NAME    ftecl(18)
+   \   0000                    RSEG    CODE(0)
+   \   0000                    EXTERN  ad
+   \   0000                    EXTERN  atenua
+   \   0000                    EXTERN  b
+   \   0000                    EXTERN  ceroe
+   \   0000                    EXTERN  codigos
+   \   0000                    EXTERN  cong
+   \   0000                    EXTERN  cont
+   \   0000                    EXTERN  conx
+   \   0000                    EXTERN  d
+   \   0000                    EXTERN  dat
+   \   0000                    EXTERN  dd
+   \   0000                    EXTERN  de
+   \   0000                    EXTERN  disp
+   \   0000                    EXTERN  e
+   \   0000                    EXTERN  ent
+   \   0000                    PUBLIC  espera_tecla
+   \   0000                    $DEFFN  espera_tecla(0,0,4,0,0,0,2,0)
+   \   0000                    EXTERN  estado_canal_serie
+   \   0000                    EXTERN  estado_printer
+   \   0000                    EXTERN  f
+   \   0000                    EXTERN  factor
+   \   0000                    EXTERN  fconv
+   \   0000                    EXTERN  fecha
+   \   0000                    EXTERN  ficher
+   \   0000                    EXTERN  ficherstd
+   \   0000                    EXTERN  filtro_actual
+   \   0000                    EXTERN  flo
+   \   0000                    EXTERN  g1
+   \   0000                    EXTERN  ghj
+   \   0000                    EXTERN  gyu
+   \   0000                    EXTERN  h
+   \   0000                    EXTERN  h1
+   \   0000                    EXTERN  habil_int
+   \   0000                    $DEFFN  habil_int(0,0,2,0),mira_tec
+   \   0000                    EXTERN  i1
+   \   0000                    EXTERN  idioma
+   \   0000                    EXTERN  idioma_codigos
+   \   0000                    EXTERN  idioma_textos
+   \   0000                    EXTERN  idioma_txt_prog
+   \   0000                    EXTERN  ihi
+   \   0000                    EXTERN  informe
+   \   0000                    EXTERN  inhib_int
+   \   0000                    $DEFFN  inhib_int(0,0,2,0),mira_tec
+   \   0000                    EXTERN  iz
+   \   0000                    PUBLIC  keyboard
+   \   0000                    $DEFFN  keyboard(0,0,2,0,0,0,2,0)
+   \   0000                    EXTERN  ki
+   \   0000                    EXTERN  lado
+   \   0000                    EXTERN  lastkey
+   \   0000                    EXTERN  lastkey1
+   \   0000                    EXTERN  lastkey2
+   \   0000                    EXTERN  lects
+   \   0000                    EXTERN  letrasx
+   \   0000                    EXTERN  lin
+   \   0000                    EXTERN  lineasinforme
+   \   0000                    EXTERN  mapimp
+   \   0000                    EXTERN  mayor
+   \   0000                    EXTERN  menp
+   \   0000                    EXTERN  mens
+   \   0000                    EXTERN  menupric
+   \   0000                    PUBLIC  mira_tec
+   \   0000                    $DEFFN  mira_tec(0,0,2,0,0,0,0,0),espera_tecla,keyboard
+   \   0000                    EXTERN  mm
+   \   0000                    EXTERN  modelo
+   \   0000                    EXTERN  ncont
+   \   0000                    EXTERN  nconv
+   \   0000                    EXTERN  nth
+   \   0000                    EXTERN  nty
+   \   0000                    EXTERN  num_codigos
+   \   0000                    EXTERN  numpuntos
+   \   0000                    EXTERN  offsfic
+   \   0000                    EXTERN  offstecn
+   \   0000                    EXTERN  pac
+   \   0000                    EXTERN  pamem
+   \   0000                    EXTERN  parametros
+   \   0000                    EXTERN  paso
+   \   0000                    EXTERN  pasos_filtro
+   \   0000                    EXTERN  perde
+   \   0000                    EXTERN  periz
+   \   0000                    EXTERN  perpaso
+   \   0000                    EXTERN  port_d002
+   \   0000                    EXTERN  pp1
+   \   0000                    EXTERN  printtec
+   \   0000                    EXTERN  puntfic
+   \   0000                    EXTERN  rec
+   \   0000                    EXTERN  recip
+   \   0000                    EXTERN  resto
+   \   0000                    EXTERN  rt
+   \   0000                    EXTERN  segs
+   \   0000                    EXTERN  segs1
+   \   0000                    EXTERN  segundo
+   \   0000                    EXTERN  spac
+   \   0000                    EXTERN  start
+   \   0000                    EXTERN  tco
+   \   0000                    EXTERN  tecla
+   \   0000                    EXTERN  teclas
+   \   0000                    EXTERN  temp1
+   \   0000                    EXTERN  temp2
+   \   0000                    EXTERN  tempo
+   \   0000                    EXTERN  tempo1
+   \   0000                    EXTERN  textos
+   \   0000                    EXTERN  tiempo
+   \   0000                    EXTERN  tiempo_abs
+   \   0000                    EXTERN  tiempo_incs
+   \   0000                    EXTERN  time
+   \   0000                    EXTERN  tipos
+   \   0000                    EXTERN  total
+   \   0000                    EXTERN  total_tecnicas
+   \   0000                    EXTERN  txt_prog
+   \   0000                    EXTERN  ty
+   \   0000                    EXTERN  units
+   \   0000                    EXTERN  v1
+   \   0000                    EXTERN  v2
+   \   0000                    EXTERN  v3
+   \   0000                    EXTERN  v4
+   \   0000                    EXTERN  valor
+   \   0000                    EXTERN  varx
+   \   0000                    EXTERN  vary
+   \   0000                    EXTERN  veces
+   \   0000                    EXTERN  wl
+   \   0000                    EXTERN  yy
+   \   0000                    EXTERN  ?CL8051L_4_01_L17
+   \   0000                    RSEG    CODE
+      1          
+      2          
+      3          
+      4                /*MODULO FTECL.C           */
+      5          
+      6          
+      7                 /*Contiene funciones relacionadas con la visualizacion por el display*/
+      8          
+      9          
+     10          
+     11          
+     12          #include <io51.h>
+     13          #include <math.h>
+     14          
+     15          #include <fdefines.h>
+     16          #include <fexterns.h>
+     17          
+     18          
+     19          
+     20          
+     21          
+     22          
+     23                       /*funcion que mira el teclado, si se ha pulsado una tecla la devuelve,
+     24                       si no devuelve el numero 100*/
+     25           mira_tec()
+     26           {int te;
+   \   0000            mira_tec:
+     27           inhib_int(1);
+   \   0000  7F01              MOV     R7,#1
+   \   0002  7E00              MOV     R6,#0
+   \   0004  120000            LCALL   $REFFN inhib_int
+     28           if (tecla==0)
+   \   0007  900000            MOV     DPTR,#tecla
+   \   000A  E0                MOVX    A,@DPTR
+   \   000B  700B              JNZ     ?0001
+   \   000D            ?0000:
+     29             {te=100;
+   \   000D  900000            MOV     DPTR,#$LOCBX mira_tec
+   \   0010  E4                CLR     A
+   \   0011  F0                MOVX    @DPTR,A
+   \   0012  A3                INC     DPTR
+   \   0013  7464              MOV     A,#100
+   \   0015  F0                MOVX    @DPTR,A
+     30             }
+     31           else
+   \   0016  8012              SJMP    ?0002
+   \   0018            ?0001:
+     32             {tecla=0;
+   \   0018  900000            MOV     DPTR,#tecla
+   \   001B  E4                CLR     A
+   \   001C  F0                MOVX    @DPTR,A
+     33              te=(int) lastkey;
+   \   001D  900000            MOV     DPTR,#lastkey
+   \   0020  E0                MOVX    A,@DPTR
+   \   0021  FF                MOV     R7,A
+   \   0022  E4                CLR     A
+   \   0023  900000            MOV     DPTR,#$LOCBX mira_tec
+   \   0026  F0                MOVX    @DPTR,A
+   \   0027  A3                INC     DPTR
+   \   0028  EF                MOV     A,R7
+   \   0029  F0                MOVX    @DPTR,A
+   \   002A            ?0002:
+     34             }
+     35             habil_int(1);
+   \   002A  7F01              MOV     R7,#1
+   \   002C  7E00              MOV     R6,#0
+   \   002E  120000            LCALL   $REFFN habil_int
+     36             return(te);
+   \   0031  900000            MOV     DPTR,#$LOCBX mira_tec
+   \   0034  E0                MOVX    A,@DPTR
+   \   0035  FE                MOV     R6,A
+   \   0036  A3                INC     DPTR
+   \   0037  E0                MOVX    A,@DPTR
+   \   0038  FF                MOV     R7,A
+     37             }
+   \   0039  22                RET
+     38          
+     39          
+     40          
+     41                       /*funcion que deja al programa parado hasta que
+     42                        se presione una tecla un tiempo determinado,
+     43                        tiempo igual a 0 implica indefinido*/
+     44          
+     45           keyboard(n)
+     46           int n;
+     47           {int res=0;
+   \   003A            keyboard:
+   \   003A  900000            MOV     DPTR,#$LOCBX keyboard+2
+   \   003D  EE                MOV     A,R6
+   \   003E  F0                MOVX    @DPTR,A
+   \   003F  A3                INC     DPTR
+   \   0040  EF                MOV     A,R7
+   \   0041  F0                MOVX    @DPTR,A
+   \   0042  900000            MOV     DPTR,#$LOCBX keyboard
+   \   0045  E4                CLR     A
+   \   0046  F0                MOVX    @DPTR,A
+   \   0047  A3                INC     DPTR
+   \   0048  F0                MOVX    @DPTR,A
+   \   0049            ?0005:
+     48          
+     49           do
+     50           {
+     51            res=mira_tec();
+   \   0049  120000            LCALL   $REFFN mira_tec
+   \   004C  900000            MOV     DPTR,#$LOCBX keyboard
+   \   004F  EE                MOV     A,R6
+   \   0050  F0                MOVX    @DPTR,A
+   \   0051  A3                INC     DPTR
+   \   0052  EF                MOV     A,R7
+   \   0053  F0                MOVX    @DPTR,A
+     52          
+     53           }while(res==100 && n==0);
+   \   0054  900000            MOV     DPTR,#$LOCBX keyboard+1
+   \   0057  E0                MOVX    A,@DPTR
+   \   0058  6464              XRL     A,#100
+   \   005A  7004              JNZ     ?0016
+   \   005C  900000            MOV     DPTR,#$LOCBX keyboard
+   \   005F  E0                MOVX    A,@DPTR
+   \   0060            ?0016:
+   \   0060  700A              JNZ     ?0003
+   \   0062  900000            MOV     DPTR,#$LOCBX keyboard+2
+   \   0065  E0                MOVX    A,@DPTR
+   \   0066  FF                MOV     R7,A
+   \   0067  A3                INC     DPTR
+   \   0068  E0                MOVX    A,@DPTR
+   \   0069  4F                ORL     A,R7
+   \   006A  60DD              JZ      ?0005
+   \   006C            ?0007:
+   \   006C            ?0006:
+   \   006C            ?0003:
+     54           return(res);
+   \   006C  900000            MOV     DPTR,#$LOCBX keyboard
+   \   006F  E0                MOVX    A,@DPTR
+   \   0070  FE                MOV     R6,A
+   \   0071  A3                INC     DPTR
+   \   0072  E0                MOVX    A,@DPTR
+   \   0073  FF                MOV     R7,A
+     55          }
+   \   0074  22                RET
+     56          
+     57          
+     58                       /*funcion que deja al programa parado hasta que
+     59                        se presione una determinada tecla*/
+     60          
+     61           espera_tecla(nun)
+     62            int nun;
+     63           {int res;
+   \   0075            espera_tecla:
+   \   0075  900000            MOV     DPTR,#$LOCBX espera_tecla+4
+   \   0078  EE                MOV     A,R6
+   \   0079  F0                MOVX    @DPTR,A
+   \   007A  A3                INC     DPTR
+   \   007B  EF                MOV     A,R7
+   \   007C  F0                MOVX    @DPTR,A
+     64            int y;
+     65          
+     66            res=0;
+   \   007D  900000            MOV     DPTR,#$LOCBX espera_tecla
+   \   0080  E4                CLR     A
+   \   0081  F0                MOVX    @DPTR,A
+   \   0082  A3                INC     DPTR
+   \   0083  F0                MOVX    @DPTR,A
+     67            y=nun;
+   \   0084  900000            MOV     DPTR,#$LOCBX espera_tecla+4
+   \   0087  E0                MOVX    A,@DPTR
+   \   0088  FE                MOV     R6,A
+   \   0089  A3                INC     DPTR
+   \   008A  E0                MOVX    A,@DPTR
+   \   008B  900000            MOV     DPTR,#$LOCBX espera_tecla+2
+   \   008E  CE                XCH     A,R6
+   \   008F  F0                MOVX    @DPTR,A
+   \   0090  A3                INC     DPTR
+   \   0091  EE                MOV     A,R6
+   \   0092  F0                MOVX    @DPTR,A
+   \   0093            ?0010:
+     68           do
+     69           {
+     70            res=mira_tec();
+   \   0093  120000            LCALL   $REFFN mira_tec
+   \   0096  900000            MOV     DPTR,#$LOCBX espera_tecla
+   \   0099  EE                MOV     A,R6
+   \   009A  F0                MOVX    @DPTR,A
+   \   009B  A3                INC     DPTR
+   \   009C  EF                MOV     A,R7
+   \   009D  F0                MOVX    @DPTR,A
+     71          
+     72          
+     73           }while(res!=nun && res!=stop);
+   \   009E  900000            MOV     DPTR,#$LOCBX espera_tecla
+   \   00A1  E0                MOVX    A,@DPTR
+   \   00A2  FE                MOV     R6,A
+   \   00A3  A3                INC     DPTR
+   \   00A4  E0                MOVX    A,@DPTR
+   \   00A5  FF                MOV     R7,A
+   \   00A6  900000            MOV     DPTR,#$LOCBX espera_tecla+5
+   \   00A9  E0                MOVX    A,@DPTR
+   \   00AA  6F                XRL     A,R7
+   \   00AB  7007              JNZ     ?0017
+   \   00AD  900000            MOV     DPTR,#$LOCBX espera_tecla+4
+   \   00B0  E0                MOVX    A,@DPTR
+   \   00B1  6E                XRL     A,R6
+   \   00B2  600E              JZ      ?0008
+   \   00B4            ?0017:
+   \   00B4  900000            MOV     DPTR,#$LOCBX espera_tecla+1
+   \   00B7  E0                MOVX    A,@DPTR
+   \   00B8  640F              XRL     A,#15
+   \   00BA  7004              JNZ     ?0018
+   \   00BC  900000            MOV     DPTR,#$LOCBX espera_tecla
+   \   00BF  E0                MOVX    A,@DPTR
+   \   00C0            ?0018:
+   \   00C0  70D1              JNZ     ?0010
+   \   00C2            ?0012:
+   \   00C2            ?0011:
+   \   00C2            ?0008:
+     74          
+     75           if (res==stop)
+   \   00C2  900000            MOV     DPTR,#$LOCBX espera_tecla+1
+   \   00C5  E0                MOVX    A,@DPTR
+   \   00C6  640F              XRL     A,#15
+   \   00C8  7004              JNZ     ?0019
+   \   00CA  900000            MOV     DPTR,#$LOCBX espera_tecla
+   \   00CD  E0                MOVX    A,@DPTR
+   \   00CE            ?0019:
+   \   00CE  7005              JNZ     ?0014
+   \   00D0            ?0013:
+     76             return(0);
+   \   00D0  7F00              MOV     R7,#0
+   \   00D2  7E00              MOV     R6,#0
+     77           else
+   \   00D4  22                RET
+   \   00D5            ?0014:
+     78             return(1);
+   \   00D5  7F01              MOV     R7,#1
+   \   00D7  7E00              MOV     R6,#0
+     79          }
+   \   00D9            ?0015:
+   \   00D9  22                RET
+     80          
+     81          
+     82          
+   \   00DA                    END
+
+Errors: none
+Warnings: none
+Code size: 218
+

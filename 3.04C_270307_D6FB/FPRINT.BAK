@@ -1,0 +1,864 @@
+     /*  MODULO FPRINT.C                    */
+
+      /* Contiene funciones relacionadas con la impresion*/
+
+
+      #define MARGEN      2
+      #define VELOCIDAD_LF       2
+      #define TIEMPO_IMPRESION   1
+      #define TIEMPO_IMPRESION1   2
+      #define TIEMPO_RECUPERACION   2
+
+
+
+#include <io51.h>
+#include <math.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <fdefines.h>
+#include <fexterns.h>
+
+int resolucion=1;
+int dots=192;
+extern unsigned char letras[];
+
+unsigned char linefeed[]={0x06,0x0a,0x09,0x05};
+
+int pasolf=0;
+
+
+
+
+/* unsigned char letras[3];*/
+
+int carsporlin;
+unsigned char pasoimp=0x3;
+
+
+int estado_printer;
+unsigned char impiz[]={0x0,0x0,0x0,0x6,0x0,0x0,0xc,0x0,0x0,0x3,0x0,0x0,0x9};
+unsigned char impde[]={0x0,0x0,0x0,0x9,0x0,0x0,0x3,0x0,0x0,0xc,0x0,0x0,0x6};
+
+    unsigned char mascara[]={0x01,0x02,0x04,
+    0x08,0x10,0x20,0x40,0x80};
+
+char informe[6400];
+char line[384];
+char fr;
+char tet;
+
+int centra(char *);
+
+
+
+ lf(n)
+ int n;
+{ int g;
+  int i;
+  unsigned char h,j;
+  for (g=0;g<n;g++)
+ {
+   if (pasolf>3)
+     pasolf=0;
+    EA=0;
+     acceso_a_puertos=1;
+     puertos[3]=puertos[3] & 0xf0;
+     puertos[3]=puertos[3] | linefeed[pasolf];
+     acceso_a_puertos=0;
+     escribe_puerto(3,puertos[3]);
+     EA=1;
+   espera_mili(VELOCIDAD_LF);
+   pasolf=pasolf+1;
+ }
+}
+
+
+
+ printer(onoff)
+ int onoff;
+ {unsigned char ty;
+  if (onoff==0)
+   {
+    EA=0;
+     acceso_a_puertos=1;
+     puertos[3]=puertos[3] & 0xf0;
+     acceso_a_puertos=0;
+     escribe_puerto(3,puertos[3]);
+   escribe_puerto(4,0);
+   EA=1;
+   estado_printer=0;
+   }
+  else
+   {
+/*   checkprint();*/
+   estado_printer=1;
+    EA=0;
+     acceso_a_puertos=1;
+     puertos[3]=puertos[3] & 0xf0;
+     puertos[3]=puertos[3] | linefeed[pasolf];
+     acceso_a_puertos=0;
+     escribe_puerto(3,puertos[3]);
+     EA=1;
+   }
+   }
+
+
+
+ imp_int(linea,col,cade,n)
+ int linea;
+ int col;
+ char cade[];
+ int n;
+ {
+   poneninforme(linea,col,cade);
+   col=col+strlen(cade);
+   intar(text,n);
+   poneninforme(linea,col,text);
+  }
+
+
+
+
+
+
+imprimelinea(linea)
+int linea;
+{
+int pu;
+int h;
+int i;
+int j=0;
+int u;
+int hj;
+int hjk;
+unsigned char porto=0x00;
+unsigned char t;
+unsigned char ty;
+int gh;
+acceso_a_puertos=1;
+PF011=0x04;
+
+for(h=0;h<8;h++)
+{
+
+j=0;
+pu=0;
+for (i=0;i<dots;i++)
+{
+
+ if (mascara[h] & informe[(linea*dots)+i])
+ {
+  PF011=0x06;
+  PF011=0x07;
+  PF011=0x06;
+  pu++;
+if (resolucion==1)
+{
+  PF011=0x07;
+  PF011=0x06;
+  pu++;
+}
+
+ }
+else
+  {
+PF011=0x05;
+PF011=0x04;
+
+if (resolucion==1)
+{
+PF011=0x05;
+PF011=0x04;
+}
+}
+}
+		  /* latch*/
+
+PF011=0x0;
+PF011=0x04;
+
+gh=4;
+if (resolucion==1)
+{
+ gh=6;
+}
+acceso_a_puertos=0;
+
+ for(u=0;u<gh;u++)
+  {
+   imp_p(pu);
+   lf(1);
+  }
+}
+}
+
+
+
+ poneninformetxt(linea,col,line,str)
+ int linea;
+ int col;
+ char line[];
+ char str[];
+ {
+   int h;
+   poneninforme(linea,col,line);
+   h=strlen(line);
+   poneninforme(linea,col+h,str);
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+ poneninforme(linea,col,line)
+ int linea;
+ int col;
+ char line[];
+ { int j;
+   long int i;
+   char *p;
+   int posletra;
+   int h;
+   char let;
+  j=0;
+  i=0;
+       while (i<dots && line[j] !='\0')
+       {
+	i=(col+j)*8;
+	p=letras;
+	let=line[j];
+	posletra=let-32;
+	posletra=posletra*5;
+	p=p+posletra;
+
+       for (h=0;h<5;h++)
+	 {
+	   informe[(linea*dots)+i]=*p;
+	   p++;
+	   i++;
+	 }
+
+       j++;
+
+       }
+
+  }
+
+
+
+
+
+
+ impinforme(numlineas,salto_antes,salto_despues)
+  int numlineas;
+  int salto_antes;
+  int salto_despues;
+
+ {int i;
+  int t;
+  int deiz=1;
+  int nu;
+  int j;
+  nu=0;
+
+ if (printtec==1)
+  {
+  printer(on);
+  lf(salto_antes*5);
+  for (i=0;i<numlineas;i++)
+  {
+    imprimelinea(i);
+    lf(8);
+  }
+
+   lf(salto_despues*5);
+   printer(off);
+ }
+   limpia_inf();
+   return(t);
+ }
+
+
+
+limpia_inf()
+{
+int i;
+for(i=0;i<6400;i++)
+ {
+  informe[i]=0x00;
+ }
+}
+
+
+
+
+
+limpia_informe()
+{
+int i;
+for(i=0;i<6400;i++)
+{informe[i]=0x00;
+}
+}
+
+
+
+
+
+
+checkprint()
+{int z;
+ z=PA002;
+ z=z & 0x1;
+ if (z==1)
+    {
+       borrar();
+       say(3,1,"IMPRESORA DESACT....");
+       inkey(0);
+    }
+}
+
+
+
+
+
+
+
+actimp()
+{
+  borrar();
+  if (printtec == 1)
+   {
+    printtec=0;
+    aviso(1,1,textos[47+idioma_textos]);
+   }
+  else
+   {
+    printtec=1;
+    aviso(1,1,textos[48+idioma_textos]);
+   }
+}
+
+
+
+  imprimir_tecnicas()
+  {
+    char text[25];
+    double j;
+    int h;
+    int i;
+    char tec1[3];
+    char tec2[3];
+    int pul1=0;
+    int pul2=0;
+    int err;
+    int t;
+
+       borrar();
+
+      say(1,0,textos[45+idioma_textos]);
+      err=get(1,strlen(textos[45+idioma_textos]),tec1,3,1,1,0);
+       if (err==novalid)
+	 return;
+
+	pul1=arflot(tec1);
+       if (pul1<0 || pul1>total_tecnicas)
+	 return;
+
+      say(2,0,textos[46+idioma_textos]);
+      err=get(2,strlen(textos[46+idioma_textos]),tec2,3,1,1,0);
+       if (err==novalid)
+	 return;
+
+        pul2=arflot(tec2);
+
+       if (pul2<0 || pul2>total_tecnicas)
+	 return;
+
+       if (pul1>pul2)
+	 return;
+
+
+
+       for (i=pul1;i<=pul2;i++)
+	{  apunta(i,POS_GRABADA);
+           if (*pficher=='*')
+	   {
+	      imprime_tecnica(i);
+
+           }
+            t=mira_tec();
+            if (t==stop)
+               i=pul2+2;
+
+
+        }
+
+ }
+
+
+
+
+
+
+  util_dispo()
+  {
+    double j;
+    int h;
+    int i;
+    int t;
+    int y;
+    int hy;
+    int cuan=0;
+      hy=0;
+    lineasinforme = 0;
+    /*pongo linea de guiones*/
+
+
+    poneninforme(lineasinforme,0,textos[99+idioma_textos]);
+    lineasinforme++;
+    poneninforme(lineasinforme,0,textos[6+idioma_textos]);
+    lineasinforme++;
+/*    if (modelo==RAL122)
+     y=11;
+    else
+     y=10;
+  */
+    for (i=0;i<11;i++)
+    {
+
+    if (modelo==CLIMA_PLUS || (modelo!=CLIMA_PLUS && i!=17))
+    {
+      poneninforme(lineasinforme,0,textos[100+i+idioma_textos]);
+      lineasinforme++;
+      cuan++;
+    }
+	   if (cuan>8)
+	    {
+	      hy=impinforme(lineasinforme,0,0);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+
+    }
+	   if (cuan>0)
+	    {
+	      hy=impinforme(lineasinforme,0,12);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+
+
+ }
+
+
+
+
+  util_dispo1()
+  {
+    double j;
+    int h;
+    int i;
+    int t;
+    int y;
+    int hy;
+    int cuan=0;
+      hy=0;
+    lineasinforme = 0;
+    /*pongo linea de guiones*/
+
+
+    poneninforme(lineasinforme,0,textos[98+idioma_textos]);
+    lineasinforme++;
+    poneninforme(lineasinforme,0,textos[6+idioma_textos]);
+    lineasinforme++;
+    for (i=0;i<9;i++)
+    {
+
+    if (modelo==CLIMA_PLUS || (modelo!=CLIMA_PLUS && i!=8))
+    {
+      poneninforme(lineasinforme,0,textos[111+i+idioma_textos]);
+      lineasinforme++;
+      cuan++;
+    }
+	   if (cuan>8)
+	    {
+	      hy=impinforme(lineasinforme,0,0);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+
+    }
+	   if (cuan>0)
+	    {
+	      hy=impinforme(lineasinforme,0,12);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+
+
+ }
+
+
+
+
+oper_dispo()
+{
+int hy;
+int cuan=0;
+int i;
+int j;
+int t=0;
+
+	   lineasinforme=0;
+	   poneninforme(lineasinforme,0,textos[96+idioma_textos]);
+	   lineasinforme++;
+	   hy=impinforme(lineasinforme,20,0);
+	 lineasinforme=0;
+
+       for (i=0;i<total_tecnicas;i++)
+	{
+	    t=mira_tec();
+	    if (t==stop)
+	       i=total_tecnicas+2;
+
+	   apunta(i,POS_GRABADA);
+	   if (*pficher=='*')
+	   {
+	   j=i;
+	   intar(text,i);
+
+	   poneninforme(lineasinforme,0,text);
+	   strcpy(text,".");
+	   poneninforme(lineasinforme,2,text);
+	   apunta(i,IDEN);
+	   j=arflot(pficher);
+	   h=j;
+	   strcpy(text,codigos[h+pos_ini_cod]);
+
+	   poneninforme(lineasinforme,6,text);
+	   lineasinforme++;
+	   cuan++;
+	   }
+	   if (cuan>8)
+	    {
+	      hy=impinforme(lineasinforme,0,0);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+
+
+	   if (hy==stop)
+	   {
+	     i=total_tecnicas+2;
+	   }
+	}
+
+	   if (cuan>0)
+	    {
+	      hy=impinforme(lineasinforme,0,0);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+	    lf(20);
+
+ }
+
+
+
+
+
+
+  cod_posibles()
+  {
+    double j;
+    int h;
+    int hy;
+    int i;
+    int cuan=0;
+
+    lineasinforme = 0;
+
+
+    poneninforme(0,2,textos[49+idioma_textos]);
+    lineasinforme++;
+    strcpy(text,textos[6+idioma_textos]);
+    poneninforme(1,0,text);
+    lineasinforme++;
+
+
+    lineasinforme++;
+
+       for (i=0;i<num_codigos;i++)
+	{
+	   j=i;
+	   intar(text,i);
+	   poneninforme(lineasinforme,5,text);
+	   strcpy(text,codigos[i+pos_ini_cod]);
+	   poneninforme(lineasinforme,9,text);
+	   lineasinforme++;
+	   cuan++;
+	   if (cuan>7)
+	    {
+	      hy=impinforme(lineasinforme,0,0);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+	}
+
+	   if (cuan>0)
+	    {
+	      hy=impinforme(lineasinforme,0,50);
+	      lineasinforme=0;
+	      cuan=0;
+	    }
+
+
+ }
+
+
+
+
+
+
+ imprime_tecnica(tecnica)
+  int tecnica;
+  {
+
+    int i;
+    double tecnica1;
+    int que;
+    int h;
+    int t;
+    int j;
+    int ji;
+    int err=0;
+    int haz=0;
+    int ord=0;
+    int referencia;
+    int numero;
+    char text[25];
+
+
+    limpia_informe();
+    lineasinforme = 0;
+
+
+    poneninforme(0,0,"--------------------");
+    poneninforme(3,0,"--------------------");
+    lineasinforme=4;
+    strcpy(text,textos[18+idioma_textos]);
+    poneninforme(1,0,text);
+    tecnica1=tecnica;
+
+    flotar(text,tecnica1,0);
+    poneninforme(1,0+strlen(textos[18+idioma_textos]),text);
+
+    apunta(tecnica,TIPO);
+    h=arflot(pficher);
+
+    strcpy(text,tipos[h]);
+    poneninforme(2,0,text);
+
+    apunta(tecnica,IDEN);
+    j=arflot(pficher);
+
+    strcpy(text,codigos[j+pos_ini_cod]);
+    poneninforme(2,12,text);
+
+
+    lineasinforme = 5;
+
+       for (i=0;parametros[i+(h*20)]!=FIN;i++)
+	{
+
+
+	 ord=parametros[i+(h*20)];
+
+
+	       if (ord!=NADA && ord!=VARIOS_STD)
+	       {
+               strcpy(text,txt_prog[ord]);
+               poneninforme(lineasinforme,0,text);
+	       haz=1;
+               }
+               apunta(tecnica,ord);
+
+	 switch (ord) {
+
+	    case WL1:
+               que=arflot(pficher);
+               strcpy(text,wl[que]);
+               break;
+
+
+	    case WL2:
+               que=arflot(pficher);
+               if (que != 0.0)
+                { strcpy(text,wl[que]);
+		  haz=1;
+		 }
+		else
+		{
+		 haz=0;
+		}
+               break;
+
+
+
+	    case UNITS:
+               que=arflot(pficher);
+
+               strcpy(text,units[que]);
+
+               break;
+
+
+	    case TEMP:
+               strcpy(text,pficher);
+	       break;
+
+
+	    case STD:
+               if (contrafact(tecnica))
+	       { haz=0;
+	       }
+	       else
+	       {
+	       haz=1;
+	       apunta(tecnica,STD);
+               strcpy(text,pficher);
+	       }
+               break;
+
+
+	    case ABSORB_LIM:
+               strcpy(text,pficher);
+               poneninforme(lineasinforme,strlen(txt_prog[ord]),text);
+	       apunta(tecnica,ABSORBLIMM);
+	       if (*pficher=='1')
+                 strcpy(text,"MAX");
+               else
+                 strcpy(text,"MIN");
+               poneninforme(lineasinforme,strlen(txt_prog[ord])+longitud[ABSORB_LIM],text);
+               lineasinforme = lineasinforme + 1;
+	       haz=0;
+               break;
+
+
+	    case VARIOS_STD:
+              imp_puntos(tecnica);
+              haz=0;
+	      break;
+
+
+	  default:
+              strcpy(text,pficher);
+	      break;
+
+	 }
+
+
+         if (haz==1)
+	    {
+               poneninforme(lineasinforme,strlen(txt_prog[ord]),text);
+               lineasinforme = lineasinforme + 1;
+	       haz=0;
+	     }
+
+
+   tecnica=tecnica;
+   }
+
+    impinforme(lineasinforme,12,12);
+
+ }
+
+
+
+imp_puntos(quina)
+int quina;
+{ int referencia;
+  int numero;
+  int ji;
+  char text[25];
+
+              apunta(quina,VARIOS_STD);
+	      referencia=arint(pficher);
+	      apuntastd(referencia,0,0,0);
+	      numero=arint(pficherstd);
+
+              for (ji=0;ji<numero;ji++)
+	      {
+	       intar(text,ji+1);
+
+	       poneninforme(lineasinforme,0,text);
+               poneninforme(lineasinforme,2,textos[43+idioma_textos]);
+	       apuntastd(referencia,1,PX,ji);
+	       strcpy(text,pficherstd);
+               poneninforme(lineasinforme,2+strlen(textos[43+idioma_textos]),text);
+
+               lineasinforme++;
+
+	       intar(text,ji+1);
+               poneninforme(lineasinforme,0,text);
+               poneninforme(lineasinforme,2,textos[44+idioma_textos]);
+	       apuntastd(referencia,1,PY,ji);
+	       strcpy(text,pficherstd);
+               poneninforme(lineasinforme,2+strlen(textos[44+idioma_textos]),text);
+
+               lineasinforme++;
+
+	      }
+}
+
+
+
+imp_p(intensa)
+int intensa;
+{
+acceso_a_puertos=1;
+ if (intensa>90)
+ {
+   PF011=0x0c;
+   espera_mili(TIEMPO_IMPRESION);
+   PF011=0x04;
+
+   espera_mili(TIEMPO_RECUPERACION);
+
+   PF011=0x0c;
+   espera_mili(TIEMPO_IMPRESION);
+   PF011=0x04;
+
+   espera_mili(TIEMPO_RECUPERACION);
+
+   PF011=0x14;
+    espera_mili(TIEMPO_IMPRESION);
+   PF011=0x04;
+
+   espera_mili(TIEMPO_RECUPERACION);
+
+   PF011=0x14;
+    espera_mili(TIEMPO_IMPRESION);
+   PF011=0x04;
+ }
+  else
+ {
+   PF011=0x0c;
+   espera_mili(TIEMPO_IMPRESION1);
+   PF011=0x04;
+   PF011=0x14;
+    espera_mili(TIEMPO_IMPRESION1);
+   PF011=0x04;
+ }
+ acceso_a_puertos=0;
+}
+

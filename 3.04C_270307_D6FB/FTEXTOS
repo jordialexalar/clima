@@ -1,0 +1,212 @@
+
+/* TEXTOS DEL PROGRAMA                             */
+#define off_textos  200
+#define off_txt_prog  100
+#define off_text_func 40
+
+    int idioma_textos=0;
+
+
+    char *textos[off_textos]={
+
+    /* CASTELLANO  */
+    "CHECK",
+    "N. DE CODIGO:",
+    "CODIGO:",
+    "ABS. LIM. MAX.(S/N)",
+    "STANDARD (S/N)",
+    "25      30      37",
+    "--------------------",
+    "/",
+    "FACTOR:",      /*8*/
+    "STD.:",        /*9*/
+    "WL1:", /*10*/
+    "WL2:",
+    "VOL. MUESTRA:",
+    "VOL. REACTIVO:",
+    "CALIBRAR (S/N)?",
+    "STANDARD",
+    "PONGA BLANCO",    /* 16*/
+    "PULSE READ",
+    "COD.:",
+    "BLANCO DE STANDARD",
+    "PONGA REACCION 1",            /* 20*/
+    "PONGA STANDARD",
+    "ERROR:2",
+    "PONGA MUESTRA",
+    "PONGA REACCION 2",            /* 24*/
+    "ESP.:",
+    "PONGA BLANCO MUESTRA",
+    "1. 37    2. TA",
+    "FILTRO:",                        /*28*/
+    "ABSORCION:",
+    "ABS.:",                        /*30*/
+    "ASPIRE 5 ML",
+    "ACCIONE PULSADOR ",
+    "VUELVA A ACCIONAR ",
+    "N. PACIENTE:",
+    "PASOS",                        /*35*/
+    "PARA 5 ML",
+    "POR TECLADO",
+    "POR LECTURA",
+    "STANDARD:" ,
+    "LECT.:" ,                     /*40*/
+    "ID.:",
+    "D. S.:",                     /*42*/
+    "ABS.:",
+    "CONC.:",
+    "DESDE:",
+    "HASTA:" ,
+    "IMPRESORA DESACT.",        /*47*/
+    "IMPRESORA ACT.",
+    "CODIGOS POSIBLES",
+    "NUMERO DE COD.:",        /*50*/
+    "IDIOMA:",
+    "CASTELLANO:",
+    "INGLES:",
+    "  ",
+    "  ",
+    "POSICION OCUPADA",
+    "EDITAR (S/N)",
+    "DD",                    /*58*/
+    "MM",
+    "AA",               /*60*/
+    "FECHA",
+    "T. REACCION:",
+    "STANDARD",
+    "PUNTO:",
+    "MUESTRA",
+    "  ",
+    "  ",
+    "  ",
+    "  ",
+
+    /* INGLES  */
+    "CHECK",
+    "CODE NUMBER:",
+    "CODE:",
+    "ABS. LIM. MAX.(Y/N)",
+    "STANDARD (Y/N)",
+    "25      30      37",
+    "--------------------",
+    "/",
+    "FACTOR:",      /*8*/
+    "STD.:",        /*9*/
+    "WL1:", /*10*/
+    "WL2:",
+    "SAMPLE VOL.:",
+    "REAGENT VOL.:",
+    "CALIBRATION (Y/N)?",
+    "STANDARD",
+    "INSERT BLANK",    /* 16*/
+    "PUSH READ",
+    "COD.:",
+    "STANDARD BLANK",
+    "INSERT REACTION 1",            /* 20*/
+    "INSERT STANDARD",
+    "ERROR:2",
+    "INSERT SAMPLE",
+    "INSERT REACTION 2",            /* 24*/
+    "WAIT:",
+    "INSERT SAMPLE BLANK",
+    "1. 37    2. TA",
+    "FILTER:",                        /*28*/
+    "ABSORTION:",
+    "ABS.:",                        /*30*/
+    "ASPIRATE 5 ML",
+    "PULL LEVER",
+    "PULL LEVER AGAIN ",
+    "IDENT. NUMBER",
+    "STEPS",                        /*35*/
+    "FOR 5 ML",
+    "KEYBOARD",
+    "READINGS",
+    "STANDARD:" ,
+    "READ.:" ,                     /*40*/
+    "ID.:",
+    "S. D.:",                     /*42*/
+    "ABS.:",
+    "CONC.:",
+    "FROM:",
+    "TO:" ,
+    "PRINTER OFF",        /*47*/
+    "PRINTER ON",
+    "CODES",
+    "NUMBER OF COD.:",        /*50*/
+    "LANGUAGE:",
+    "SPANISH",
+    "ENGLISH",
+    "  ",
+    "  ",
+    "LOCATION OCCUPIED",
+    "EDIT (Y/N)",
+    "DD",
+    "MM",
+    "YY",
+    "DATE",
+    "REAC. TIME:",
+    "STANDAR",
+    "POINT:",
+    "SAMPLE",
+    "  ",
+    "  ",
+    "  ",
+    "  ",
+
+
+     };
+
+
+    int idioma_text_func=0;
+
+    char *text_func[off_text_func]={
+     /*CASTELLANO */
+    "OPER. DISPONIBLES",
+    "100. EDICION TECNICAS",
+    "101. LECT. ABS.",
+    "102. N. PACIENTE",
+    "103. FECHA",
+    "104. IMP. TECNICAS",
+    "105. ACT/DESACT IMP.",
+    "106. IDENT. TECNICAS",
+    "107. CAMB. FACTOR",
+    "108. CAMB. STD.",
+    "109. CAL. PERISTAL.",
+
+     /*INGLES*/
+    "AVAL. FUNCTIONS",
+    "100. EDIT MODE",
+    "101. ABS. MEASUR.",
+    "102. IDEN. NUMBER",
+    "103. DATE",
+    "104. PRINTING METHODS",
+    "105. PRINTING ON/OFF",
+    "106. METHODS CODE",
+    "107. FACTOR EXC.",
+    "108. STD. EXC.",
+    "109. PUMP CAL."
+     };
+
+
+
+
+   unsigned char *units[]={"MG/DL","U/L","G/DL",
+   "MU/ML","G/L","MCG/ML",
+   "%","NG/ML","MCG%","MEQ/L","MCG/DL","MMO/L",
+   "MCMO/L","NMO/L","KAT/L","MCKAT/L"};
+
+
+   unsigned char *wl[]={"000","340","405","500","546","578","630","---"};
+
+   int idioma_tipos=0;
+   unsigned char *tipos[]={"ABS","CONC","CIN","FxT","DIF","COC","MSTD",
+   "ABS","CONC","KIN","FxT","DIF","RAT","MSTD"};
+
+   int idioma_txt_prog=0;
+
+   unsigned char *txt_prog[off_txt_prog];
+
+
+  #include <fcodigos.h>
+
+

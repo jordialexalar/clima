@@ -1,0 +1,665 @@
+################################################################################
+#                                                                              #
+#      Micro Series Universal Linker V4.24/DOS         14/Jun/107  15:58:57     #
+#                                                                              #
+#           Target CPU    =  8051                                              #
+#           List file     =  f100.lst                                          #
+#           Output file 1 =  f100.eje                                          #
+#           Output format =  motorola                                          #
+#           Command line  =  -f lnk8051b (fmain f100 fqc ffun fproces fproces1 #
+#                            ftecl fget fedit fedit1 fedit2 finiz fstr finter  #
+#                            fabs fprint fcom ftest futil -c8051 -D_R=0        #
+#                            -Z(BIT)C_ARGB,BITVARS=0                           #
+#                            -Z(DATA)C_ARGD,D_UDATA,D_IDATA=8                  #
+#                            -Z(IDATA)C_ARGI,I_UDATA,I_IDATA,CSTACK            #
+#                            -Z(XDATA)C_ARGX+400=500                           #
+#                            -Z(XDATA)X_UDATA,X_IDATA,ECSTR,RF_XDATA=1500      #
+#                            -Z(XDATA)NO_INIT=8000                             #
+#                            -Z(CODE)INTVEC,RCODE,D_CDATA,I_CDATA,X_CDATA,     #
+#                            C_ICALL,C_RECFN,CSTR,CCSTR,CONST=0                #
+#                            -b(CODE)CODE=8000,8000,10000 cl8051b -xsme -l     #
+#                            f100.lst -FMOTOROLA -o f100.eje -a -m)            #
+#                                                                              #
+#                                               (c) Copyright IAR Systems 1990 #
+################################################################################
+
+Warning[16]: Function borrar in module fstr ( fstr.r03 ) is called from two function trees ( with roots main and ret_per )
+Warning[16]: Function say in module fget ( fget.r03 ) is called from two function trees ( with roots main and ret_per )
+Warning[16]: Function inkey in module ftecl ( ftecl.r03 ) is called from two function trees ( with roots main and checkprint )
+Warning[16]: Function lee_bit in module ffun ( ffun.r03 ) is called from two function trees ( with roots main and T2_int )
+Warning[16]: Function reset_bit in module ffun ( ffun.r03 ) is called from two function trees ( with roots main and T2_int )
+Warning[16]: Function set_bit in module ffun ( ffun.r03 ) is called from two function trees ( with roots main and T2_int )
+Warning[16]: Function get in module fget ( fget.r03 ) is called from two function trees ( with roots main and ret_per )
+Warning[16]: Function apunta in module fedit ( fedit.r03 ) is called from two function trees ( with roots borra_tecs and main )
+Warning[16]: Function arint in module fstr ( fstr.r03 ) is called from two function trees ( with roots main and ret_per )
+Warning[16]: Function intar in module fstr ( fstr.r03 ) is called from two function trees ( with roots main and ret_per )
+Warning[16]: Function strlen in module strlen ( cl8051b.r03 ) is called from two function trees ( with roots main and numpaciente )
+
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+       Program entry at : 0000  Relocatable, from module : CSTARTUP
+
+
+
+                ****************************************
+                *                                      *
+                *             ENTRY LIST               *
+                *                                      *
+                ****************************************
+
+?ABS_ENTRY_MOD
+  _R                               0000 
+fmain ( fmain.r03 )
+  main                             0000:FFE6 
+  FREQ_OSC                         BEF6 
+  RET_MOT_PERISTALTICA             BEFF 
+  cal_per                          BEEE 
+  carry_over                       BF61 
+  control                          BF6F 
+  control_diana                    BF85 
+  control_fabricacion              D307 
+  datos_control                    BFF3 
+  desde_tecnica                    D30B 
+  dif_carry                        BF69 
+  fact_peris                       BF59 
+  fechas_control                   C8B7 
+  ficher                           8008 
+  ficherstd                        AEE8 
+  filtro7                          BF51 
+  filtro8                          BF55 
+  hasta_tecnica                    D30D 
+  idioma                           BEF2 
+  limites_control                  D22B 
+  n_datos                          C88B 
+  password                         D30F 
+  porcen_macro                     BF63 
+  porcen_micro                     BF67 
+  porcen_semimicro                 BF65 
+  pos_datos                        C8A1 
+  printtec                         BEEC 
+  spa                              8000 
+  t_esp_aut                        BF6D 
+  tipo_peris                       BEFD 
+  valth                            BEFA 
+  valtl                            BEFB 
+  velth                            BEFC 
+  veters                           BEF4 
+  vol_auto                         BF5D 
+  wipers                           BF01 
+  car_env                          1A7D 
+  car_rec                          19AD 
+  car_recib                        19AC 
+  con                              1715 
+  con1                             172F 
+  counter_timer                    1762 
+  dat                              1796 
+  dd                               1943 
+  decimales                        1AB5 
+  delay                            1BA3 
+  err                              1BAD 
+  error_control                    1C81 
+  errortrans                       1A86 
+  estado_canal_serie               198F 
+  estado_zumbador                  1754 
+  fecha                            193A 
+  fpuntos                          1C0B 
+  fpuntosx                         1BBB 
+  fpuntosy                         1BE3 
+  go                               1BA9 
+  h                                1798 
+  hor                              194E 
+  ih                               1AC3 
+  incs                             1AC5 
+  interv                           1BA1 
+  ipito                            175B 
+  ji                               1BB9 
+  jy                               1BB3 
+  keyb                             174C 
+  ki                               17A6 
+  lado                             17A9 
+  lastkey                          1799 
+  lastkey1                         179A 
+  lastkey2                         179C 
+  lecturas                         1ABB 
+  lecturas1                        1ABD 
+  lecturas2                        1ABF 
+  lecturas3                        1AC1 
+  lineasinforme                    1991 
+  long_ficha                       170B 
+  long_ficha_std                   170D 
+  longitud                         16A7 
+  m                                1C0D 
+  mayor                            17A0 
+  menp                             1A7F 
+  mens                             195B 
+  mensaje                          19B0 
+  mensaje_recibido                 1A7A 
+  menu_prin                        1758 
+  menupric                         198D 
+  mili_secs                        175F 
+  min                              1951 
+  mm                               1946 
+  mseg                             1A97 
+  muestra                          1AAD 
+  muestra_ant                      1AAF 
+  n                                1C35 
+  n_lect                           1AB9 
+  n_std                            1AB7 
+  numi                             1BB5 
+  ocupado                          1A84 
+  offset                           1643 
+  p                                1C66 
+  pac                              1957 
+  pamem                            1993 
+  pficher                          170F 
+  pficherstd                       1712 
+  pito                             175A 
+  pos_ini_cod                      1641 
+  puertos                          1C5D 
+  rec                              19AE 
+  recibiendo_fichero               19AA 
+  recibiendo_mensaje               1A78 
+  recip                            1764 
+  referencia                       1BB7 
+  resto                            17A8 
+  ret                              1A7C 
+  retardo_cero                     1BA5 
+  seg                              1954 
+  seguns                           1BAB 
+  std                              1BAF 
+  tco                              1797 
+  tec                              1BA7 
+  teclas                           17AA 
+  temp_alcanz                      1A8F 
+  temp_puesta                      1A88 
+  temper                           1A8A 
+  temperat                         1A8B 
+  tempi                            1A93 
+  tempi1                           1A95 
+  tempo2                           175D 
+  text                             1A99 
+  tiempo_incs                      1994 
+  tiempo_zumbador                  1756 
+  time_mili                        1761 
+  time_temp                        1A91 
+  tipos                            162C 
+  total                            17A2 
+  total_tecnicas                   19A8 
+  txt_prog                         1500 
+  valor                            179E 
+  veces1                           1A82 
+  versi                            174A 
+  wiper_pos                        1752 
+  wl1                              1AB1 
+  wl2                              1AB3 
+  yy                               1949 
+  a_control                        45F4 
+  abs_act                          4593 
+  abs_ant                          4597 
+  acceso_a_puertos                 45F0 
+  atenua                           444F 
+  bitacero                         45E8 
+  bitauno                          45E0 
+  cal                              45B9 
+  calc_abs                         457F 
+  carry                            45D4 
+  ceroe                            4460 
+  codigos                          3F73 
+  con_peristaltica                 444B 
+  conc                             45AF 
+  de                               4423 
+  desv_std                         459B 
+  disp_get                         457D 
+  disp_say                         457B 
+  display_temp                     4579 
+  error_general                    4585 
+  espera_cero                      458B 
+  estan                            45BD 
+  factor                           45B3 
+  filtro_actual                    4463 
+  fuera_de_rango_max               45D8 
+  fuera_de_rango_min               45DA 
+  idioma_codigos                   3F6F 
+  idioma_textos                    37FC 
+  incabs                           458F 
+  iz                               4427 
+  lavar                            45D6 
+  lects                            4581 
+  medabs                           4583 
+  modelo                           4447 
+  n_filtros_tamb                   4589 
+  n_keyb                           444D 
+  num_codigos                      3F71 
+  parametros                       4467 
+  paso                             442B 
+  pasos_filtro                     4435 
+  perde                            4430 
+  periz                            442C 
+  perpaso                          4434 
+  porcen_carry                     45F2 
+  puesto                           45D2 
+  salir                            45B7 
+  segundo                          445D 
+  sigue                            458D 
+  sino                             45BB 
+  sipping                          45DC 
+  tecla                            4462 
+  teclado                          4587 
+  temperatura_fija                 4449 
+  tempo                            4459 
+  tempo1                           445B 
+  textos                           37FE 
+  tiempo                           4457 
+  tiempo_abs                       4465 
+  time                             445F 
+  units                            3F24 
+  valabsorblim                     45A7 
+  valinf                           45A3 
+  vallimlin                        45AB 
+  valsup                           459F 
+  wl                               3F54 
+f100 ( f100.r03 )
+  menu                             0002:C627 
+fqc ( fqc.r03 )
+  coge_lim                         0000:CC49 
+  coge_valors                      0000:C0BF 
+  edit_qc                          0000:A878 
+  env_qc                           0000:C191 
+  exist_qc                         0000:B272 
+  haz_control                      0000:B448 
+  impr_cont                        0000:AD66 
+  impr_controls                    0000:B097 
+  iniz_control                     0000:C871 
+  locate                           0000:C70D 
+  pedir_datos                      0000:CA22 
+  ver_qc                           0000:B2B7 
+  cv                               1C87 
+  ds                               1C83 
+  mitja                            1C8B 
+  num                              1C93 
+  pt_datos                         1D16 
+  pt_diana                         1D0D 
+  pt_fechas                        1D19 
+  pt_liminf                        1D13 
+  pt_limsup                        1D10 
+  v_diana                          1C8F 
+  valors                           1C95 
+  lim_inf                          45FA 
+  lim_sup                          45F6 
+ffun ( ffun.r03 )
+  busy_flag                        0002:BF5A 
+  escribe_puerto                   0002:C09B 
+  iniz_lcd                         0002:BF6D 
+  lee_bit                          0002:C02B 
+  reset_bit                        0002:C106 
+  set_bit                          0002:BFA0 
+  w_cmd                            0002:BDFE 
+  w_data                           0002:BECC 
+fproces ( fproces.r03 )
+  abs_total                        0000:9FAF 
+  absorbe                          0000:8C0A 
+  cab_resul                        0000:80D8 
+  cal_final                        0000:A275 
+  cojo_parametros                  0000:8F8E 
+  conc_final                       0000:977F 
+  correcion_carry                  0000:965E 
+  form_pan                         0000:8D37 
+  haz                              0000:8000 
+  inic_pac                         0000:8BE3 
+fproces1 ( fproces1.r03 )
+  haz_tecnica                      0001:8000 
+ftecl ( ftecl.r03 )
+  espera_teclas                    0002:C318 
+  inkey                            0002:C206 
+  keyboard                         0002:C2D6 
+  limpia_teclado                   0002:C191 
+  mira_tec                         0002:C19D 
+  pita                             0002:C3C2 
+  l                                1D1C 
+fget ( fget.r03 )
+  borrarstr                        0002:AE20 
+  get                              0002:A502 
+  getstr                           0002:AAB8 
+  say                              0002:A3FF 
+  say_bcd                          0002:AD5E 
+  say_double                       0002:ACA4 
+  say_int                          0002:AC05 
+fedit ( fedit.r03 )
+  apunta                           0002:B372 
+  apuntastd                        0002:B3DE 
+  cod_access                       0002:B5B7 
+  contrafact                       0002:B331 
+  editar                           0002:AEC1 
+  escribe                          0002:B47D 
+  grabada                          0002:B2F0 
+  lee_parametro                    0002:B511 
+  lee_parametro_double             0002:B55E 
+fedit1 ( fedit1.r03 )
+  edit                             0001:D486 
+fedit2 ( fedit2.r03 )
+  borrar_tecnica                   0002:A0B8 
+  borrar_tecnicas                  0002:A154 
+  busca                            0002:9762 
+  busca_pos_puntos                 0002:9C77 
+  camb_estan                       0002:9B36 
+  camb_fact                        0002:99FB 
+  lista_pant                       0002:9770 
+  pide_puntos                      0002:9DE2 
+finiz ( finiz.r03 )
+  check                            0000:FEAB 
+  def_model                        0000:FB28 
+  def_par                          0000:F4B4 
+  inic_8231                        0000:F33D 
+  inic_8255                        0000:F3C9 
+  inic_8279                        0000:F34A 
+  inicializacion                   0000:EE9A 
+  retardo                          0000:FF50 
+  retards                          0000:FF16 
+fstr ( fstr.r03 )
+  ajusta                           0001:C6B1 
+  arflot                           0001:C362 
+  arint                            0001:C1FB 
+  aviso                            0001:BCC3 
+  bcd_a_str                        0001:BE65 
+  borrar                           0001:BD3A 
+  borrarl                          0001:BD66 
+  flotar                           0001:CFA3 
+  flotpower                        0001:BBF8 
+  int_a_bcd                        0001:BF66 
+  intar                            0001:BFAF 
+  lee_fecha                        0001:CE2E 
+  len                              0001:D43C 
+  numpaciente                      0001:C5FE 
+  pon_fecha                        0001:C742 
+  power                            0001:BB87 
+  restdiv                          0001:BC71 
+  str_a_bcd                        0001:BEE8 
+finter ( finter.r03 )
+  SCON_int                         034C 
+  T1_int                           002E 
+  T2_int                           00A4 
+  barrido_tec                      01DE 
+  base_de_tiempos                  0183 
+  t_zumba                          03C2 
+  vis_temp                         02B2 
+  tecr                             1D29 
+  tef                              1D28 
+  tiempo_barr                      1D26 
+  barri                            45FE 
+fabs ( fabs.r03 )
+  activa_timer                     0002:8C8A 
+  cal_peris                        0002:8D89 
+  calibrar                         0002:8FFA 
+  comprobar_temp                   0002:8CED 
+  desactiva_timer                  0002:8CC8 
+  espera                           0002:8B20 
+  espera_mili                      0002:8BF0 
+  halla_cero                       0002:80E0 
+  inic_pot                         0002:951C 
+  lee_abs                          0002:8607 
+  media_tiempo_desc                0002:83FA 
+  motor_filtro                     0002:8A6A 
+  mueve_pot                        0002:95CC 
+  paso_i                           0002:89D1 
+  per_pasos                        0002:8ADF 
+  pon_filtro                       0002:8702 
+  pon_temp                         0002:8874 
+  pon_time                         0002:8B8D 
+  pon_time_mili                    0002:8C42 
+  posicion_inicial                 0002:88E7 
+  tiempo_desc                      0002:8000 
+  washing                          0002:8D26 
+  pos_atenuador                    4601 
+fprint ( fprint.r03 )
+  actimp                           0000:D555 
+  checkprint                       0000:D4F5 
+  cod_posibles                     0000:E011 
+  imp_int                          0000:CF29 
+  imp_p                            0000:EDB6 
+  imp_puntos                       0000:EA87 
+  impinforme                       0000:D3AE 
+  imprime_tecnica                  0000:E28F 
+  imprimelinea                     0000:CFCF 
+  imprimir_tecnicas                0000:D603 
+  lf                               0000:CDBB 
+  limpia_inf                       0000:D487 
+  limpia_informe                   0000:D4BE 
+  oper_dispo                       0000:DCE7 
+  poneninforme                     0000:D21D 
+  poneninformetxt                  0000:D184 
+  printer                          0000:CE7B 
+  util_dispo                       0000:D8DD 
+  util_dispo1                      0000:DAE2 
+  carsporlin                       1D2B 
+  estado_printer                   1D2D 
+  fr                               37AF 
+  informe                          1D2F 
+  line                             362F 
+  tet                              37B0 
+  dots                             47CC 
+  impde                            47E2 
+  impiz                            47D5 
+  letras                           4603 
+  linefeed                         47CE 
+  mascara                          47EF 
+  pasoimp                          47D4 
+  pasolf                           47D2 
+  resolucion                       47CA 
+fcom ( fcom.r03 )
+  aca_com                          0002:B781 
+  borra_tecs                       0002:BCF8 
+  emp_com                          0002:B776 
+  env_file                         0002:BB97 
+  env_res                          0002:B786 
+  envia_car                        0002:BCC1 
+  iniz_com                         0002:B6B2 
+  rec_file                         0002:B9F3 
+  recep1                           0002:B6DA 
+  select_canal                     0002:BDA2 
+  carff                            47F7 
+ftest ( ftest.r03 )
+  cal_temp                         0001:A9BE 
+  cambio_peris                     0001:A86B 
+  get_dif_carry                    0001:AF0E 
+  get_password                     0001:B5F7 
+  get_tecnicas                     0001:B8EB 
+  iniz_fab                         0001:B1A0 
+  n_lecturas                       0001:A7BB 
+  print_setup                      0001:B228 
+  print_test                       0001:AFAA 
+  ret_per                          0001:A920 
+  test                             0001:A067 
+  test_com                         0001:AD2F 
+  test_filtros                     0001:A36D 
+  test_no_init                     0001:B547 
+  test_temp                        0001:A5F6 
+  hr                               37BB 
+  mi                               37B6 
+  se                               37B1 
+futil ( futil.r03 )
+  cambio_cal_per                   0001:EE69 
+  comunic                          0001:FAA9 
+  correc_carry                     0001:F71C 
+  fon                              0001:FA89 
+  get_fact_peris                   0001:F66D 
+  get_filtro                       0001:F3A9 
+  get_t_esp_aut                    0001:F9EB 
+  get_vol_auto                     0001:F5C0 
+  idiom                            0001:EF3A 
+  que_idioma                       0001:F149 
+  que_veter                        0001:F289 
+  util                             0001:EC22 
+  util1                            0001:FB70 
+  veter                            0001:F1BD 
+  pf                               37C0 
+  mod                              47F9 
+CSTARTUP ( cl8051b.r03 )
+exit ( cl8051b.r03 )
+  exit                             0509 
+  ?C_EXIT                          0509 
+ctype ( cl8051b.r03 )
+  _ctype_                          41EE 
+strcpy ( cl8051b.r03 )
+  strcpy                           0000:FF90 
+strcmp ( cl8051b.r03 )
+  strcmp                           0002:C81B 
+strcat ( cl8051b.r03 )
+  strcat                           0002:C8B1 
+strlen ( cl8051b.r03 )
+  strlen                           0001:FFA1 
+sqrt ( cl8051b.r03 )
+  sqrt                             0002:C3E4 
+frexp ( cl8051b.r03 )
+  frexp                            0001:FE28 
+?I_MUL_L00 ( cl8051b.r03 )
+  ?I_MUL_L00                       050B 
+?SI_DIV_L00 ( cl8051b.r03 )
+  ?SI_DIV_L00                      0520 
+?UI_DIV_L00 ( cl8051b.r03 )
+  ?UI_DIV_L00                      054A 
+?L_MUL_L01 ( cl8051b.r03 )
+  ?L_MUL_L01                       056D 
+?UL_DIV_L01 ( cl8051b.r03 )
+  ?UL_MOD_L01                      062A 
+  ?UL_DIV_L01                      05D0 
+  ?MOVNT_L01                       062D 
+?SL_DIV_L01 ( cl8051b.r03 )
+  ?SL_DIV_L01                      0637 
+  ?SL_MOD_L01                      0668 
+?L_NEG_L01 ( cl8051b.r03 )
+  ?L_NEG_L01                       0671 
+?L_CMP_L01 ( cl8051b.r03 )
+  ?L_CMP_L01                       067F 
+?L_ADD_L01 ( cl8051b.r03 )
+  ?L_ADD_L01                       06A9 
+?L_SUB_L01 ( cl8051b.r03 )
+  ?L_SUB_L01                       06B9 
+?L_SHL_L01 ( cl8051b.r03 )
+  ?L_SHL_L01                       06CA 
+?F_ADDSUB_L02 ( cl8051b.r03 )
+  ?F_SUB_L02                       06E1 
+  ?F_ADD_L02                       06E4 
+?F_MUL_L02 ( cl8051b.r03 )
+  ?F_MUL_L02                       079C 
+?F_DIV_L02 ( cl8051b.r03 )
+  ?F_DIV_L02                       082F 
+?FLT_TO_LONG_L02 ( cl8051b.r03 )
+  ?FLT_TO_LONG_L02                 08DB 
+?LONG_TO_FLT_L02 ( cl8051b.r03 )
+  ?SL_TO_FLT_L02                   0924 
+  ?UL_TO_FLT_L02                   0939 
+?F_UNPACK_L02 ( cl8051b.r03 )
+  ?F_UNPACK_L02                    096D 
+?F_NORMALIZE_L02 ( cl8051b.r03 )
+  ?F_NORMALIZE_L02                 099E 
+?F_PACK_L02 ( cl8051b.r03 )
+  ?F_PACK_L02                      09E4 
+?F_CMP_L02 ( cl8051b.r03 )
+  ?F_CMP_L02                       0A04 
+?S_SWITCH_L05 ( cl8051b.r03 )
+  ?SL_SWITCH_L05                   0A35 
+  ?S_SWITCH_L05                    0A55 
+?VI_SWITCH_L05 ( cl8051b.r03 )
+  ?VI_SWITCH_L05                   0A96 
+?VC_SWITCH_L05 ( cl8051b.r03 )
+  ?VC_SWITCH_L05                   0AC3 
+?I_ASG_L17 ( cl8051b.r03 )
+  ?I_ASG_L17                       0AEE 
+  ?I_ASG_OF_L17                    0AE9 
+?L_ASG_L17 ( cl8051b.r03 )
+  ?L_ASG_L17                       0B1A 
+  ?L_ASG_OF_L17                    0B15 
+?C_ST_PTR_L17 ( cl8051b.r03 )
+  ?C_ST_PTR_L17                    0B4E 
+  ?C_ST_PTR_OF_L17                 0B49 
+  ?A_ST_PTR_L17                    0B4F 
+?I_ST_PTR_L17 ( cl8051b.r03 )
+  ?I_ST_PTR_L17                    0B69 
+  ?I_ST_PTR_OF_L17                 0B64 
+?L_ST_PTR_L17 ( cl8051b.r03 )
+  ?L_ST_PTR_L17                    0B91 
+  ?L_ST_PTR_OF_L17                 0B8C 
+  ?L_ST_IDATA_L17                  0B96 
+  ?L_ST_XDATA_L17                  0BAC 
+?C_LD_PTR_L17 ( cl8051b.r03 )
+  ?C_LD_PTR_L17                    0BCF 
+  ?C_LD_PTR_OF_L17                 0BCA 
+?I_LD_PTR_L17 ( cl8051b.r03 )
+  ?I_LD_PTR_L17                    0BF6 
+  ?I_LD_PTR_OF_L17                 0BF1 
+?P_LD_PTR_L17 ( cl8051b.r03 )
+  ?P_LD_PTR_L17                    0C2F 
+  ?P_LD_PTR_OF_L17                 0C2A 
+  ?P_LD_IDATA_L17                  0C34 
+  ?P_LD_XDATA_L17                  0C45 
+  ?P_LD_CODE_L17                   0C56 
+?L_LD_PTR_L17 ( cl8051b.r03 )
+  ?L_LD_PTR_L17                    0C74 
+  ?L_LD_PTR_OF_L17                 0C6F 
+  ?L_LD_IDATA_L17                  0C79 
+  ?L_LD_XDATA_L17                  0C90 
+  ?L_LD_CODE_L17                   0CA4 
+?PA_IDX_L17 ( cl8051b.r03 )
+  ?PA_IDX_L17                      0CC4 
+?L_LD_PRE_L17 ( cl8051b.r03 )
+  ?L_LD_PRE_OF_L17                 0CD6 
+  ?L_LD_PRE_L17                    0CDF 
+?VERSION_L17 ( cl8051b.r03 )
+  ?CL8051B_4_01_L17                C893 
+?BANK_SWITCHER_L18 ( cl8051b.r03 )
+  ?X_CALL_L18                      0D06 
+  ?X_RET_L18                       0D0C 
+
+                ****************************************
+                *                                      *
+                *        SEGMENTS IN DUMP ORDER        *
+                *                                      *
+                ****************************************
+
+ SEGMENT               START ADDRESS    END ADDRESS  TYPE  ORG  P/N  ALIGN
+ =======               =============    ===========  ====  ===  ===  =====
+C_ARGB                          Not applicable        dse  stc  pos   0     
+BITVARS                         Not applicable        dse  flt  pos   0     
+C_ARGD                          Not applicable        dse  stc  pos   0     
+D_UDATA                         Not applicable        rel  flt  pos   0     
+D_IDATA                         Not applicable        rel  flt  pos   0     
+C_ARGI                          Not applicable        dse  flt  pos   0     
+I_UDATA                         Not applicable        rel  flt  pos   0     
+I_IDATA                         Not applicable        rel  flt  pos   0     
+CSTACK                      0008     -     0025       rel  flt  pos   0     
+C_ARGX                      0500     -     11D4       rel  stc  pos   0     
+X_UDATA                     1500     -     37FB       rel  stc  pos   0     
+X_IDATA                     37FC     -     4807       rel  flt  pos   0     
+ECSTR                           Not applicable        rel  flt  pos   0     
+RF_XDATA                        Not applicable        dse  flt  pos   0     
+NO_INIT                     8000     -     D315       rel  stc  pos   0     
+INTVEC                      0000     -     002D       com  stc  pos   0     
+RCODE                       002E     -     0D0E       rel  flt  pos   0     
+D_CDATA                         Not applicable        rel  flt  pos   0     
+I_CDATA                         Not applicable        rel  flt  pos   0     
+X_CDATA                     0D0F     -     1D1A       rel  flt  pos   0     
+C_ICALL                     1D1B     -     1D22       rel  flt  pos   0     
+C_RECFN                         Not applicable        dse  flt  pos   0     
+CSTR                        1D23     -     41ED       rel  flt  pos   0     
+CCSTR                           Not applicable        rel  flt  pos   0     
+CONST                       41EE     -     426E       rel  flt  pos   0     
+CODE                     0000:8000   -   0000:FFF0    bnk  flt  pos   0     
+                         0001:8000   -   0001:FFF6   
+                         0002:8000   -   0002:C926   
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+Errors: none
+Warnings: 11
+

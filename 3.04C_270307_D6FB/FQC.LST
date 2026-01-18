@@ -1,0 +1,530 @@
+####################################################################################################
+#                                                                                                  #
+#     Micro Series 8051 C-Compiler V4.01A/DOS                              14/Jun/107  15:58:57     #
+#                                                                                                  #
+#           Memory model  =  banked                                                                #
+#           Source file   =  fqc.c                                                                 #
+#           List file     =  fqc.lst                                                               #
+#           Object file   =  fqc.r03                                                               #
+#           Command line  =  fqc.c -e -mb -l fqc.lst                                               #
+#                                                                                                  #
+#                                                                   (c) Copyright IAR Systems 1990 #
+####################################################################################################
+
+      1            
+      2            
+      3            #include <io51.h>
+      4            #include <stdio.h>
+      5            #include <math.h>
+      6            #include <ctype.h>
+      7            #include <fdefines.h>
+      8            #include <fexterns.h>
+      9            
+     10            #define NOCONTROL  200
+     11            
+     12            double ds;
+     13            double cv;
+     14            double mitja;
+     15            double v_diana;
+     16            int num;
+     17            double valors[30];
+     18            double lim_sup=0.0;
+     19            double lim_inf=0.0;
+     20            
+     21            char *pt_diana;
+     22            char *pt_limsup;
+     23            char *pt_liminf;
+     24            char *pt_datos;
+     25            char *pt_fechas;
+     26            
+     27            
+     28            
+     29            
+     30            edit_qc()
+     31            {
+     32            int po;
+     33            int i;
+     34            int contr;
+     35            int tecnic;
+     36            int salir;
+     37            int hg;
+     38            salir=0;
+     39             for(i=1;i<11;i++)
+     40              {
+     41                if (control[i]!=NOCONTROL)
+     42                 {
+     43                  if (grabada(control[i])==0)
+     44                    control[i]=NOCONTROL;
+     45                 }
+     46            
+     47              }
+     48            while (salir==0)
+     49            {
+     50            borrar();
+     51            text[0]=0x0;
+     52            getstr(1,0,text,2,1,1,0,textos[184+idioma_textos],BORRAR);
+     53            if (lastkey==stop)
+     54             return(0);
+     55            
+     56            if (lastkey==print)
+     57             impr_controls();
+     58            
+     59            if (lastkey==cr)
+     60             {
+     61               tecnic=arint(text);
+     62               if (tecnic>0 && tecnic<total_tecnicas)
+     63                {
+     64                  if (grabada(tecnic))
+     65                   {
+     66                         salir=1;
+     67                     for(i=1;i<11;i++)
+     68                      {
+     69                        if (control[i]==tecnic)
+     70                         {
+     71                          locate(i);
+     72                          say(2,0,textos[185+idioma_textos]);
+     73                          say(3,0,textos[166+idioma_textos]);
+     74                          po=strlen(textos[166+idioma_textos]);
+     75                          say(3,0+po,pt_diana);
+     76                          inkey(0);
+     77                          borrarstr(2,0,textos[185+idioma_textos]);
+     78            
+     79                          salir=0;
+     80                          if (lastkey==1)
+     81                            {
+     82                               control[i]=NOCONTROL;
+     83                            }
+     84                          i=12;
+     85            
+     86                         }
+     87                      }
+     88                   }
+     89                  else
+     90                   {
+     91                     aviso(1,1,textos[84+idioma_textos]);
+     92                   }
+     93                 }
+     94              }
+     95             }
+     96              contr=0;
+     97              for(i=1;i<11;i++)
+     98               {
+     99                if (control[i]==NOCONTROL)
+    100                  {
+    101                   contr=i;
+    102                   i=20;
+    103                  }
+    104               }
+    105               if (contr>0 && contr<11)
+    106                {
+    107                               control[contr]=tecnic;
+    108                               pedir_datos(contr);
+    109                               if (lastkey==stop)
+    110                                 control[contr]=0;
+    111                               else
+    112                                 impr_cont(contr);
+    113                }
+    114               else
+    115                {
+    116                    aviso(1,1,textos[186+idioma_textos]);
+    117                }
+    118            
+    119             }
+    120            
+    121            
+    122            
+    123            impr_cont(pul)
+    124            int pul;
+    125            {
+    126            int j;
+    127                  lineasinforme=0;
+    128                  poneninforme(lineasinforme,8,textos[76+idioma_textos]);
+    129                  lineasinforme++;
+    130                  apunta(control[pul],IDEN);
+    131                  j=arint(pficher);
+    132                  strcpy(text,codigos[j+pos_ini_cod]);
+    133                  locate(pul);
+    134                  poneninforme(lineasinforme,1,text);
+    135            
+    136                  intar(text,control[pul]);
+    137                  poneninforme(lineasinforme,8,text);
+    138            
+    139                  lineasinforme++;
+    140                  intar(text,n_datos[pul]);
+    141                  poneninformetxt(lineasinforme,1,textos[77+idioma_textos],text);
+    142                  poneninformetxt(lineasinforme,8,textos[166+idioma_textos],pt_diana);
+    143                  lineasinforme++;
+    144                  poneninformetxt(lineasinforme,1,textos[86+idioma_textos],pt_limsup);
+    145            /*      poneninformetxt(lineasinforme,11,textos[87+idioma_textos],pt_liminf); */
+    146                  lineasinforme++;
+    147                  poneninforme(lineasinforme,0,"--------------------");
+    148                  lineasinforme++;
+    149                  impinforme(lineasinforme,10,1);
+    150            
+    151            
+    152            }
+    153            
+    154            impr_controls()
+    155            {
+    156            int i;
+    157            int h;
+    158            int j;
+    159            lineasinforme=0;
+    160              for(i=1;i<11;i++)
+    161               {
+    162                if (control[i]!=NOCONTROL)
+    163                  {
+    164                       intar(text,control[i]);
+    165                       poneninforme(lineasinforme,0,text);
+    166                       strcpy(text,".");
+    167                       poneninforme(lineasinforme,2,text);
+    168            
+    169                       apunta(control[i],IDEN);
+    170                       j=arint(pficher);
+    171                       strcpy(text,codigos[j+pos_ini_cod]);
+    172                       poneninforme(lineasinforme,6,text);
+    173                       lineasinforme++;
+    174                  }
+    175            
+    176               }
+    177            
+    178               if (lineasinforme>0)
+    179                  impinforme(lineasinforme,10,10);
+    180            }
+    181            
+    182            
+    183            exist_qc(pul)
+    184            int pul;
+    185            {
+    186             int tec;
+    187             int er=0;
+    188             if (control[pul]>0)
+    189             {
+    190                er=1;
+    191             }
+    192            return(er);
+    193            }
+    194            
+    195            
+    196            ver_qc()
+    197            {
+    198            int pul;
+    199            int pul1;
+    200            int i;
+    201            borrar();
+    202            text[0]=0x0;
+    203            getstr(1,0,text,2,1,1,0,textos[2+idioma_textos],BORRAR);
+    204            if (lastkey==cr)
+    205             {
+    206               pul=arint(text);
+    207               if (pul>0 && pul<total_tecnicas)
+    208                {
+    209                  if (grabada(pul))
+    210                   {
+    211                     for(i=1;i<11;i++)
+    212                      {
+    213                       if (control[i]==pul)
+    214                        {
+    215                         haz_control(i);
+    216                         i=12;
+    217                        }
+    218                      }
+    219                   }
+    220                  else
+    221                   {
+    222                     aviso(1,1,textos[84+idioma_textos]);
+    223                     return(0);
+    224                   }
+    225            
+    226                }
+    227             }
+    228            
+    229            }
+    230            
+    231            
+    232            haz_control(pul)
+    233            int pul;
+    234            {
+    235             int salir=0;
+    236             int i=0;
+    237             int j;
+    238             int decs;
+    239             double val=0;
+    240             num=0;
+    241            
+    242             decs=lee_parametro(control[pul],DECIMALES);
+    243            
+    244            while (salir==0)
+    245            {
+    246                 borrar();
+    247            
+    248                   mitja=0.0;
+    249                   coge_valors(pul);
+    250                   num=n_datos[pul];
+    251                   for(i=0;i<num;i++)
+    252                    {
+    253                      mitja=mitja+valors[i];
+    254                    }
+    255                   mitja=mitja/num;
+    256                   ds=0.0;
+    257                   for(i=0;i<num;i++)
+    258                    {
+    259                       val=valors[i]-mitja;
+    260                       val=flotpower(val,2);
+    261                       ds=ds+val;
+    262                    }
+    263                    ds=ds/(num-1);
+    264                    ds=sqrt(ds);
+    265                    cv=(ds/mitja)*100.0;
+    266            
+    267                    apunta(control[pul],IDEN);
+    268                    j=arint(pficher);
+    269                    say(1,0,codigos[j+pos_ini_cod]);
+    270                    say_int(1,10,num,textos[77+idioma_textos]);
+    271            
+    272                    say_double(2,0,mitja,decs,textos[82+idioma_textos]);
+    273            
+    274            
+    275                    say_double(2,10,ds,2,textos[78+idioma_textos]);
+    276            
+    277                    say_double(3,0,cv,2,textos[79+idioma_textos]);
+    278                    say_double(3,10,(mitja/v_diana),2,textos[80+idioma_textos]);
+    279            
+    280                   inkey(0);
+    281            
+    282            
+    283               if (lastkey==print)
+    284                {
+    285                  locate(pul);
+    286                  lineasinforme=0;
+    287                  poneninforme(lineasinforme,8,textos[76+idioma_textos]);
+    288                  lineasinforme++;
+    289                  apunta(control[pul],IDEN);
+    290                  j=arint(pficher);
+    291                  strcpy(text,codigos[j+pos_ini_cod]);
+    292                  locate(pul);
+    293                  poneninforme(lineasinforme,1,text);
+    294                  lineasinforme++;
+    295                  intar(text,n_datos[pul]);
+    296                  poneninformetxt(lineasinforme,1,textos[77+idioma_textos],text);
+    297                  poneninformetxt(lineasinforme,8,textos[166+idioma_textos],pt_diana);
+    298                  lineasinforme++;
+    299                  poneninformetxt(lineasinforme,1,textos[86+idioma_textos],pt_limsup);
+    300            /*      poneninformetxt(lineasinforme,11,textos[87+idioma_textos],pt_liminf); */
+    301                  lineasinforme++;
+    302                  poneninforme(lineasinforme,0,"--------------------");
+    303                  lineasinforme++;
+    304                  impinforme(lineasinforme,10,1);
+    305            
+    306                  lineasinforme=0;
+    307                  poneninforme(lineasinforme,1,textos[82+idioma_textos]);
+    308                  flotar(text,mitja,decs);
+    309                  poneninforme(lineasinforme,5,text);
+    310                  lineasinforme++;
+    311                  poneninforme(lineasinforme,1,textos[78+idioma_textos]);
+    312                  flotar(text,ds,2);
+    313                  poneninforme(lineasinforme,5,text);
+    314                  lineasinforme++;
+    315                  poneninforme(lineasinforme,1,textos[79+idioma_textos]);
+    316                  flotar(text,cv,2);
+    317                  poneninforme(lineasinforme,5,text);
+    318                  lineasinforme++;
+    319                  poneninforme(lineasinforme,1,textos[80+idioma_textos]);
+    320                  flotar(text,(mitja/v_diana),2);
+    321                  poneninforme(lineasinforme,1+strlen(textos[80+idioma_textos]),text);
+    322                  lineasinforme++;
+    323            
+    324                  impinforme(lineasinforme,0,10);
+    325            
+    326            
+    327                  lineasinforme=0;
+    328                  for(i=0;i<num;i++)
+    329                   {
+    330                    poneninforme(lineasinforme,1,pt_fechas);
+    331                    pt_fechas=pt_fechas+11;
+    332                    poneninforme(lineasinforme,13,pt_datos);
+    333                    pt_datos=pt_datos+10;
+    334                    lineasinforme++;
+    335                    if (lineasinforme>=8)
+    336                      {
+    337                       impinforme(lineasinforme,0,0);
+    338                       lineasinforme=0;
+    339                      }
+    340                   }
+    341                   if (lineasinforme>0)
+    342                    {
+    343                       impinforme(lineasinforme,0,0);
+    344                       lineasinforme=0;
+    345                    }
+    346                  lineasinforme++;
+    347            
+    348                }
+    349            
+    350            
+    351               if (lastkey==stop)
+    352                 salir=1;
+    353             }
+    354            }
+    355            
+    356            
+    357            
+    358            
+    359            coge_valors(pul)
+    360            int pul;
+    361            {
+    362             int i;
+    363             locate(pul);
+    364             v_diana=arflot(pt_diana);
+    365             for(i=0;i<n_datos[pul];i++)
+    366              {
+    367                valors[i]=arflot(pt_datos);
+    368                pt_datos=pt_datos+10;
+    369              }
+    370            }
+    371            
+    372            
+    373            
+    374            env_qc(pul,con)
+    375            int pul;
+    376            char con[];
+    377            {
+    378             int i;
+    379             int j;
+    380             char *po;
+    381             double mt;
+    382             mt=arflot(con);
+    383            
+    384             for(i=1;i<11;i++)
+    385              {
+    386                if (control[i]==pul)
+    387                 {
+    388                    coge_lim(i);
+    389                    if (mt>lim_sup || mt<lim_inf)
+    390                       return(1);
+    391            
+    392                     j=0;
+    393                     while (con[j]!=0x0 && j<9)
+    394                     {
+    395                       datos_control[(i*200)+(pos_datos[i]*10)+j]=con[j];
+    396                       j++;
+    397                     }
+    398                       datos_control[(i*200)+(pos_datos[i]*10)+j]=0x0;
+    399            
+    400                       fechas_control[(i*220)+(pos_datos[i]*11)+0]=dd[0];
+    401                       fechas_control[(i*220)+(pos_datos[i]*11)+1]=dd[1];
+    402                       fechas_control[(i*220)+(pos_datos[i]*11)+2]='/';
+    403            
+    404                       fechas_control[(i*220)+(pos_datos[i]*11)+3]=mm[0];
+    405                       fechas_control[(i*220)+(pos_datos[i]*11)+4]=mm[1];
+    406                       fechas_control[(i*220)+(pos_datos[i]*11)+5]='/';
+    407                       for (j=0;j<4;j++)
+    408                         fechas_control[(i*220)+(pos_datos[i]*11)+j+6]=yy[j];
+    409                       fechas_control[(i*220)+(pos_datos[i]*11)+10]=0x0;
+    410            
+    411            
+    412                       pos_datos[i]++;
+    413                       if (pos_datos[i]>19)
+    414                        pos_datos[i]=0;
+    415                       n_datos[i]++;
+    416                       if (n_datos[i]>20)
+    417                        n_datos[i]=20;
+    418            
+    419            
+    420                 }
+    421            
+    422              }
+    423              return(0);
+    424            }
+    425            
+    426            locate(pul)
+    427            int pul;
+    428            {
+    429             pt_diana=&control_diana[0];
+    430             pt_diana=pt_diana+10*pul;
+    431             pt_limsup=&limites_control[0];
+    432             pt_limsup=pt_limsup+pul*20;
+    433             pt_liminf=&limites_control[0];
+    434             pt_liminf=pt_liminf+pul*20+10;
+    435             pt_datos=&datos_control[0];
+    436             pt_datos=pt_datos+pul*200;
+    437             pt_fechas=&fechas_control[0];
+    438             pt_fechas=pt_fechas+pul*220;
+    439            }
+    440            
+    441            iniz_control(pul)
+    442            int pul;
+    443            {
+    444             int i;
+    445               for (i=pul*200;i<(pul*200)+200;i++)
+    446                 {
+    447                   datos_control[i]=0x0;
+    448                 }
+    449               for (i=pul*220;i<(pul*220)+220;i++)
+    450                 {
+    451                   fechas_control[i]=0x0;
+    452                 }
+    453                n_datos[pul]=0;
+    454                pos_datos[pul]=0;
+    455                for(i=0;i<20;i++)
+    456                  {
+    457                   limites_control[(pul*20)+i]=0x0;
+    458                  }
+    459                for(i=0;i<10;i++)
+    460                  {
+    461                   control_diana[(pul*10)+i]=0x0;
+    462                  }
+    463            }
+    464            
+    465            pedir_datos(pul)
+    466            int pul;
+    467            {
+    468             int i;
+    469             char *pt;
+    470             int j;
+    471            
+    472                     locate(pul);
+    473                     iniz_control(pul);
+    474                     borrar();
+    475                     locate(pul);
+    476                       apunta(control[pul],IDEN);
+    477                       j=arint(pficher);
+    478                       say(1,0,codigos[j+pos_ini_cod]);
+    479            
+    480                               text[0]=0x0;
+    481                               getstr(2,0,text,7,1,1,0,textos[166+idioma_textos],BORRAR);
+    482                               if (lastkey==cr)
+    483                                {
+    484                                  strcpy(pt_diana,text);
+    485                                  text[0]=0x0;
+    486                                  getstr(2,0,text,7,1,1,0,textos[162+idioma_textos],BORRAR);
+    487                                  if (lastkey==cr)
+    488                                   {
+    489                                     strcpy(pt_limsup,text);
+    490                                     strcpy(pt_liminf,text);
+    491            
+    492                                   }
+    493                                 }
+    494            
+    495            }
+    496            
+    497            coge_lim(pul)
+    498            int pul;
+    499            {
+    500             int i;
+    501             char *pt;
+    502                 pt_diana=&control_diana[0];
+    503                 pt_diana=pt_diana+10*pul;
+    504            
+    505                pt=&limites_control[0];
+    506                pt=pt+pul*20;
+    507                lim_sup=arflot(pt)+arflot(pt_diana);
+    508                pt=&limites_control[0];
+    509                pt=pt+(pul*20)+10;
+    510                lim_inf=arflot(pt_diana)-arflot(pt);
+    511            }
+    512            
+
+Errors: none
+Warnings: none
+Code size: 9539
+

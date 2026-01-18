@@ -1,0 +1,139 @@
+
+
+
+      /*MODULO FTECL.C           */
+
+
+       /*Contiene funciones relacionadas con la visualizacion por el display*/
+
+
+
+
+#include <io51.h>
+#include <math.h>
+
+#include <fdefines.h>
+#include <fexterns.h>
+
+int espera_teclas(int nun,int nun1);
+
+char l[10];
+
+
+             /*funcion que mira el teclado, si se ha pulsado una tecla la devuelve,
+	     si no devuelve el numero 100*/
+
+ limpia_teclado()
+ {
+  EA=0;
+  tecla=0;
+  EA=1;
+ }
+
+ mira_tec()
+ {int te;
+ if (tecla==0)
+   {te=NINGUNA_TECLA;
+   }
+ else
+   {tecla=0;
+    te=lastkey;
+    if (te==feed)
+       {printer(on);
+	 lf(250);
+	 printer(off);
+	 te=NINGUNA_TECLA;
+        }
+
+   }
+   return(te);
+   }
+
+
+
+             /*funcion que deja al programa parado hasta que
+	      se presione una tecla un tiempo determinado,
+	      tiempo igual a 0 implica indefinido*/
+
+
+
+
+inkey(n)
+int n;
+ {
+  int res=0;
+  if (n_keyb>0)
+    {
+     n_keyb--;
+     res=keyb[n_keyb];
+    }
+  else
+  {
+  time=0x00;
+  if (n!=0)
+    pon_time(0,n);
+
+  tecla=0;
+  do
+   {
+     res=mira_tec();
+   } while(res==100 && (time==0x00 || n==0));
+   if (time==0xff && n!=0)
+     res=1000;
+ }
+return(res);
+}
+
+
+
+
+ keyboard(n)
+ int n;
+ {int res=0;
+
+ do
+  {
+    res=mira_tec();
+  }while(res==100 && n==0);
+ return(res);
+}
+
+
+
+             /*funcion que deja al programa parado hasta que
+	      se presione una determinada tecla*/
+
+ espera_teclas(nun,nun1)
+  int nun;
+  int nun1;
+ {int res;
+  int y;
+
+  res=0;
+
+ do
+ {
+  res=mira_tec();
+  if (res==wash && modelo==CLIMA_PLUS)
+      {
+       washing();
+       res=0;
+      }
+ }while(res!=nun && res!=stop && res!=nun1);
+
+ if (res==stop)
+   return(0);
+ else
+   return(res);
+return(0);
+}
+
+
+
+pita(h)
+int h;
+{int i;
+estado_zumbador=1;
+tiempo_zumbador=h;
+}
+

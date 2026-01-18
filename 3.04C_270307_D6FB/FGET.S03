@@ -1,0 +1,1397 @@
+	NAME	fget(18)
+	RSEG	CODE(0)
+	RSEG	CSTR(0)
+	EXTERN	ad
+	EXTERN	atenua
+	EXTERN	b
+	EXTERN	ceroe
+	EXTERN	codigos
+	EXTERN	codisp
+	$DEFFN	codisp(0,0,2,0),get,say
+	EXTERN	cong
+	EXTERN	cont
+	EXTERN	conx
+	EXTERN	d
+	EXTERN	dat
+	EXTERN	dd
+	EXTERN	de
+	EXTERN	debug1
+	EXTERN	debug2
+	EXTERN	debug3
+	EXTERN	debug4
+	EXTERN	debug5
+	EXTERN	debug6
+	EXTERN	disp
+	EXTERN	displcd
+	$DEFFN	displcd(0,0,2,0),get,say
+	EXTERN	e
+	EXTERN	ent
+	EXTERN	estado_canal_serie
+	EXTERN	estado_printer
+	EXTERN	f
+	EXTERN	factor
+	EXTERN	fconv
+	EXTERN	fecha
+	EXTERN	ficher
+	EXTERN	ficherstd
+	EXTERN	filtro_actual
+	EXTERN	flo
+	EXTERN	g1
+	PUBLIC	get
+	$DEFFN	get(0,0,11,0,0,0,15,0)
+	EXTERN	ghj
+	EXTERN	gyu
+	EXTERN	h
+	EXTERN	h1
+	EXTERN	i1
+	EXTERN	idebug1
+	EXTERN	idebug2
+	EXTERN	idebug3
+	EXTERN	idebug4
+	EXTERN	idebug5
+	EXTERN	idebug6
+	EXTERN	idioma
+	EXTERN	idioma_codigos
+	EXTERN	idioma_textos
+	EXTERN	idioma_txt_prog
+	EXTERN	ihi
+	EXTERN	informe
+	EXTERN	iz
+	EXTERN	keyboard
+	$DEFFN	keyboard(0,0,2,0),get
+	EXTERN	ki
+	EXTERN	lado
+	EXTERN	lastkey
+	EXTERN	lastkey1
+	EXTERN	lastkey2
+	EXTERN	lects
+	EXTERN	letrasx
+	EXTERN	lin
+	EXTERN	lineasinforme
+	EXTERN	mapimp
+	EXTERN	mayor
+	EXTERN	menp
+	EXTERN	mens
+	EXTERN	menupric
+	EXTERN	mm
+	EXTERN	modelo
+	EXTERN	ncont
+	EXTERN	nconv
+	EXTERN	nth
+	EXTERN	nty
+	EXTERN	num_codigos
+	EXTERN	numpuntos
+	EXTERN	offsfic
+	EXTERN	offstecn
+	EXTERN	pac
+	EXTERN	pamem
+	EXTERN	parametros
+	EXTERN	paso
+	EXTERN	pasos_filtro
+	EXTERN	perde
+	EXTERN	periz
+	EXTERN	perpaso
+	EXTERN	port_d002
+	EXTERN	pp1
+	EXTERN	printtec
+	EXTERN	puntfic
+	EXTERN	rec
+	EXTERN	recip
+	EXTERN	resto
+	EXTERN	rt
+	PUBLIC	say
+	$DEFFN	say(0,0,4,0,0,0,7,0),get
+	EXTERN	segs
+	EXTERN	segs1
+	EXTERN	segundo
+	EXTERN	spac
+	EXTERN	start
+	EXTERN	tco
+	EXTERN	tecla
+	EXTERN	teclas
+	EXTERN	temp1
+	EXTERN	temp2
+	EXTERN	tempo
+	EXTERN	tempo1
+	EXTERN	textos
+	EXTERN	tiempo
+	EXTERN	tiempo_abs
+	EXTERN	tiempo_incs
+	EXTERN	time
+	EXTERN	tipos
+	EXTERN	total
+	EXTERN	total_tecnicas
+	EXTERN	txt_prog
+	EXTERN	ty
+	EXTERN	units
+	EXTERN	v1
+	EXTERN	v2
+	EXTERN	v3
+	EXTERN	v4
+	EXTERN	valor
+	EXTERN	varx
+	EXTERN	vary
+	EXTERN	veces
+	EXTERN	wl
+	EXTERN	yy
+	EXTERN	?C_LD_PTR_L17
+	EXTERN	?C_ST_PTR_OF_L17
+	EXTERN	?C_ST_PTR_L17
+	EXTERN	?VC_SWITCH_L05
+	EXTERN	?PA_IDX_L17
+	EXTERN	_R
+	EXTERN	?CL8051L_4_01_L17
+	RSEG	CODE
+; 1.	
+; 2.	
+; 3.	
+; 4.	      /*MODULO FGET.C           */
+; 5.	
+; 6.	
+; 7.	       /*Contiene funciones relacionadas con la visualizacion por el display*/
+; 8.	
+; 9.	
+; 10.	
+; 11.	
+; 12.	#include <io51.h>
+; 13.	#include <math.h>
+; 14.	
+; 15.	#include <fdefines.h>
+; 16.	#include <fexterns.h>
+; 17.	
+; 18.	
+; 19.	
+; 20.	 say(lan,pos,cha)
+; 21.	     int lan,pos;
+; 22.	     unsigned char cha[];
+; 23.	       { unsigned char posi;
+say:
+	MOV	DPTR,#$LOCBX say+4
+	MOV	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R7
+	MOVX	@DPTR,A
+; 24.	         unsigned char j;
+; 25.	         int i=0;
+	MOV	DPTR,#$LOCBX say+2
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 26.	         idebug1=lan;
+	MOV	DPTR,#$LOCBX say+5
+	MOVX	A,@DPTR
+	MOV	DPTR,#idebug1
+	MOVX	@DPTR,A
+; 27.	         switch(lan)
+	MOV	DPTR,#$LOCBX say+4
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	A,R6
+	JNZ	?0005
+	LCALL	?VC_SWITCH_L05
+	DW	?0001
+	DB	1
+	DW	?0002
+	DB	2
+	DW	?0003
+	DB	3
+	DW	?0004
+	DB	4
+	DW	0
+	DW	?0005
+?0001:
+; 28.	         {
+; 29.	         case 1:
+; 30.	            posi=0x80;
+	MOV	DPTR,#$LOCBX say
+	MOV	A,#128
+	MOVX	@DPTR,A
+; 31.	            break;
+	SJMP	?0000
+?0002:
+; 32.	         case 2:
+; 33.	            posi=0xc0;
+	MOV	DPTR,#$LOCBX say
+	MOV	A,#192
+	MOVX	@DPTR,A
+; 34.	            break;
+	SJMP	?0000
+?0003:
+; 35.	
+; 36.	         case 3:
+; 37.	            posi=0x94;
+	MOV	DPTR,#$LOCBX say
+	MOV	A,#148
+	MOVX	@DPTR,A
+; 38.	            break;
+	SJMP	?0000
+?0004:
+; 39.	
+; 40.	         case 4:
+; 41.	            posi=0xd4;
+	MOV	DPTR,#$LOCBX say
+	MOV	A,#212
+	MOVX	@DPTR,A
+; 42.	            break;
+	SJMP	?0000
+?0005:
+; 43.	
+; 44.	         default:
+; 45.	            posi=0x80;
+	MOV	DPTR,#$LOCBX say
+	MOV	A,#128
+	MOVX	@DPTR,A
+; 46.	            break;
+	SJMP	?0000
+?0000:
+; 47.	        }
+; 48.	        debug3=posi;
+	MOV	DPTR,#$LOCBX say
+	MOVX	A,@DPTR
+	MOV	DPTR,#debug3
+	MOVX	@DPTR,A
+; 49.	        debug4=(unsigned char) pos;
+	MOV	DPTR,#$LOCBX say+7
+	MOVX	A,@DPTR
+	MOV	DPTR,#debug4
+	MOVX	@DPTR,A
+; 50.	        posi=posi+(unsigned char) pos;
+	MOV	DPTR,#$LOCBX say+7
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX say
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOVX	@DPTR,A
+; 51.	        i=0;
+	MOV	DPTR,#$LOCBX say+2
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 52.	        j=0;
+	MOV	DPTR,#$LOCBX say+1
+	MOVX	@DPTR,A
+; 53.	         debug1=posi;
+	MOV	DPTR,#$LOCBX say
+	MOVX	A,@DPTR
+	MOV	DPTR,#debug1
+	MOVX	@DPTR,A
+?0007:
+; 54.	         while (cha[i]!='\0')
+	MOV	DPTR,#$LOCBX say+2
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX say+8
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	LCALL	?C_LD_PTR_L17
+	JZ	?0006
+?0008:
+; 55.	         {
+; 56.	         debug2=posi+j;
+	MOV	DPTR,#$LOCBX say+1
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX say
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOV	DPTR,#debug2
+	MOVX	@DPTR,A
+; 57.	         codisp(posi+j);
+	MOV	DPTR,#$LOCBX say+1
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX say
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOV	R7,A
+	CLR	A
+	RLC	A
+	MOV	R6,A
+	LCALL	$REFFN codisp
+; 58.	         displcd(cha[i]);
+	MOV	DPTR,#$LOCBX say+2
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX say+8
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	LCALL	?C_LD_PTR_L17
+	MOV	R6,#0
+	LCALL	$REFFN displcd
+; 59.	         j++;
+	MOV	DPTR,#$LOCBX say+1
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+; 60.	         i++;
+	MOV	DPTR,#$LOCBX say+3
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+	JNZ	?0058
+	MOV	DPTR,#$LOCBX say+2
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+?0058:
+; 61.	         }
+; 62.	
+; 63.	      }
+	SJMP	?0007
+?0006:
+	RET
+; 64.	
+; 65.	
+; 66.	
+; 67.	
+; 68.	
+; 69.	
+; 70.	
+; 71.	
+; 72.	 get (lin,pos,stri,lon,tipo,enter,update)
+; 73.	     int lin,pos;
+; 74.	     unsigned char stri[];
+; 75.	     int lon,tipo,enter,update;
+; 76.	       { unsigned char posi=0xc0;
+get:
+	MOV	DPTR,#$LOCBX get+11
+	MOV	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R7
+	MOVX	@DPTR,A
+	MOV	DPTR,#$LOCBX get
+	MOV	A,#192
+	MOVX	@DPTR,A
+; 77.	         int error=0;
+	MOV	DPTR,#$LOCBX get+1
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 78.	         int i=0;
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 79.	         int hk;
+; 80.	         int pul=0;
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 81.	         int primera_tecla=0;
+	MOV	DPTR,#$LOCBX get+9
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 82.	         idebug2=lin;
+	MOV	DPTR,#$LOCBX get+12
+	MOVX	A,@DPTR
+	MOV	DPTR,#idebug2
+	MOVX	@DPTR,A
+; 83.	         say(lin,pos,"(");
+	MOV	DPTR,#$LOCBX get+13
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	DPTR,#$PRMBX say+2
+	XCH	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#2
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#HIGH(?0009)
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#LOW(?0009)
+	MOVX	@DPTR,A
+	MOV	DPTR,#$LOCBX get+11
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	LCALL	$REFFN say
+; 84.	         say(lin,pos+lon+1,")");
+	MOV	DPTR,#$LOCBX get+13
+	MOVX	A,@DPTR
+	INC	DPTR
+	MOV	R6,A
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+19
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+18
+	MOVX	A,@DPTR
+	ADDC	A,R6
+	XCH	A,R7
+	ADD	A,#1
+	XCH	A,R7
+	ADDC	A,#0
+	MOV	DPTR,#$PRMBX say+2
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R7
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#2
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#HIGH(?0010)
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#LOW(?0010)
+	MOVX	@DPTR,A
+	MOV	DPTR,#$LOCBX get+11
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	LCALL	$REFFN say
+; 85.	         pos=pos+1;
+	MOV	DPTR,#$LOCBX get+14
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+	JNZ	?0059
+	MOV	DPTR,#$LOCBX get+13
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+?0059:
+; 86.	
+; 87.	         if (update==1)
+	MOV	DPTR,#$LOCBX get+25
+	MOVX	A,@DPTR
+	DEC	A
+	JNZ	?0060
+	MOV	DPTR,#$LOCBX get+24
+	MOVX	A,@DPTR
+?0060:
+	JNZ	?0012
+?0011:
+; 88.	           say(lin,pos,stri);
+	MOV	DPTR,#$LOCBX get+13
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	DPTR,#$PRMBX say+2
+	XCH	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R6
+	MOVX	@DPTR,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R5,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	DPTR,#$PRMBX say+4
+	XCH	A,R5
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R5
+	MOVX	@DPTR,A
+	MOV	DPTR,#$LOCBX get+11
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	LCALL	$REFFN say
+?0012:
+; 89.	
+; 90.	         switch(lin)
+	MOV	DPTR,#$LOCBX get+11
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	A,R6
+	JNZ	?0018
+	LCALL	?VC_SWITCH_L05
+	DW	?0014
+	DB	1
+	DW	?0015
+	DB	2
+	DW	?0016
+	DB	3
+	DW	?0017
+	DB	4
+	DW	0
+	DW	?0018
+?0014:
+; 91.	         {
+; 92.	
+; 93.	         case 1:
+; 94.	            posi=0x80;
+	MOV	DPTR,#$LOCBX get
+	MOV	A,#128
+	MOVX	@DPTR,A
+; 95.	            break;
+	SJMP	?0013
+?0015:
+; 96.	
+; 97.	         case 2:
+; 98.	            posi=0xc0;
+	MOV	DPTR,#$LOCBX get
+	MOV	A,#192
+	MOVX	@DPTR,A
+; 99.	            break;
+	SJMP	?0013
+?0016:
+; 100.	
+; 101.	         case 3:
+; 102.	            posi=0x94;
+	MOV	DPTR,#$LOCBX get
+	MOV	A,#148
+	MOVX	@DPTR,A
+; 103.	            break;
+	SJMP	?0013
+?0017:
+; 104.	
+; 105.	         case 4:
+; 106.	            posi=0xd4;
+	MOV	DPTR,#$LOCBX get
+	MOV	A,#212
+	MOVX	@DPTR,A
+; 107.	            break;
+	SJMP	?0013
+?0018:
+; 108.	
+; 109.	         default:
+; 110.	            posi=0x80;
+	MOV	DPTR,#$LOCBX get
+	MOV	A,#128
+	MOVX	@DPTR,A
+; 111.	            break;
+	SJMP	?0013
+?0013:
+; 112.	        }
+; 113.	        lon=lon-1;
+	MOV	DPTR,#$LOCBX get+19
+	MOVX	A,@DPTR
+	DEC	A
+	MOVX	@DPTR,A
+	INC	A
+	JNZ	?0061
+	MOV	DPTR,#$LOCBX get+18
+	MOVX	A,@DPTR
+	DEC	A
+	MOVX	@DPTR,A
+?0061:
+; 114.	        posi=posi+(unsigned char) pos;
+	MOV	DPTR,#$LOCBX get+14
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOVX	@DPTR,A
+; 115.	        i=0;
+	MOV	DPTR,#$LOCBX get+3
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 116.	        error=0;
+	MOV	DPTR,#$LOCBX get+1
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 117.	        codisp(posi+i);
+	MOV	DPTR,#$LOCBX get
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+4
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	ADDC	A,#0
+	MOV	R6,A
+	LCALL	$REFFN codisp
+; 118.	        if (stri[i] == ' ')
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	LCALL	?C_LD_PTR_L17
+	XRL	A,#32
+	JNZ	?0020
+?0019:
+; 119.	           displcd('_');
+	MOV	R7,#95
+	MOV	R6,#0
+	LCALL	$REFFN displcd
+?0020:
+?0022:
+; 120.	/*        stri[i]='\0';*/
+; 121.	
+; 122.	         while (pul!=stop && pul!=cr && pul!=print && pul!=wash)
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#15
+	JNZ	?0062
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JNZ	$+5
+	LJMP	?0021
+?0062:
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#11
+	JNZ	?0063
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JNZ	$+5
+	LJMP	?0021
+?0063:
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#14
+	JNZ	?0064
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JNZ	$+5
+	LJMP	?0021
+?0064:
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#17
+	JNZ	?0065
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JNZ	$+5
+	LJMP	?0021
+?0065:
+?0025:
+?0024:
+?0023:
+; 123.	         {
+; 124.	            pul=100;
+	MOV	DPTR,#$LOCBX get+7
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#100
+	MOVX	@DPTR,A
+; 125.	            codisp(posi+i);
+	MOV	DPTR,#$LOCBX get
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+4
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	ADDC	A,#0
+	MOV	R6,A
+	LCALL	$REFFN codisp
+; 126.	
+; 127.	            if (i<lon && stri[i] ==' ')
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	SETB	C
+	MOV	DPTR,#$LOCBX get+19
+	MOVX	A,@DPTR
+	SUBB	A,R7
+	MOV	DPTR,#$LOCBX get+18
+	MOVX	A,@DPTR
+	XRL	A,#128
+	XRL	_R+6,#128
+	SUBB	A,R6
+	JC	?0027
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	LCALL	?C_LD_PTR_L17
+	XRL	A,#32
+	JNZ	?0027
+?0029:
+?0028:
+?0026:
+; 128.	             {
+; 129.	               displcd('_');
+	MOV	R7,#95
+	MOV	R6,#0
+	LCALL	$REFFN displcd
+?0027:
+; 130.	             }
+; 131.	
+; 132.	           pul=keyboard(0);
+	MOV	R7,#0
+	MOV	R6,#0
+	LCALL	$REFFN keyboard
+	MOV	DPTR,#$LOCBX get+7
+	MOV	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R7
+	MOVX	@DPTR,A
+; 133.	
+; 134.	            if (primera_tecla==0 && update==1 && pul!=stop && pul!=cr && pul!=print && pul!=wash)
+	MOV	DPTR,#$LOCBX get+9
+	MOVX	A,@DPTR
+	MOV	R7,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	ORL	A,R7
+	JZ	$+5
+	LJMP	?0031
+	MOV	DPTR,#$LOCBX get+25
+	MOVX	A,@DPTR
+	DEC	A
+	JNZ	?0066
+	MOV	DPTR,#$LOCBX get+24
+	MOVX	A,@DPTR
+?0066:
+	JZ	$+5
+	LJMP	?0031
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#15
+	JNZ	?0067
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JNZ	$+5
+	LJMP	?0031
+?0067:
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#11
+	JNZ	?0068
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JZ	?0031
+?0068:
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#14
+	JNZ	?0069
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JZ	?0031
+?0069:
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	XRL	A,#17
+	JNZ	?0070
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	JZ	?0031
+?0070:
+?0033:
+?0032:
+?0030:
+; 135.	              {
+; 136.	                primera_tecla=1;
+	MOV	DPTR,#$LOCBX get+9
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	INC	A
+	MOVX	@DPTR,A
+; 137.	
+; 138.	                 for(hk=0;hk<=lon;hk++)
+	MOV	DPTR,#$LOCBX get+5
+	DEC	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+?0035:
+	MOV	DPTR,#$LOCBX get+5
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	CLR	C
+	MOV	DPTR,#$LOCBX get+19
+	MOVX	A,@DPTR
+	SUBB	A,R7
+	MOV	DPTR,#$LOCBX get+18
+	MOVX	A,@DPTR
+	XRL	A,#128
+	XRL	_R+6,#128
+	SUBB	A,R6
+	JC	?0034
+?0036:
+; 139.	                  {
+; 140.	                   displcd(' ');
+	MOV	R7,#32
+	MOV	R6,#0
+	LCALL	$REFFN displcd
+	MOV	DPTR,#$LOCBX get+6
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+	JNZ	?0071
+	MOV	DPTR,#$LOCBX get+5
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+?0071:
+; 141.	                  }
+; 142.	              }
+	SJMP	?0035
+?0034:
+?0031:
+; 143.	
+; 144.	
+; 145.	            switch(pul)
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	A,R6
+	JZ	$+5
+	LJMP	?0051
+	LCALL	?VC_SWITCH_L05
+	DW	?0039
+	DB	10
+	DW	?0042
+	DB	11
+	DW	?0045
+	DB	12
+	DW	?0044
+	DB	14
+	DW	?0050
+	DB	15
+	DW	?0043
+	DB	17
+	DW	0
+	DW	?0051
+?0039:
+; 146.	            {
+; 147.	
+; 148.	              case 10:
+; 149.	                 stri[i]='.';
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	MOV	R7,#46
+	LCALL	?C_ST_PTR_L17
+; 150.	                 stri[i+1]='\0';
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	MOV	R7,#0
+	MOV	A,#1
+	LCALL	?C_ST_PTR_OF_L17
+; 151.	                 codisp(posi+i);
+	MOV	DPTR,#$LOCBX get
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+4
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	ADDC	A,#0
+	MOV	R6,A
+	LCALL	$REFFN codisp
+; 152.	                 displcd(stri[i]);
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	LCALL	?C_LD_PTR_L17
+	MOV	R6,#0
+	LCALL	$REFFN displcd
+; 153.	
+; 154.	                 if (i<lon)
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	SETB	C
+	MOV	DPTR,#$LOCBX get+19
+	MOVX	A,@DPTR
+	SUBB	A,R7
+	MOV	DPTR,#$LOCBX get+18
+	MOVX	A,@DPTR
+	XRL	A,#128
+	XRL	_R+6,#128
+	SUBB	A,R6
+	JC	?0041
+?0040:
+; 155.	                   i++;
+	MOV	DPTR,#$LOCBX get+4
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+	JNZ	?0072
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+?0072:
+?0041:
+; 156.	
+; 157.	                 break;
+	LJMP	?0038
+?0042:
+; 158.	
+; 159.	
+; 160.	              case cr:
+; 161.	                 error=1;
+	MOV	DPTR,#$LOCBX get+1
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	INC	A
+	MOVX	@DPTR,A
+; 162.	                 break;
+	LJMP	?0038
+?0043:
+; 163.	
+; 164.	              case wash:
+; 165.	                 error=5;
+	MOV	DPTR,#$LOCBX get+1
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#5
+	MOVX	@DPTR,A
+; 166.	                 break;
+	LJMP	?0038
+?0044:
+; 167.	
+; 168.	              case print:
+; 169.	                 error=3;
+	MOV	DPTR,#$LOCBX get+1
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#3
+	MOVX	@DPTR,A
+; 170.	                 break;
+	LJMP	?0038
+?0045:
+; 171.	
+; 172.	              case cl:
+; 173.	/*                 borrarl(lin,posi,i);*/
+; 174.	
+; 175.	                 for(hk=0;hk<=i;hk++)
+	MOV	DPTR,#$LOCBX get+5
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+?0047:
+	MOV	DPTR,#$LOCBX get+5
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	CLR	C
+	MOV	DPTR,#$LOCBX get+4
+	MOVX	A,@DPTR
+	SUBB	A,R7
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	XRL	A,#128
+	XRL	_R+6,#128
+	SUBB	A,R6
+	JC	?0046
+?0048:
+; 176.	                  {stri[hk]=' ';
+	MOV	DPTR,#$LOCBX get+5
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	MOV	R7,#32
+	LCALL	?C_ST_PTR_L17
+	MOV	DPTR,#$LOCBX get+6
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+	JNZ	?0073
+	MOV	DPTR,#$LOCBX get+5
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+?0073:
+; 177.	                  }
+; 178.	                   stri[hk]='\0';
+	SJMP	?0047
+?0046:
+	MOV	DPTR,#$LOCBX get+5
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	MOV	R7,#0
+	LCALL	?C_ST_PTR_L17
+; 179.	                  say(lin,pos,stri);
+	MOV	DPTR,#$LOCBX get+13
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	DPTR,#$PRMBX say+2
+	XCH	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R6
+	MOVX	@DPTR,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R5,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	DPTR,#$PRMBX say+4
+	XCH	A,R5
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R6
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,R5
+	MOVX	@DPTR,A
+	MOV	DPTR,#$LOCBX get+11
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	LCALL	$REFFN say
+; 180.	                 i=0;
+	MOV	DPTR,#$LOCBX get+3
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOVX	@DPTR,A
+; 181.	                 break;
+	LJMP	?0038
+?0050:
+; 182.	
+; 183.	              case stop:
+; 184.	                 error=2;
+	MOV	DPTR,#$LOCBX get+1
+	CLR	A
+	MOVX	@DPTR,A
+	INC	DPTR
+	MOV	A,#2
+	MOVX	@DPTR,A
+; 185.	                 break;
+	LJMP	?0038
+?0051:
+; 186.	
+; 187.	
+; 188.	              default:
+; 189.	                  if (pul>=0 && pul <=9)
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	XRL	A,#128
+	CLR	C
+	SUBB	A,#128
+	JNC	$+5
+	LJMP	?0053
+	SETB	C
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	SUBB	A,#9
+	MOV	DPTR,#$LOCBX get+7
+	MOVX	A,@DPTR
+	XRL	A,#128
+	SUBB	A,#128
+	JC	$+5
+	LJMP	?0053
+?0055:
+?0054:
+?0052:
+; 190.	                   { stri[i]=(unsigned char) pul+48;
+	MOV	DPTR,#$LOCBX get+8
+	MOVX	A,@DPTR
+	ADD	A,#48
+	PUSH	ACC
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	POP	_R+7
+	LCALL	?C_ST_PTR_L17
+; 191.	                     stri[i+1]='\0';
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	MOV	R7,#0
+	MOV	A,#1
+	LCALL	?C_ST_PTR_OF_L17
+; 192.	                     codisp(posi+i);
+	MOV	DPTR,#$LOCBX get
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+4
+	MOVX	A,@DPTR
+	ADD	A,R7
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	ADDC	A,#0
+	MOV	R6,A
+	LCALL	$REFFN codisp
+; 193.	                     displcd(stri[i]);
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	MOV	DPTR,#$LOCBX get+15
+	MOVX	A,@DPTR
+	MOV	R1,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R2,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R3,A
+	MOV	A,#1
+	LCALL	?PA_IDX_L17
+	LCALL	?C_LD_PTR_L17
+	MOV	R6,#0
+	LCALL	$REFFN displcd
+; 194.	                     if (i<lon)
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+	SETB	C
+	MOV	DPTR,#$LOCBX get+19
+	MOVX	A,@DPTR
+	SUBB	A,R7
+	MOV	DPTR,#$LOCBX get+18
+	MOVX	A,@DPTR
+	XRL	A,#128
+	XRL	_R+6,#128
+	SUBB	A,R6
+	JC	?0057
+?0056:
+; 195.	                       i++;
+	MOV	DPTR,#$LOCBX get+4
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+	JNZ	?0074
+	MOV	DPTR,#$LOCBX get+3
+	MOVX	A,@DPTR
+	INC	A
+	MOVX	@DPTR,A
+?0074:
+?0057:
+?0053:
+; 196.	                    }
+; 197.	                    break;
+	SJMP	?0038
+?0038:
+; 198.	            }
+; 199.	         }
+; 200.	        return(error);
+	LJMP	?0022
+?0021:
+	MOV	DPTR,#$LOCBX get+1
+	MOVX	A,@DPTR
+	MOV	R6,A
+	INC	DPTR
+	MOVX	A,@DPTR
+	MOV	R7,A
+; 201.	      }
+	RET
+; 202.	
+; 203.	
+; 204.	
+; 205.	
+; 206.	
+; 207.	
+	RSEG	CSTR
+?0009:
+	DB	'(',0
+?0010:
+	DB	')',0
+	END

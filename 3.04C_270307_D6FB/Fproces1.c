@@ -1,0 +1,644 @@
+
+    /*  MODULO FPROCES1.C                */
+    /*  Contiene funciones que ejecutan las t‚cnicas*/
+
+
+
+#include <io51.h>
+#include <math.h>
+#include <fdefines.h>
+#include <fexterns.h>
+
+
+
+
+
+haz_tecnica(pul,cual)
+int pul;
+int cual;
+ {
+int i;
+  /*    IMPRIMO LA CABECERA   */
+a_control=0;
+error_control=0;
+cab_resul(cual,pul);
+
+
+sino=0;
+    /*  PONGO LA TEMPERATURA */
+
+
+
+  /*  COJO LOS DATOS DE LA TECNICA SEGUN EL TIPO*/
+  cojo_parametros(pul,cual);
+
+
+   borrar();
+
+   form_pan(pul);
+
+
+   /* CALIBRO SI ES NECESARIO */
+  switch (cual)
+  {
+     case MSTD:
+      referencia=lee_parametro(pul,VARIOS_STD);
+      sino=0;
+      apuntastd(referencia,0,0,0);
+      numi=arint(pficherstd);
+      jy=0;
+      while (jy<numi)
+     {
+      apuntastd(referencia,1,0,jy);
+      if (*pficherstd=='\0')
+        {jy=1000;
+         sino=1;
+        }
+      apuntastd(referencia,1,1,jy);
+      if (*pficherstd=='\0')
+        {jy=1000;
+         sino=1;
+        }
+        jy++;
+     }
+      if (sino==0)
+       {
+     say(3,1,textos[14+idioma_textos]);
+     sino=keyboard(0);
+     borrarl(3,0,20);
+       }
+
+      if (sino==1)
+      {
+    say(3,1,textos[37+idioma_textos]);
+    say(4,1,textos[38+idioma_textos]);
+    sino=keyboard(0);
+    borrarl(3,0,20);
+    borrarl(4,0,20);
+    if (sino==1)
+       {
+        sino=0;
+        pide_puntos(referencia,1,0);
+       }
+    else
+       {
+        sino=1;
+        pide_puntos(referencia,1,1);
+        lecturas=lecturas1;
+       }
+      }
+      break;
+
+
+    default:
+    if (contrafact(pul)==0)
+    {
+       apunta(pul,FACTOR);
+       if (*pficher!='\0')
+         {
+           say(4,1,textos[14+idioma_textos]);
+           sino=keyboard(0);
+           borrarl(4,0,20);
+         }
+       else
+           sino=1;
+     }
+     break;
+  }
+
+
+    if (lastkey==stop)
+      return;
+
+      /*  PIDE BLANCOS Y HALLA  CEROS */
+
+  if (sino==1)
+    {
+    if (cual!=MSTD)
+    {
+       say(4,1,textos[15+idioma_textos]);
+       apunta(pul,STD);
+       strcpy(estan,pficher);
+       err=get(4,1+strlen(textos[15+idioma_textos]),estan,LSTD,1,1,1);
+       borrarl(4,0,20);
+    }
+    if (lastkey==stop)
+      return;
+
+    if (con_peristaltica==1)
+     {
+       say(3,1,textos[145+idioma_textos]);
+       say(4,1,textos[146+idioma_textos]);
+       espera_teclas(chupa,cr);
+       borrarstr(3,1,textos[145+idioma_textos]);
+       borrarstr(4,1,textos[146+idioma_textos]);
+       if (lastkey==stop)
+        return(0);
+       if (lastkey==chupa)
+         {
+          if (fact_peris>0.0)
+         absorbe(1000.0*fact_peris);
+          else
+        absorbe(1000.0);
+         }
+
+     }
+
+    say(4,1,textos[16+idioma_textos]);
+    tec=espera_teclas(read,chupa);
+    borrarl(3,0,20);
+    borrarl(4,0,20);
+
+    if (lastkey==stop)
+      {
+       return;
+      }
+
+    if (tec==chupa)
+      {
+       lavar=1;
+     if (fact_peris>0)
+       absorbe(sipping*fact_peris);
+     else
+       absorbe(sipping);
+
+      }
+
+/*    espera(0,retardo_cero);*/
+    halla_cero(wl1,wl2);
+    cal=0;
+/*    if (lavar==1)
+    {
+     lavar=0;
+     absorbe(vol_auto);
+    } */
+    }
+
+ else
+  {
+
+      switch (cual)
+       {
+    case MSTD:
+         referencia=lee_parametro(pul,VARIOS_STD);
+         apuntastd(referencia,0,0,0);
+         fpuntos=arint(pficherstd);
+
+         for(ji=0;ji<fpuntos;ji++)
+         {
+
+         apuntastd(referencia,1,PX,ji);
+        fpuntosx[ji]=arflot(pficherstd);
+         apuntastd(referencia,1,PY,ji);
+        fpuntosy[ji]=arflot(pficherstd);
+         }
+
+         for(ji=0;ji<fpuntos;ji++)
+           { if (ji>0)
+         {
+          m[ji]=(fpuntosy[ji]-fpuntosy[ji-1])/(fpuntosx[ji]-fpuntosx[ji-1]);
+          n[ji]=(fpuntosy[ji])-(fpuntosx[ji]*m[ji]);
+         }
+           }
+      break;
+
+
+
+     default:
+         factor=lee_parametro_double(pul,FACTOR);
+         break;
+
+     }
+
+
+
+    if (con_peristaltica==1)
+     {
+       say(3,1,textos[145+idioma_textos]);
+       say(4,1,textos[146+idioma_textos]);
+       espera_teclas(chupa,cr);
+       borrarstr(3,1,textos[145+idioma_textos]);
+       borrarstr(4,1,textos[146+idioma_textos]);
+       if (lastkey==stop)
+        return(0);
+       if (lastkey==chupa)
+         {
+          if (fact_peris>0)
+         absorbe(1000.0*fact_peris);
+          else
+        absorbe(1000.0);
+         }
+
+     }
+
+    say(4,1,textos[16+idioma_textos]);
+    tec=espera_teclas(read,chupa);
+    borrarl(3,0,20);
+    borrarl(4,0,20);
+
+    if (lastkey==stop)
+      return;
+
+    if (tec==chupa)
+       {
+       lavar=1;
+    if (fact_peris>0)
+       absorbe(sipping*fact_peris);
+     else
+       absorbe(sipping);
+
+       }
+
+/*    espera(0,retardo_cero);*/
+    halla_cero(wl1,wl2);
+/*    if (lavar==1)
+    {
+     lavar=0;
+     absorbe(vol_auto);
+    }  */
+  }
+
+
+
+
+
+
+
+
+     muestra=arint(pac);
+
+
+
+      n_lect=1;
+      n_std=1;
+
+      /* EMPIEZA A PEDIR MUESTRAS */
+
+
+      while (salir==0)
+      {
+      limpia_informe();
+      lineasinforme=0;
+
+
+
+      if (cal==0)
+         {
+        switch (cual)
+
+         {
+          case DIF:
+             say(4,1,textos[19+idioma_textos]);
+             break;
+
+           case REL:
+              say(4,1,textos[20+idioma_textos]);
+              break;
+
+           case MSTD:
+              say_int(3,1,n_std,textos[39+idioma_textos]);
+              say_int(4,1,n_lect,textos[40+idioma_textos]);
+              break;
+
+            default:
+              say(4,1,textos[21+idioma_textos]);
+              break;
+         }
+          }
+
+      else
+          {
+         switch(cual)
+          {
+           case DIF:
+             say(4,0,textos[26+idioma_textos]);
+             break;
+
+           case REL:
+
+               say(4,0,textos[65+idioma_textos]);
+               break;
+            default:
+            say(4,0,textos[23+idioma_textos]);
+            break;
+          }
+        }
+
+
+             limpia_teclado();
+
+             do
+             {
+                tec=mira_tec();
+                if (tec==cr && cal !=0)
+                  {
+                get(4,15,pac,3,1,1,1);
+                /*tec=0;*/
+                muestra=arint(pac);
+                if (muestra==0)
+                 a_control=1;
+                borrarl(4,15,5);
+                  }
+                if (tec==wash && con_peristaltica==1)
+                  {
+                washing();
+                /*tec=0;*/
+                  }
+                if (tec==0 && cal!=0)
+                  {
+                halla_cero(wl1,wl2);
+
+                /*tec=0;*/
+                  }
+
+              }while(tec!=read && tec!=stop && tec!=chupa);
+
+
+        borrarl(4,0,20);
+        borrarl(3,0,20); /*borro la concentracion*/
+
+            if (lastkey==stop)
+              return;
+            if (lastkey==read)
+              carry=0;
+
+            if (tec==chupa)
+             {
+               lavar=1;
+               if (cal==0)
+            {
+                       
+                 if (cual!=FXT && cual!=CIN)     
+                     carry++;
+                 if (fact_peris>0)
+                 absorbe(sipping*fact_peris);
+                 else
+                 absorbe(sipping);
+
+             }
+               else
+            {
+                 if (cual!=FXT && cual!=CIN)     
+                   carry++;
+                 if (fact_peris>0)
+                 absorbe(sipping*fact_peris);
+                 else
+                 absorbe(sipping);
+            }
+             }
+
+        if (cal==1)
+          {
+            if (muestra!=0)
+              poneninformetxt(lineasinforme,4,textos[41+idioma_textos],pac);
+            else
+              poneninforme(lineasinforme,4,textos[168+idioma_textos]);
+
+            lineasinforme++;
+            if (muestra!=0)
+             {
+               muestra_ant=muestra;
+               muestra++;
+               if (muestra > 999)
+             muestra=1;
+             }
+            else
+             {
+            muestra=muestra_ant+1;
+             }
+            intar(pac,muestra);
+
+          }
+
+           for (i=0;i<20;i++)
+          {
+             incs[i]=0.0;
+          }
+
+
+       /* EMPIEZO EL BUCLE DE LECTURAS*/
+
+             for (i=0;i<lecturas;i++)
+              {
+
+                if (i==0)
+                  pon_time(0,delay);
+
+                else
+                  {
+                   if (cual == DIF || cual==REL || cual==MSTD)
+                {
+
+                    if (cal==0)
+                     {
+                    if (cual==DIF)
+                        say(4,1,textos[21+idioma_textos]);
+                    else
+                     {
+                       if (cual==MSTD)
+                        {
+                         say_int(3,1,n_std,textos[39+idioma_textos]);
+                         say_int(4,1,n_lect,textos[40+idioma_textos]);
+                        }
+                       else
+                        {
+                          say(4,1,textos[24+idioma_textos]);
+                        }
+                     }
+                      }
+                     else
+                       {
+                     if (cual==DIF)
+                          say(4,1,textos[23+idioma_textos]);
+                     else
+                       {
+                          say(4,1,textos[66+idioma_textos]);
+                       }
+                       }
+                 tec=espera_teclas(read,chupa);
+                 borrarl(4,0,20);
+                 borrarl(3,0,20);
+                 if (lastkey==stop)
+                    return;
+
+                if (tec==chupa)
+                   absorbe(sipping);
+                 /*if (cual==MSTD)*/
+
+                   pon_time(0,interv);
+
+                 }
+                 else
+                 {
+                  if (cual!=CIN)
+                pon_time(0,interv);
+                 }
+              }
+
+        seguns=0;
+
+
+      if (cual>ABS)
+       say(2,10,textos[25+idioma_textos]);
+
+       while (time==0x00)
+       {
+          if (lastkey==stop)
+        {
+         time=0xff;
+         return(0);
+        }
+
+          if (seguns!=segundo)
+          {
+         seguns=segundo;
+         intar(con,seguns);
+         say(2,10+strlen(textos[25+idioma_textos]),"    ");
+
+
+       if (cual>ABS)
+         say(2,10+strlen(textos[25+idioma_textos]),con);
+          }
+        }
+          if (cual==CIN && i<(lecturas-1))
+        pon_time(0,interv);
+
+
+        say(2,10,"         ");
+
+
+
+        if (cal==0 && cual==MSTD)
+        {
+        incs[n_lect]=lee_abs(0,wl1,wl2);
+        n_lect ++;
+/*        if (lavar==1)
+        {
+         lavar=0;
+         absorbe(vol_auto);
+        } */
+
+        }
+        else
+        {
+        /* LEO ABSORCION */
+
+        incs[i]=lee_abs(0,wl1,wl2);
+/*        if (lavar==1)
+        {
+         lavar=0;
+         absorbe(vol_auto);
+        }
+   */
+        /*elimino absorciones negativas convirtiendolas a cero
+
+        if (incs[i]<0)
+          incs[i]=0.000; */
+
+
+        tiempo_incs[i]=tiempo_abs;
+
+        intar(con1,tiempo_incs[i]);
+        flotar(con,incs[i],3);
+        }
+
+        if (cal==0 && cual==MSTD)
+         {
+         std=0.0;
+         if (n_lect>lecturas2)
+           {
+              for (ih=1;ih<=lecturas2;ih++)
+               {
+             std=incs[ih]+std;
+               }
+               std=std/lecturas2;
+               apuntastd(referencia,1,0,n_std-1);
+               flotar(pficherstd,std,2);
+              n_lect=1;
+              n_std++;
+           }
+
+         }
+
+
+        /* CALCULO INCREMENTOS SI NO ES GLICOSILADA*/
+
+
+        if (cual != REL && cual!=MSTD)
+        {
+          if (i>0)
+          {
+              incs[i-1]=incs[i]-incs[i-1];
+              tiempo_incs[i-1]=tiempo_incs[i]-tiempo_incs[i-1];
+              flotar(con,incs[i-1],3);
+              lineasinforme++;
+              poneninforme(lineasinforme,8,con); /*escribo el incremento*/
+
+           }
+          else
+            {
+              if (cual==CIN || cual==DIF || cual==FXT)
+              {
+                  flotar(con,incs[i],3);
+                  lineasinforme++;
+                  poneninforme(lineasinforme,2,"ABS0:");
+                  poneninforme(lineasinforme,8,con);
+                  if (cual==CIN)
+                  {apunta(pul,ABSORBLIMM);
+                   if (*pficher=='1')
+                       {
+                       if (valabsorblim < incs[i])
+                          poneninforme(lineasinforme,14,"FL");
+
+                    }
+                    else
+                       {
+                        if (valabsorblim > incs[i])
+                        poneninforme(lineasinforme,14,"FL");
+
+                    }
+                      }
+
+                 }
+                 }
+              }
+
+
+    }
+
+
+     /*  HALLO ABSORCIONES TOTALES */
+      abs_total(pul,cual);
+
+      abs_act=incabs;
+      if (carry>=1)
+       {
+         if (carry_over==1)
+         {
+           correcion_carry();
+         }
+        carry--;
+       }
+       abs_ant=abs_act;
+     /* HALLO CONCENTRACIONES */
+
+     if (cal > 0)
+     {
+
+       conc_final(pul,cual);
+     }
+     else
+     {
+      cal_final(pul,cual);
+     }
+  }
+ }
+
+
+
+
+
+
+
+
+

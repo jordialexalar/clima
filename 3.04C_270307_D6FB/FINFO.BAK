@@ -1,0 +1,47 @@
+
+                      /* MODULO FINFO.H  */
+
+int offset[50];
+int longitud[50];
+int long_ficha;
+int long_ficha_std;
+
+no_init char spa[8];
+no_init char ficher[12000];
+no_init char ficherstd[4100];
+
+char *pficher;
+char *pficherstd;
+
+no_init int printtec;
+no_init long int cal_per;
+
+no_init int idioma;
+no_init int veters;
+
+no_init double FREQ_OSC;
+no_init char valth;
+no_init char valtl;
+no_init char velth;
+no_init int  tipo_peris;
+no_init int  RET_MOT_PERISTALTICA;
+no_init int wipers[40];
+
+no_init char filtro7[4];
+no_init char filtro8[4];
+no_init double fact_peris;
+no_init double vol_auto;
+no_init int carry_over;
+no_init int porcen_macro;
+no_init int porcen_semimicro;
+no_init int porcen_micro;
+
+no_init int t_esp_aut;
+no_init int control[11];
+no_init char control_diana[110];
+no_init char datos_control[2200];
+no_init int n_datos[11];
+no_init int pos_datos[11];
+no_init double dif_carry;
+no_init char fechas_control[2420];
+

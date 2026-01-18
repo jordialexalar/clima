@@ -1,0 +1,4 @@
+def-cpu 8051
+ren-seg nvram UDATA NONVOLRAM
+exit
+

@@ -1,0 +1,137 @@
+#define off_codigos  200
+
+   int idioma_codigos=0;
+   int num_codigos=52;
+   int pos_ini_cod;
+                                       /* 6 digitos */
+   unsigned char *codigos[off_codigos]={
+
+    /* CLINICA Y VETERINARIA */
+   "ABS",             /*0*/
+   "ALB",
+   "AMIL",
+   "AMON",
+   "APOA1",
+   "APOB",
+   "ASO",
+   "BILD",
+   "BILT",
+   "C3",           /*9*/
+   "C4",
+   "CALC",
+   "CL",
+   "CO2",
+   "COL",
+   "COLIN",
+   "CK-NAC",
+   "CK-MB",
+   "CREAT",
+   "CU",
+   "FOS. AC",           /*20*/
+   "FOS. AL",
+   "FOSFORO",
+   "FR",
+   "FRUCT.",
+   "GGT",
+   "GOT",
+   "GPT",
+   "GLUC",
+   "IGA",
+   "IGG",
+   "IGM",
+   "HBA1",
+   "HBDH",
+   "HDL",
+   "HGB",
+   "HIERRO",
+   "K",
+   "LACT.",
+   "LDH",
+   "LIPASA",                  /*40*/
+   "LIP. T.",
+   "MAG",
+   "NA",
+   "PCR",
+   "PROT O.",
+   "PROT T.",
+   "TIBC",
+   "TRANSF",
+   "TRIG",
+   "URICO",                         /*50*/
+   "UREA",
+   "ZN",
+   "NO ID.",
+   "HCT",
+   "G.R.",                               /*55*/
+
+   /* AGUAS  */
+
+   "AL",
+   "AMON",
+   "BO",
+   "CA",
+   "CD",
+   "CLO2",
+   "CL L",
+   "CL TO",
+   "CLORU",
+   "CROMA",
+   "CR TO",
+   "CIANU",
+   "COD",
+   "CU",
+   "DUR - RE",
+   "DUR - TO",
+   "HIERRO",
+   "FLUORU",
+   "HYORAZ",
+   "MG.",
+   "MN",
+   "NI",
+   "NITRAT",
+   "NITRIT",
+   "O-FOSF",
+   "OZONO",
+   "PH",
+   "FENOL",
+   "PB",
+   "P-TOT",
+   "SILICAT",
+   "SULFAT",
+   "SULFUR",
+   "TENS-A",
+   "TENS-C",
+   "TURBIO",
+   "ZN.",
+   "NO ID.",
+
+
+  /* ALIMENTACION */
+   "ACET",                 /*94*/
+   "L-LACT",
+   "D-LACT",
+   "L-MAL",
+   "D-MAL",
+   "ALMID",
+   "AMON",
+   "FRUCTO",
+   "GLUC",
+   "ALP",
+   "CA",
+   "GLICER",
+   "COLEST",
+   "LISOZ",
+   "HIERRO",
+   "CU",
+   "UREA",
+   "CITRI",
+   "ASCOR",
+   "ACETAL",
+   "SO2",
+   "SACARO",
+   "NO ID."
+
+
+   };
+
+

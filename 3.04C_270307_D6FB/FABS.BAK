@@ -1,0 +1,700 @@
+
+     /*  MODULO FABS.C                       */
+
+    /* Contiene funciones relacionadas con la medici¢n de absorciones*/
+
+
+
+#include <io51.h>
+#include <math.h>
+#include <fdefines.h>
+#include <fexterns.h>
+
+#define      UD      6
+#define      INC     5
+#define      CS      7
+
+
+ int pos_atenuador=0;
+
+ int tiempo_desc()
+  {
+ unsigned int yu;
+ int i;
+ if (estado_canal_serie==on)
+  say(2,2,"ERROR 15");
+
+ EA=0;
+ ET0=1;
+ counter_timer=0;
+
+
+
+ TMOD=TMOD & 0xF0;
+ TMOD=TMOD | 0x09;
+
+ TR0=0;
+ TH0=0x00;
+ TL0=0x00;
+ TR0=0;
+ CKCON=0x00;
+
+
+ set_bit(0,7); /*cargo condensador*/
+ retardo(TIEMPO_DE_CARGA);
+
+
+
+ TR0=1;     /*activo timer*/
+
+
+ reset_bit(0,7);  /*DESCARGO CONDENSADOR*/
+
+ retardo(TIEMPO_DE_DESCARGA);
+
+
+ TR0=0;   /* DESACTIVO TIMER */
+
+ yu=TL0;
+ counter_timer=1;
+
+ yu=(TH0*255)+TL0;
+ yu=yu >> 1;
+ EA=1;
+
+return(yu);
+}
+
+
+
+
+
+/*nos da el tiempo de descarga cuando pongo un blanco*/
+/*no hace media */
+/*el valor del tiempo de descarga del cero lo deposita en la  variable ceroe*/
+
+
+ halla_cero(filtro1,filtro2)
+  char filtro1[],filtro2[];
+
+   {
+   char debu[10];
+   double debu1;
+   int ty;
+   long int rt;
+   int ceroe1=0;
+   int ceroe2=0;
+   unsigned long int ce2=0;
+   unsigned char c=0x00;
+   unsigned char d=0x00;
+   int yki;
+   int y;
+   int tec;
+   int salir=0;
+   pon_filtro(filtro1);
+
+			for (yki=6;yki>2;yki--)
+			    set_bit(0,yki);
+
+			yki=0;
+			while (salir==0 && yki<4)
+			   {
+			    pos_atenuador=yki;
+			    reset_bit(0,atenua[yki]);
+
+			      espera_mili(300);
+
+			       ceroe1=tiempo_desc();
+			      if (ceroe1 > tiempo_min_cero )
+				 salir=1;
+			      else
+				set_bit(0,atenua[yki]);
+
+			     yki++;
+
+			    }
+
+			      if (espera_cero>2)
+				 espera(0,espera_cero);
+			      else
+				 espera(0,2);
+
+			      rt=0;
+			      for (ty=0;ty<lects;ty++)
+				 {
+				    rt=rt+tiempo_desc();
+				 }
+			      ceroe1=rt/lects;
+
+			      if ((filtro2[0]-48)>=1 && (filtro2[0]-48)<=8)
+			      {
+			       pon_filtro(filtro2);
+			       rt=0;
+			       for (ty=0;ty<lects;ty++)
+				 {
+				    rt=rt+tiempo_desc();
+				 }
+			       ceroe2=rt/lects;
+			      }
+			      ceroe=ceroe1-ceroe2;
+
+
+
+  }
+
+
+
+
+long int media_tiempo_desc(filtro1,filtro2)
+  char filtro1[],filtro2[];
+ {
+   char debu[10];
+   double debu1;
+
+
+ int ty;
+ long int tiempo1=0;
+ long int tiempo2=0;
+ long int rt=0;
+ pon_filtro(filtro1);
+   for (ty=0;ty<lects;ty++)
+    {
+      tiempo1=tiempo_desc();
+      rt=(tiempo1-ceroe)+rt;
+
+   }
+      tiempo1=rt;
+      rt=0;
+ if ((filtro2[0]-48)>=1 && (filtro2[0]-48)<=8)
+    {  pon_filtro(filtro2);
+
+   for (ty=0;ty<lects;ty++)
+    {
+      tiempo2=tiempo_desc();
+      rt=tiempo2+rt;
+
+   }
+     tiempo2=rt;
+  }
+     rt=(tiempo1-tiempo2)/lects;
+
+   return(rt);
+}
+
+
+  /*nos da la absorbancia en unidades de absorbancia*/
+double lee_abs(n,filtro1,filtro2)
+  int n;
+  char filtro1[];
+  char filtro2[];
+  {  long int tx;
+     double abs=0;
+    if (n==1)
+    aviso(1,1,"PONGA MUESTRA Y PULSE TECLA");
+        tx=media_tiempo_desc(filtro1,filtro2);
+          tx=tx/fact;
+
+         tiempo=(int) tx;
+	tiempo_abs=tx;
+
+        abs=(double) tx/1000.0;
+
+      return(abs);
+   }
+
+
+
+
+
+
+
+  pon_filtro(wl)
+  char wl[];
+  {int n=0;
+   int pas=0;
+   char text[15];
+   n=wl[0]-48;
+   if (n > 0 && n != filtro_actual)
+   {
+   motor_filtro(on);
+   if (!posicion_inicial())
+     {
+      strcpy(text,textos[22+idioma_textos]);
+      strcat(text,"1");
+      aviso(1,1,text);
+      error_general=1;
+     }
+     else
+    {
+	filtro_actual=n;
+	if (n_filtros_tamb==7)
+	  paso_i(pasos_filtro[n]);
+	else
+	  paso_i(n*6);
+
+	espera(0,estab_filtro);
+
+    }
+/*    motor_filtro(off);*/
+    }
+  }
+
+
+
+  pon_temp(te)
+  char te[];
+  {
+   int n;
+   if (te[0]=='T')
+     n=25;
+   else
+     n=arint(te);
+
+   mueve_pot(wipers[n]);
+  }
+
+
+
+posicion_inicial()  /*funcion trucada*/
+{
+ int z=1;
+ unsigned int n=0;
+ int r;
+
+ if (filtro_actual==8)
+      paso_i(6);
+
+ if (lee_bit(2,4)!=0)
+   paso_i(20);
+
+
+ while (lee_bit(2,4)==0 && n<300)
+    {paso_i(1);
+     n++;
+
+     for (r=0;r<10;r++)
+     r=r;
+    }
+if (n>=300)
+   z=0;
+
+    return(z);
+ }
+
+
+
+ paso_i(n)
+ int n;
+{ int g;
+  int h;
+  unsigned char j;
+
+  for (g=0;g<n;g++)
+  {
+   paso=paso+1;
+   if (paso > 3)
+     paso=0;
+
+   EA=0;
+     puertos[1]=puertos[1] & 0xf0;
+     puertos[1]=puertos[1] | iz[paso];
+     escribe_puerto(1,puertos[1]);
+
+   espera_mili(RET_MOT_FILTRO);
+   EA=1;
+
+ }
+ }
+
+
+
+
+
+
+
+
+motor_filtro(onoff)
+int onoff;
+{
+unsigned char h;
+ if (onoff==1)
+   {
+     EA=0;
+     puertos[1]=puertos[1] & 0x0f;
+     puertos[1]=puertos[1] | iz[paso];
+     escribe_puerto(1,puertos[1]);
+     EA=1;
+    }
+   else
+    {
+     EA=0;
+     puertos[1]=puertos[1] & 0x0f;
+     escribe_puerto(1,puertos[1]);
+     paso=0;
+     EA=1;
+    }
+}
+
+
+
+
+
+per_pasos(n,der_izq)
+int n;
+int der_izq;
+
+{
+   EA=0;
+   set_bit(0,0);
+   espera_mili(n);
+   reset_bit(0,0);
+   EA=1;
+}
+
+
+  espera(min,segs)
+  int min,segs;
+   {int i;
+    if (min==0 && segs==0)
+      return;
+
+    segundo=60*min;
+    segundo=segundo+segs;
+    tempo1=0;
+    time=0x00;
+    while (time==0x00)
+     i=i;
+
+  }
+
+
+  pon_time(min,segs)
+  int min,segs;
+   {int i;
+     time=0xff;
+    if (min==0 && segs==0)
+      return;
+    segundo=60*min;
+    segundo=segundo+segs;
+    tempo1=0;
+    time=0x00;
+
+  }
+
+
+
+
+
+
+  espera_mili(milis)
+  int milis;
+   {int i;
+    if (milis==0)
+      return;
+    EA=0;
+    tempo2=0;
+    time_mili=0x00;
+    mili_secs=milis;
+    activa_timer(1);
+    EA=1;
+    while (time_mili==0x00)
+     i=i;
+   }
+
+
+
+
+  pon_time_mili(milis)
+  int milis;
+   {int i;
+    time_mili=0xff;
+    if (milis==0)
+      return;
+    EA=0;
+    tempo2=0;
+    time_mili=0x00;
+    mili_secs=milis;
+    activa_timer(1);
+    EA=1;
+  }
+
+
+
+
+
+activa_timer(n)
+int n;
+{
+ switch(n)
+ {
+  case 0:
+      break;
+
+   case 1:
+      ET1=1;
+      TMOD=TMOD & 0x0F;
+      TMOD=TMOD | 0x10;
+      TH1=TH_1MSEG;
+      TL1=TL_1MSEG;
+      TR1=1;
+      break;
+
+   case 2:
+     T2CON=0x00;
+     ET2=1;
+     TH2=TH_50MSEG;
+     TL2=TL_50MSEG;
+     TR2=1;
+     TF2=0;
+     break;
+   }
+}
+
+
+
+
+desactiva_timer(n)
+int n;
+{
+switch(n)
+{
+ case 0:
+  ET0=0;
+  TR0=0;
+  break;
+
+ case 1:
+  ET1=0;
+  TR1=0;
+  break;
+
+ case 2:
+  ET2=0;
+  TR2=0;
+  break;
+
+}
+}
+
+
+
+
+
+    comprobar_temp()
+     {
+      int err=0;
+      int salir=0;
+	if (lee_bit(5,4)==1)
+	   {
+	      err=1;
+	   }
+	return(err);
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+washing()
+{int j;
+ int te;
+ int y=0;
+ int pas=0;
+ j=100;
+
+if (modelo==CLIMA_PLUS)
+ {
+
+    pas=(1000.0/5000)*cal_per;
+    per_pasos(pas,0);
+
+ }
+
+ /* motor_peris(on);
+    absorbe(1000.0);
+    motor_peris(off);
+    */
+}
+
+
+
+cal_peris()
+{
+ char text[25];
+ int te;
+ int y;
+ y=0;
+ te=0;
+ borrar();
+
+ say (2,1,textos[31+idioma_textos]);
+ say(3,1,textos[32+idioma_textos]);
+ te=keyboard(0);
+ if (te!=chupa)
+  return;
+
+ borrar();
+ te=0;
+ say(2,1,textos[33+idioma_textos]);
+
+ te=100;
+
+   set_bit(0,0);
+
+
+ while (te==100)
+ {
+     espera_mili(10);
+     y=y+10;
+     te=mira_tec();
+ }
+
+   reset_bit(0,0);
+
+ cal_per=y;
+
+ intar(text,y);
+ borrar();
+ say (2,1,text);
+ say (2,15,textos[35+idioma_textos]);
+ say (3,1,textos[36+idioma_textos]);
+ te=keyboard(0);
+
+}
+
+
+
+
+ calibrar(impo)
+ int impo;
+ { double abs=0;
+   int salir=0;
+   char ent[7];
+   int pul=0;
+   int y;
+   int numero;
+   int j;
+   char absor[10];
+   say(1,0,textos[28+idioma_textos]);
+   lista_pant(wl,1,n_filtros_tamb+1,7,2,0,3,1);
+   get(1,0+strlen(textos[28+idioma_textos]),ent,1,1,1);
+
+   numero=arint(ent);
+   if (numero>0 && numero<n_filtros_tamb+1)
+     {
+   borrar();
+   say(2,2,textos[16+idioma_textos]);
+   say(3,2,textos[17+idioma_textos]);
+   j=espera_teclas(read,stop);
+   if (j==0)
+     return(0);
+
+   halla_cero(ent,"0");
+   if (error_general!=0)
+     return(0);
+
+   borrar();
+   say(1,1,textos[29+idioma_textos]);
+
+   while (salir==0)
+   {
+
+    lee_abs(0,ent,"");
+    abs=(double) tiempo /1000.0;
+    flotar(absor,abs,3);
+    strcat(absor,"     ");
+    say(1,1+strlen(textos[29+idioma_textos]),absor);
+
+
+    pul=mira_tec();
+    if (pul==100 && impo==1)
+      { espera(0,10);
+	pul=print;
+      }
+      if (pul!=100)
+     {
+	switch(pul)
+	 {
+	  case 0:
+	    say(2,10,"       ");
+	    halla_cero(ent,"");
+	    break;
+
+	  case stop:
+	    salir=1;
+	    break;
+
+	  case print:
+	    lineasinforme=0;
+	    poneninforme(lineasinforme,4,textos[30+idioma_textos]);
+	    poneninforme(lineasinforme,4+strlen(textos[30+idioma_textos]),absor);
+	    lineasinforme++;
+	    impinforme(lineasinforme,2,2);
+	    break;
+
+	 }
+     }
+
+   }
+  }
+}
+
+
+
+inic_pot()
+{
+ int i;
+   set_bit(3,INC);
+   set_bit(3,UD);
+   reset_bit(3,CS);
+   for(i=0;i<105;i++)
+    {
+      reset_bit(3,INC);
+      set_bit(3,INC);
+    }
+   set_bit(3,CS);
+   wiper_pos=0;
+}
+
+
+
+mueve_pot(n)
+int n;
+{
+if (wiper_pos>n)
+{
+   set_bit(3,INC);
+   set_bit(3,UD);
+   reset_bit(3,CS);
+  while (wiper_pos>n)
+   {
+      reset_bit(3,INC);
+      set_bit(3,INC);
+      wiper_pos--;
+   }
+   set_bit(3,CS);
+ }
+if (wiper_pos<n)
+  {
+   set_bit(3,INC);
+   reset_bit(3,UD);
+   reset_bit(3,CS);
+  while (wiper_pos<n)
+   {
+      reset_bit(3,INC);
+      set_bit(3,INC);
+      wiper_pos++;
+   }
+   set_bit(3,CS);
+  }
+}
+
+

@@ -1,0 +1,212 @@
+
+                    /*  MODULO FINTER.C    */
+
+#include <io51.h>
+#include <math.h>
+
+#include <fdefines.h>
+#include <fexterns.h>
+
+unsigned char barri[]={0x1,0x2,0x4};
+int tiempo_barr;
+unsigned char tef;
+int tecr;
+
+
+
+
+
+interrupt void T1_int()
+ {
+   TH1=TH_1MSEG;
+   TL1=TL_1MSEG;
+    tempo2=tempo2+1;
+
+   if (tempo2>=mili_secs)
+   { tempo2=0;
+     time_mili=0xff;
+     desactiva_timer(1);
+   }
+
+ }
+
+
+
+interrupt void T2_int()
+  {
+   TH2=TH_50MSEG;
+   TL2=TL_50MSEG;
+    TF2=0;
+   if (tecla==0x00 && teclado==on)
+    {
+     tiempo_barr++;
+     if (tiempo_barr > 0)
+    barrido_tec();
+    }
+
+   if (estado_zumbador>0)
+     t_zumba();
+
+   base_de_tiempos();
+
+   if (time_temp>20)
+    {
+    if (disp_say==0 && display_temp==on)
+     {
+       time_temp=0;
+       vis_temp();
+     }
+    }
+   else
+     time_temp++;
+
+
+ }
+
+
+
+
+
+
+
+ base_de_tiempos()
+  {
+
+   tempo1=tempo1+1;
+
+   if (tempo1>=20)
+   { tempo1=tempo1-20;
+    if(segundo > 0)
+     segundo=segundo-1;
+     if (segundo <=0)
+      {
+    time=0xff;
+      }
+    }
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+barrido_tec()
+{
+  int t;
+  tiempo_barr=0;
+  t=0;
+  for(tecr=0;tecr<3;tecr++)
+   {
+      PF020=barri[tecr];
+      tef=PF022;
+      tef=tef & 0xff;
+      if (tef!=0x00)
+       {
+        t=(int) tef + 128*tecr;
+        tecr=10;
+       }
+    }
+    if (t!=0x00)
+      {
+        if (lastkey1!=t)
+          {
+        tecla=0xff;
+        lastkey1=t;
+        lastkey=teclas[lastkey1];
+          }
+       }
+    else
+      {
+     lastkey1=0x00;
+      }
+
+}
+
+
+
+vis_temp()
+{
+         if (comprobar_temp()==0x01)
+          {
+           temp_puesta=on;
+           say(1,18,temperat);
+          }
+         else
+          {
+        if (temp_puesta==on)
+         {
+           temp_puesta=off;
+           say(1,18,"  ");
+         }
+        else
+         {
+           temp_puesta=on;
+           say(1,18,temperat);
+         }
+          }
+
+}
+
+
+
+
+
+
+interrupt void SCON_int()
+  {
+      EA=0;
+
+      if (RI==1)
+    {
+     car_rec=SBUF;
+     car_recib=1;
+     if (recibiendo_fichero==0)
+      recep1();
+     RI=0;
+     }
+
+     if (TI==1)
+     {
+      car_env=0;
+      TI=0;
+      veces1++;
+     }
+
+
+
+  EA=1;
+  }
+
+
+
+t_zumba()
+{
+ if (estado_zumbador==1)
+   {
+     if (acceso_a_puertos==0)
+      {
+    estado_zumbador++;
+    set_bit(0,ZUMBADOR);
+      }       
+   }
+ if (estado_zumbador==2)
+  {
+     if (tiempo_zumbador>0)
+       tiempo_zumbador--;
+     else
+      {
+       if (acceso_a_puertos==0)
+        {
+          estado_zumbador=0;
+          reset_bit(0,ZUMBADOR);
+        }
+  }
+ }
+}

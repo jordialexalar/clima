@@ -1,0 +1,305 @@
+
+         /*  MODULO FEXTERNS.H                       */
+
+   extern int con_peristaltica;
+   extern int temperatura_fija;
+   extern char con[];
+   extern char con1[];
+   extern double lee_parametro_double(int pul,int que);
+   extern int versi;
+   extern char car_recib;
+
+   extern int keyb[3];
+   extern int n_keyb;
+
+   extern int wiper_pos;
+
+   extern int menu_prin;
+
+   extern unsigned int tempo2;
+   extern unsigned int mili_secs;
+   extern unsigned char time_mili;
+   extern unsigned int counter_timer;
+
+
+    extern int parametros[];
+
+   extern int tiempo;
+   extern unsigned int tempo;
+   extern unsigned int tempo1;
+   extern unsigned int segundo;
+   extern unsigned char time;
+   extern unsigned char pito;
+   extern int ipito;
+   extern int ceroe;
+
+extern int estado_zumbador;
+extern int tiempo_zumbador;
+
+
+   extern unsigned char recip[50];
+   extern unsigned char dat;
+
+
+
+
+   extern unsigned  char tco,h;
+   extern unsigned  char lastkey;
+   extern int lastkey1;
+   extern int lastkey2;
+
+  extern char tecla;
+
+
+  extern int valor,mayor;
+  extern float total;
+  extern int ki;
+  extern char resto;
+
+/*-------------------------------------------------*/
+
+
+
+
+
+   extern unsigned char *units[];
+   extern unsigned char *wl[];
+   extern unsigned char *tipos[];
+   extern unsigned char *codigos[];
+   extern unsigned char *txt_prog[];
+
+/* -------------------------------------------------*/
+
+
+
+   extern unsigned char lado;
+
+   extern unsigned char de[],iz[],paso;
+
+   extern unsigned char perde[],periz[],perpaso;
+
+   unsigned long int power(int x,int n);
+
+   double arflot(unsigned char num[]);
+
+   double redondeo(double flot,int nd);
+
+   double lee_abs(int n,char *f1,char *f2);
+
+   double flotpower(double x,int n);
+
+  extern unsigned char teclas[];
+
+  extern unsigned char fecha[9];
+  extern  unsigned char dd[3];
+  extern  unsigned char mm[3];
+  extern  unsigned char yy[5];
+  extern  unsigned char hor[3];
+  extern  unsigned char min[3];
+  extern  unsigned char seg[3];
+
+
+  extern  unsigned char pac[4];
+
+  extern unsigned char mens[50];
+
+  extern int menupric;
+  extern int estado_canal_serie;
+  extern int lineasinforme;
+
+  extern char pamem;
+
+  extern int atenua[4];
+
+  extern int filtro_actual;
+
+  extern int pasos_filtro[];
+
+  extern int printtec;
+
+
+ /* ESPACIO DE VARIABLES DE PRUEBA */
+
+  extern  int tiempo_abs;
+  extern  int tiempo_incs[10];
+
+
+
+
+/* TEXTOS DEL PROGRAMA                             */
+
+    extern char *textos[];
+    extern char *txt_prog[];
+    extern char *codigos[];
+
+
+    extern int idioma_codigos;
+    extern int idioma_textos;
+
+
+    extern int modelo;
+    extern int idioma;
+    extern int veters;
+    extern int total_tecnicas;
+    extern int num_codigos;
+    extern int pos_ini_cod;
+
+extern int offset[50];
+extern int longitud[50];
+extern int long_ficha;
+extern int long_ficha_std;
+
+extern char ficher[10000];
+extern char ficherstd[4060];
+extern char *pficher;
+extern char *pficherstd;
+
+extern long int cal_per;
+
+/* variables comunicacion*/
+  extern int recibiendo_fichero;
+  extern unsigned char car_rec;
+  extern int rec;
+  extern char mensaje[200];
+  extern int recibiendo_mensaje;
+  extern int mensaje_recibido;
+  extern unsigned char ret;
+  extern int car_env;
+  extern unsigned char *menp;
+  extern int veces1;
+  extern int ocupado;
+  extern int errortrans;
+
+
+  /* variables temperatura */
+
+  extern int display_temp;
+  extern int temp_puesta;
+  extern unsigned char temper;
+  extern char temperat[4];
+  extern int temp_alcanz;
+  extern int time_temp;
+  extern int tempi;
+  extern int tempi1;
+  extern int disp_say;
+  extern int disp_get;
+  extern int calc_abs;
+
+
+
+  extern int lects;
+  extern int medabs;
+
+  extern int error_general;
+
+/*  extern int retardo_peristaltica;*/
+
+
+extern double FREQ_OSC;
+extern char valth;
+extern char valtl;
+extern char velth;
+extern int n_filtros_tamb;
+extern int tipo_peris;
+extern int RET_MOT_PERISTALTICA;
+extern int mseg;
+
+extern int teclado;
+extern int wipers[40];
+
+extern char filtro7[];
+extern char filtro8[];
+extern char text[10];
+
+extern double fact_peris;
+extern double vol_auto;
+
+extern int carry_over;
+extern int porcen_macro;
+extern int porcen_semimicro;
+extern int porcen_micro;
+extern double dif_carry;
+
+extern int espera_cero;
+extern int t_esp_aut;
+
+
+
+
+extern  int muestra_ant;
+extern  int muestra;
+extern   char wl1[2];
+extern   char wl2[2];
+extern   int sigue;
+extern   int decimales;
+
+
+extern  int n_std;
+extern  int n_lect;
+extern  int lecturas;
+extern  int lecturas1;
+extern  int lecturas2;
+extern  int lecturas3;
+extern  int ih;
+extern  double incs[55];
+extern  double incabs;
+extern  double abs_act;
+extern  double abs_ant;
+
+extern  double desv_std;
+extern  double valsup;
+extern  double valinf;
+extern  double valabsorblim;
+extern  double vallimlin;
+
+extern  double conc;
+extern  double factor;
+extern  int interv;
+extern  int delay;
+extern  int retardo_cero;
+extern  int salir;
+extern  int tec;
+extern  int cal;
+extern  int go;
+extern  int seguns;
+extern  int err;
+extern  int sino;
+extern  double std;
+extern  char estan[];
+extern  int puesto;
+extern  int carry;
+extern  int jy;
+extern  int numi;
+extern  int lavar;
+extern  int referencia;
+extern  int ji;
+extern  double fpuntosx[10];
+extern  double fpuntosy[10];
+extern  int fpuntos;
+extern  double m[10];
+extern  double n[10];
+extern  int fuera_de_rango_max;
+extern  int fuera_de_rango_min;
+extern  double sipping;
+
+extern int control[];
+extern char control_diana[];
+extern char datos_control[];
+extern int n_datos[];
+extern int pos_datos[];
+extern char fechas_control[];
+extern char limites_control[];
+
+extern char puertos[];
+extern char *p[];
+extern char bitauno[];
+extern char bitacero[];
+extern int acceso_a_puertos;
+extern int porcen_carry;
+extern int a_control;
+extern int error_control;
+extern double control_fabricacion;
+extern int desde_tecnica;
+extern int hasta_tecnica;
+extern char password[];
+

@@ -1,0 +1,464 @@
+
+
+       /*  MODULO FUTIL.C       */
+
+
+
+
+#include <io51.h>
+#include <stdio.h>
+#include <math.h>
+#include <ctype.h>
+
+
+#include <fdefines.h>
+
+
+
+
+#include <fexterns.h>
+   char *mod[]={"133000","134000","135000","136000"};
+
+int pon_fecha();
+int editar(int que);
+int (*pf[20])();
+
+  util()
+  {
+   /*comienzo del bucle princial*/
+     int salir=0;
+     char ent[14];
+     pf[4]=pon_fecha;
+     pf[1]=editar;
+      while (salir==0)
+      {
+      int sal=0;
+      int pul;
+      borrar();
+      say(1,0,textos[189+idioma_textos]);
+      sal=get(1,0+strlen(textos[189+idioma_textos]),ent,3,1,0,0);
+      if (sal==novalid)
+	salir=1;
+      else
+      {
+
+       if (lastkey==print)
+	 util_dispo();
+       else
+       {
+	pul=arint(ent);
+
+
+
+
+	borrar();
+
+	switch(pul)
+	 {
+	 case 1:
+	     (*pf[pul])(0);
+	     break;
+
+	 case 4:
+	     calibrar(0);
+	     break;
+
+	 case 7:
+	     edit_qc();
+	     break;
+
+
+	 case 3:
+	  if (printtec==1)
+	     imprimir_tecnicas();
+	     break;
+
+	 case 9:
+	     actimp();
+	     break;
+
+
+	 case 5:
+	     editar(1);
+	     break;
+
+	 case 6:
+	     editar(2);
+	     break;
+
+	 case 2:
+	  if (printtec==1)
+	     cod_posibles();
+	     break;
+
+	 case 8:
+	    ver_qc();
+	    break;
+
+	 case 10:
+	    if (modelo==CLIMA_PLUS)
+	     cal_peris();
+	     break;
+
+	 case 110:
+	    util1();
+	    break;
+
+	 }
+	}
+      }
+     }
+
+}
+
+
+
+cambio_cal_per()
+{
+int h;
+borrar();
+h=cal_per;
+intar(text,h);
+getstr(1,1,text,6,1,1,1,textos[idioma_textos+97],BORRAR);
+h=arint(text);
+cal_per = h;
+}
+
+
+
+
+ idiom()
+ {
+  int err;
+  int h;
+  char ent[8];
+  borrar();
+  say(1,1,textos[51+idioma_textos]);
+  say(2,1,"0.");
+  say(2,4,textos[52+idioma_textos]);
+  say(3,1,"1.");
+  say(3,4,textos[53+idioma_textos]);
+  say(4,1,"2.");
+  say(4,4,textos[54+idioma_textos]);
+   err=get(1,1+strlen(textos[51+idioma_textos]),ent,1,1,1,1);
+   h=arint(ent);
+   que_idioma(h);
+
+ }
+
+
+
+ que_idioma(h)
+ int h;
+ {
+    switch(h)
+    {
+     case 1:
+     idioma_textos=190;
+     idioma=h;
+     break;
+
+     case 2:
+     idioma_textos=380;
+     idioma=h;
+     break;
+
+     default:
+     idioma_textos=0;
+     idioma=0;
+     break;
+    }
+    def_par();
+    que_veter(veters);
+ }
+
+
+ veter()
+ {
+  int err;
+  int h;
+  char ent[8];
+  borrar();
+  say(1,1,"0.");
+  say(1,4,"Clin. y vet");
+  say(2,1,"1.");
+  say(2,4,"Clin. y vet. esp");
+  say(3,1,"2.");
+  say(3,4,"Aguas");
+  say(4,1,"3.");
+  say(4,4,"Alimentacion");
+
+
+/*            err=get(1,0+strlen("Funcion:"),ent,1,1,1);*/
+   h=keyboard(0);
+/*   h=arint(ent);*/
+  if (h>=0 && h<=3)
+   que_veter(h);
+
+ }
+
+
+ que_veter(h)
+ int h;
+ {
+    switch(h)
+    {
+     case 0:                 /*CLINICA + VET.  */
+       num_codigos=54;
+       pos_ini_cod=0+(idioma*117);
+       veters=h;
+       break;
+
+     case 1:               /*CLINICA + VET. ESPECIAL */
+	 num_codigos=56;
+	 pos_ini_cod=0+(idioma*117);
+	 veters=h;
+	 break;
+
+     case 2:              /*AGUAS */
+       num_codigos=38;
+       pos_ini_cod=56+(idioma*117);
+       veters=h;
+     break;
+
+     case 3:                /*ALIMENTACION */
+       num_codigos=23;
+       pos_ini_cod=94+(idioma*117);
+       veters=h;
+       break;
+
+     default:                 /*CLINICA + VET.  */
+       num_codigos=54;
+       pos_ini_cod=0+(idioma*117);
+       veters=0;
+       break;
+
+
+    }
+ }
+
+
+
+
+
+
+get_filtro()
+ {
+  char ent[8];
+  int y;
+  char *p;
+
+  say(1,1,textos[74+idioma_textos]);
+  get(1,1+strlen(textos[74+idioma_textos]),filtro7,3,1,1,1);
+  if (lastkey==cr)
+   {
+       y=arint(filtro7);
+       if (y<=0 || y>999)
+	{
+	 strcpy(filtro7,"---");
+	}
+    }
+
+  say(2,1,textos[75+idioma_textos]);
+  get(2,1+strlen(textos[75+idioma_textos]),filtro8,3,1,1,1);
+  if (lastkey==cr)
+    {
+       y=arint(filtro8);
+       if (y<=0 || y>999)
+	{
+	 strcpy(filtro8,"---");
+	}
+    }
+ }
+
+
+get_vol_auto()
+{
+double s;
+char ent[6];
+borrar();
+flotar(ent,vol_auto,0);
+say(1,0,"VOL.:");
+get(1,6,ent,4,1,1,1);
+vol_auto=arflot(ent);
+}
+
+
+get_fact_peris()
+{
+char ent[8];
+borrar();
+flotar(ent,fact_peris,2);
+say(1,0,"F. PER.:");
+get(1,9,ent,5,1,1,1);
+fact_peris=arflot(ent);
+}
+
+
+correc_carry()
+ {
+  int err;
+  int h;
+  char ent[8];
+  borrar();
+  if (carry_over>1 || carry_over<0)
+    carry_over=0;
+  intar(ent,carry_over);
+  err=getstr(1,1,ent,1,1,1,1,textos[158+idioma_textos],NOBORRAR);
+  carry_over=arint(ent);
+  if (carry_over==1)
+   {
+     intar(ent,porcen_macro);
+     getstr(2,1,ent,2,1,1,1,textos[159+idioma_textos],BORRAR);
+     if (lastkey==cr)
+       porcen_macro=arint(ent);
+     intar(ent,porcen_semimicro);
+     getstr(2,1,ent,2,1,1,1,textos[160+idioma_textos],BORRAR);
+     if (lastkey==cr)
+       porcen_semimicro=arint(ent);
+     intar(ent,porcen_micro);
+     getstr(2,1,ent,2,1,1,1,textos[161+idioma_textos],BORRAR);
+     if (lastkey==cr)
+       porcen_micro=arint(ent);
+
+   }
+ }
+
+get_t_esp_aut()
+ {
+  int err;
+  int h;
+  char ent[8];
+  borrar();
+  if (t_esp_aut<0 || t_esp_aut>1)
+   t_esp_aut=0;
+  intar(ent,t_esp_aut);
+  say(1,1,"T. ESP.:");
+  err=get(1,10,ent,2,1,1,1);
+  t_esp_aut=arint(ent);
+ }
+
+
+
+fon(pfech)
+int (*pfech)();
+{
+ (*pfech)();
+}
+
+
+comunic()
+{
+  int err;
+  int h;
+  char ent[8];
+  borrar();
+  say(2,1,textos[88+idioma_textos]);
+  say(3,1,textos[89+idioma_textos]);
+  inkey(0);
+  borrar();
+  switch(lastkey)
+  {
+   case 1:
+   rec_file();
+   break;
+
+   case 2:
+   env_file();
+   break;
+  }
+
+}
+
+
+ util1()
+  {
+   /*comienzo del bucle princial*/
+     int salir=0;
+     pf[11]=pon_fecha;
+     pf[1]=editar;
+      while (salir==0)
+      {
+      int sal=0;
+      int pul;
+      borrar();
+      say(1,0,textos[188+idioma_textos]);
+      sal=get(1,0+strlen(textos[188+idioma_textos]),text,3,1,0,0);
+      if (sal==novalid)
+	salir=1;
+      else
+      {
+
+       if (lastkey==print)
+	 util_dispo1();
+       else
+       {
+	pul=arint(text);
+
+
+
+
+	borrar();
+
+	switch(pul)
+	 {
+
+	 case 11:
+/*	     fon(pon_fecha);*/
+	     (*pf[pul])();
+
+	     break;
+
+
+	 case 12:
+	    idiom();
+	    break;
+
+	 case 13:
+	    veter();
+	    break;
+
+
+
+	  case 14:
+	      calibrar(1);
+	      break;
+
+	  case 15:
+	      comunic();
+	      break;
+
+	 case 16:
+	   get_filtro();
+	   break;
+
+	 case 17:
+	     borrar_tecnicas();
+	     break;
+
+	 case 18:
+	     {
+	      int n;
+	      borrar();
+	      say(2,5,"VERSION 3.00");
+	      say(3,5,"07/07/1999");
+	      say(4,5,mod[versi]);
+	      n=keyboard(0);
+	      }
+	      break;
+
+	 case 19:
+	    if (modelo==CLIMA_PLUS)
+	     cambio_cal_per();
+	     break;
+
+	 case 999:
+	     test();
+	     break;
+
+	 }
+	}
+      }
+     }
+
+}

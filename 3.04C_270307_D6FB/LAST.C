@@ -1,0 +1,3 @@
+    if (lastkey==stop)
+      return;
+

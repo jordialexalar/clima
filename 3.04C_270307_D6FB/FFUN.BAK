@@ -1,0 +1,144 @@
+
+     /*  MODULO FFUN.C                       */
+
+    /* Contiene funciones relacionadas con la medici¢n de absorciones*/
+
+
+
+#include <io51.h>
+#include <math.h>
+#include <fdefines.h>
+#include <fexterns.h>
+
+
+unsigned char puertos[6]={0,0,0,0,0,0};
+
+/**********  FUNCIONES DEL DISPLAY ******************/
+
+ w_cmd(h)
+ unsigned char h;
+ {unsigned char p;
+  unsigned char r;
+ unsigned char pi;
+  while (busy_flag()==0)
+  {
+  pi=pi;
+  }
+  reset_bit(6,4);
+  reset_bit(6,5);
+  set_bit(6,6);
+
+  PF021=h;
+
+  reset_bit(6,6);
+  reset_bit(6,4);
+  reset_bit(6,5);
+
+  h=0x00;
+  PF021=h;
+            }
+
+
+
+
+
+ w_data(h)
+ unsigned char h;
+ {unsigned char p;
+  unsigned char r;
+ unsigned char c;
+ unsigned char pi;
+  while (busy_flag()==0)
+  {
+  pi=pi;
+  }
+  set_bit(6,4);
+  set_bit(6,6);
+
+  r=h;
+  PF021=r;
+
+  reset_bit(6,6);
+  reset_bit(6,4);
+            }
+
+
+
+busy_flag()
+{
+ unsigned char c;
+ unsigned char pi;
+ int i;
+/* i=mseg;
+ while (i>0)
+  i--;*/
+  retardo(DISPLAY_OCUPADO);
+ return(1);
+}
+
+
+
+
+
+
+iniz_lcd()
+{
+int j;
+int y;
+unsigned char d;
+
+  w_cmd(0x38); /* 8 vits */
+  w_cmd(0x01);/* clear   */
+  w_cmd(0x0c); /* display on , cursor off, no blink */
+  w_cmd(0x02);/*   home */
+}
+
+
+
+
+
+set_bit(port,posbit)
+int port;
+int posbit;
+{
+  acceso_a_puertos=1;
+  puertos[port]=puertos[port] | bitauno[posbit];
+  *p[port]=puertos[port];
+  acceso_a_puertos=0;
+}
+
+lee_bit(port,posbit)
+int port;
+int posbit;
+{
+  char h;
+  acceso_a_puertos=1;
+  h=*p[port];
+  h=h & bitauno[posbit];
+  acceso_a_puertos=0;
+  if (h!=0x0)
+    return(1);
+  else
+   return(0);
+}
+
+escribe_puerto(port,car)
+int port;
+char car;
+{
+  acceso_a_puertos=1;
+  puertos[port]=car;
+  *p[port]=puertos[port];
+  acceso_a_puertos=0;
+}
+
+
+reset_bit(port,posbit)
+int port;
+int posbit;
+{
+  acceso_a_puertos=1;
+  puertos[port]=puertos[port] & bitacero[posbit];
+  *p[port]=puertos[port];
+  acceso_a_puertos=0;
+}

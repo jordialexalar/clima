@@ -1,0 +1,953 @@
+
+    /*  MODULO FPROCES1.C                */
+    /*  Contiene funciones que ejecutan las t‚cnicas*/
+
+
+
+#include <io51.h>
+#include <math.h>
+#include <fdefines.h>
+#include <ctype.h>
+#include <string.h>
+#include <fexterns.h>
+
+
+
+
+
+
+haz_tecnica(pul,cual)
+int pul;
+int cual;
+
+ {int muestra;
+  char wl1[2];
+  char wl2[2];
+  double f=0.0;
+  int sigue=0;
+  int decimales;
+  int i;
+  int fix=0;
+ float fi=0.0;
+ char text[25];
+ int id;
+
+ int n_std;
+ int n_lect;
+ int lecturas;
+ int lecturas1;
+ int lecturas2;
+ int lecturas3;
+ int ih;
+ double incs[20];
+ double incabs=0.0;
+ double desv_std=0.0;
+ double valsup=0.0;
+ double valinf=0.0;
+ double valabsorblim=0.0;
+ double vallimlin=0.0;
+
+ double conc=0.0;
+ double factor=0.0;
+ char con[]="                         ";
+ char con1[]="                         ";
+ char nl[20];
+ int interv;
+ int delay;
+ int salir=0;
+ int tec;
+ int cal=1;
+ int go;
+ int seguns;
+ int err;
+ int sino=0;
+ double std;
+ char estan[]="                    ";
+ int puesto=1;
+
+ int jy;
+ int numi;
+
+ int referencia;
+ int ji;
+ double fpuntosx[10];
+ double fpuntosy[10];
+ int fpuntos;
+ double m[10];
+ double n[10];
+ int fuera_de_rango_max=0;
+ int fuera_de_rango_min=0;
+
+
+
+
+  /*    IMPRIMO LA CABECERA   */
+
+    cab_resul(cual,pul);
+
+
+
+
+
+    /*  PONGO LA TEMPERATURA */
+     apunta(pul,TEMP);
+     pon_temp(pficher);
+
+     apunta(pul,WL1);
+     strcpy(wl1,pficher);
+
+     apunta(pul,WL2);
+     strcpy(wl2,pficher);
+
+
+
+
+  /*  COJO LOS DATOS DE LA TECNICA SEGUN EL TIPO*/
+
+    apunta(pul,NORM_ALTO);
+   valsup=arflot(pficher);
+    apunta(pul,NORM_BAJO);
+   valinf=arflot(pficher);
+    apunta(pul,ABSORB_LIM);
+   valabsorblim=arflot(pficher);
+    apunta(pul,LIN_LIM);
+   vallimlin=arflot(pficher);
+    apunta(pul,FACTOR);
+   factor=arflot(pficher);
+    apunta(pul,DECIMALES);
+   decimales=arflot(pficher);
+
+   switch (cual)
+   {
+     case ABS:
+        lecturas=1;
+	decimales=3;
+        delay=0;
+	interv=0;
+       break;
+
+     case CONC:
+       lecturas=1;
+       apunta(pul,READING_DLY);
+       delay=arint(pficher);
+       interv=0;
+       break;
+
+     case CIN:
+
+       apunta(pul,N_OF_READINGS);
+       lecturas=arint(pficher);
+       apunta(pul,DELAY);
+       delay=arint(pficher);
+       apunta(pul,INTERVAL_TIME);
+       interv=arint(pficher);
+       escribe(pul,CONTRA_FACTOR,"1");
+       break;
+
+     case FXT:
+        lecturas=2;
+        apunta(pul,DELAY);
+        delay=arint(pficher);
+        apunta(pul,INTERVAL_TIME);
+        interv=arint(pficher);
+       break;
+
+     case DIF:
+         lecturas=2;
+       apunta(pul,READING_DLY);
+       delay=arint(pficher);
+       interv=delay;
+       break;
+
+     case REL:
+         lecturas=2;
+       apunta(pul,READING_DLY);
+       delay=arint(pficher);
+       interv=delay;
+      break;
+
+     case MSTD:
+       lecturas=1;
+       apunta(pul,N_OF_READINGS); /*lecturas por estandar*/
+       lecturas2=arint(pficher);
+	     apunta(pul,VARIOS_STD);
+             referencia=arint(pficher);
+	     apuntastd(referencia,0,0,0);
+	     fpuntos=arint(pficherstd);
+             lecturas1=lecturas2*fpuntos;
+
+	interv=0;
+        apunta(pul,READING_DLY);
+        delay=arint(pficher);
+	interv=delay;
+        break;
+   }
+
+
+   borrar();
+
+   form_pan(pul);
+
+
+
+
+
+   /* CALIBRO SI ES NECESARIO */
+
+
+  switch (cual)
+  {
+     case MSTD:
+
+      apunta(pul,VARIOS_STD);
+      referencia=arint(pficher);
+      sino=0;
+      apuntastd(referencia,0,0,0);
+      numi=arint(pficherstd);
+      jy=0;
+      while (jy<numi)
+	 {
+	  apuntastd(referencia,1,0,jy);
+	  if (*pficherstd=='\0')
+	    {jy=1000;
+	     sino=1;
+	    }
+	  apuntastd(referencia,1,1,jy);
+	  if (*pficherstd=='\0')
+	    {jy=1000;
+	     sino=1;
+	    }
+	    jy++;
+	 }
+      if (sino==0)
+       {
+         say(3,1,textos[14+idioma_textos]);
+         sino=keyboard(0);
+         borrarl(3,0,19);
+       }
+      if (sino==1)
+      {
+	say(3,1,"1.");
+	say(3,4,textos[37+idioma_textos]);
+	say(4,1,"2.");
+	say(4,4,textos[38+idioma_textos]);
+	sino=keyboard(0);
+        borrarl(3,0,19);
+        borrarl(4,0,19);
+        if (sino==1)
+           {
+	    sino=0;
+            pide_puntos(referencia,1,0);
+	   }
+	else
+           {
+	    sino=1;
+            pide_puntos(referencia,1,1);
+	    lecturas=lecturas1;
+	   }
+      }
+      break;
+
+
+    default:
+        if (contrafact(pul)==0)
+        {
+	   apunta(pul,FACTOR);
+           if (*pficher!='\0')
+             {
+	       say(4,1,textos[14+idioma_textos]);
+	       sino=keyboard(0);
+	       borrarl(4,0,19);
+	     }
+           else
+               sino=1;
+         }
+	 break;
+  }
+
+
+    if (lastkey==stop)
+      return;
+
+
+
+
+
+
+
+
+
+
+
+      /*  PIDE BLANCOS Y HALLA  CEROS */
+
+  if (sino==1)
+    {
+    if (cual!=MSTD)
+    {
+       say(4,1,textos[15+idioma_textos]);
+       apunta(pul,STD);
+       strcpy(estan,pficher);
+       err=get(4,1+strlen(textos[15+idioma_textos]),estan,7,1,1,1);
+       borrarl(4,0,19);
+
+     }
+    if (lastkey==stop)
+      return;
+
+    say(4,1,textos[16+idioma_textos]);
+/*    say(4,1,textos[17+idioma_textos]);*/
+    tec=espera_tecla(read);
+        borrarl(3,0,19);
+        borrarl(4,0,19);
+    if (lastkey==stop)
+      return;
+
+    halla_cero(wl1,wl2);
+    cal=0;              /*  PONGO CAL A 0 PARA QUE CALIBRE */
+    }
+
+ else
+  {
+
+      switch (cual)
+       {
+	case MSTD:
+	     apunta(pul,VARIOS_STD);
+             referencia=arint(pficher);
+	     apuntastd(referencia,0,0,0);
+	     fpuntos=arint(pficherstd);
+
+             for(ji=0;ji<fpuntos;ji++)
+	     {
+
+	     apuntastd(referencia,1,PX,ji);
+         	fpuntosx[ji]=arflot(pficherstd);
+	     apuntastd(referencia,1,PY,ji);
+        	fpuntosy[ji]=arflot(pficherstd);
+             }
+
+             for(ji=0;ji<fpuntos;ji++)
+	       { if (ji>0)
+          	 {
+                	 m[ji]=(fpuntosy[ji]-fpuntosy[ji-1])/(fpuntosx[ji]-fpuntosx[ji-1]);
+                	 n[ji]=(fpuntosy[ji])-(fpuntosx[ji]*m[ji]);
+        	 }
+               }
+          break;
+
+
+
+         default:
+	     apunta(pul,FACTOR);
+             factor=arflot(pficher);
+             break;
+
+     }
+
+
+
+    say(4,1,textos[16+idioma_textos]);
+/*    say(4,1,textos[17+idioma_textos]);*/
+    tec=espera_tecla(read);
+        borrarl(3,0,19);
+        borrarl(4,0,19);
+    if (lastkey==stop)
+      return;
+
+    halla_cero(wl1,wl2);
+  }
+
+
+
+
+
+
+
+
+     muestra=arint(pac);
+
+
+
+      n_lect=1;
+      n_std=1;
+
+      /* EMPIEZA A PEDIR MUESTRAS */
+
+
+      while (salir==0)
+      {
+	  limpia_informe();
+          lineasinforme=0;
+
+
+
+          if (cal==0)
+             {
+		switch (cual)
+
+                 {
+		  case DIF:
+		     say(4,1,textos[19+idioma_textos]);
+                     break;
+
+		   case REL:
+		      say(3,1,textos[63+idioma_textos]);
+		      say(4,1,textos[20+idioma_textos]);
+		      break;
+
+		   case MSTD:
+		      say (3,1,textos[39+idioma_textos]);
+		      intar(text,n_std);
+		      say (3,1+strlen(textos[39+idioma_textos]),text);
+		      say (4,1,textos[40+idioma_textos]);
+		      intar(text,n_lect);
+		      say (4,1+strlen(textos[40+idioma_textos]),text);
+		      break;
+
+                    default:
+		      say(4,1,textos[21+idioma_textos]);
+		      break;
+	         }
+              }
+
+          else
+              {
+		 switch(cual)
+  	          {
+		   case DIF:
+                     say(4,0,textos[26+idioma_textos]);
+                     break;
+
+		   case REL:
+                       say (4,0,textos[20+idioma_textos]);
+         	       break;
+		    default:
+                        say(4,0,textos[23+idioma_textos]);
+			break;
+                  }
+                }
+
+
+                         tec=0;
+
+                         do
+                         {
+                            tec=mira_tec();
+			    if (tec==cr && cal !=0)
+			      {
+                                get(4,15,pac,3,1,1,1);
+				tec=0;
+				muestra=arint(pac);
+			        borrarl(4,15,19);
+  			      }
+			    if (tec==wash && modelo==RAL122)
+			      {
+                                washing();
+				tec=0;
+  			      }
+
+                          }while(tec!=read && tec!=stop);
+
+
+                borrarl(4,0,20);
+		borrarl(3,0,20); /*borro la concentracion*/
+
+                    if (lastkey==stop)
+                      return;
+
+ 	        if (cal==1)
+                  {
+	            poneninforme(lineasinforme,4,textos[41+idioma_textos]);
+	            poneninforme(lineasinforme,4+strlen(textos[41+idioma_textos]),pac);
+	            lineasinforme++;
+                    muestra++;
+	            if (muestra > 999)
+		       muestra=0;
+                    intar(pac,muestra);
+
+                  }
+
+               for (i=0;i<20;i++)
+                  {
+                     incs[i]=0.0;
+                  }
+
+
+       /* EMPIEZO EL BUCLE DE LECTURAS*/
+
+                     for (i=0;i<lecturas;i++)
+                          {
+
+                            if (i==0)
+                	      pon_time(0,delay);
+
+                            else
+                              {
+                               if (cual == DIF || cual==REL || cual==MSTD)
+                 		{
+
+                                    if (cal==0)
+                                     {
+                   			if (cual==DIF)
+                                            say(4,1,textos[21+idioma_textos]);
+                   			else
+					 {
+					   if (cual==MSTD)
+					    {
+ 		                                 say (3,1,textos[39+idioma_textos]);
+		                                 intar(text,n_std);
+		                                 say (3,1+strlen(textos[39+idioma_textos]),text);
+		                                 say (4,1,textos[40+idioma_textos] );
+		                                 intar(text,n_lect);
+		                                 say (4,1+strlen(textos[40+idioma_textos]),text);
+					    }
+					   else
+                                            {
+		                              say(3,1,textos[63+idioma_textos]);
+		                              say(4,1,textos[24+idioma_textos]);
+					    }
+                                         }
+                                      }
+                                     else
+                                       {
+			                 if (cual==DIF)
+                                              say(4,1,textos[23+idioma_textos]);
+			                 else
+		                           {
+		                              say(4,1,textos[24+idioma_textos]);
+                                           }
+                                       }
+                                 tec=espera_tecla(read);
+                                 borrarl(4,0,19);
+                                 borrarl(3,0,19);
+                                 if (lastkey==stop)
+                                    return;
+
+                                 /*if (cual==MSTD)*/
+
+				   pon_time(0,interv);
+
+               		     }
+                             else
+			       pon_time(0,interv);
+                          }
+
+            seguns=0;
+
+
+      if (cual>ABS)
+           say (2,10,textos[25+idioma_textos]);
+           while (time==0x00)
+	   {
+	      if (lastkey==stop)
+		{
+		 time=0xff;
+		 return(0);
+		}
+
+              if (seguns!=segundo)
+	      {
+                 seguns=segundo;
+                 intar(con,seguns);
+	         say(2,10+strlen(textos[25+idioma_textos]),"    ");
+
+
+           if (cual>ABS)
+	         say(2,10+strlen(textos[25+idioma_textos]),con);
+	      }
+            }
+            say(2,10,"         ");
+
+
+
+            if (cal==0 && cual==MSTD)
+	    {
+            incs[n_lect]=lee_abs(0,wl1,wl2);
+	    n_lect ++;
+
+	    }
+            else
+            {
+            /* LEO ABSORCION */
+
+            incs[i]=lee_abs(0,wl1,wl2);
+
+            /*elimino absorciones negativas convirtiendolas a cero
+
+	    if (incs[i]<0)
+	      incs[i]=0.000; */
+
+
+            tiempo_incs[i]=tiempo_abs;
+
+            intar(con1,tiempo_incs[i]);
+            flotar(con,incs[i],3);
+            }
+
+            if (cal==0 && cual==MSTD)
+	     {
+		 std=0.0;
+		 if (n_lect>lecturas2)
+		   {
+                      for (ih=1;ih<=lecturas2;ih++)
+		       {
+			 std=incs[ih]+std;
+		       }
+		       std=std/lecturas2;
+		       apuntastd(referencia,1,0,n_std-1);
+		       flotar(pficherstd,std,2);
+   	              n_lect=1;
+  		      n_std++;
+		   }
+
+	     }
+
+
+            /* CALCULO INCREMENTOS SI NO ES GLICOSILADA*/
+
+
+            if (cual != REL && cual!=MSTD)
+            {
+    	          if (i>0)
+                  {
+                      incs[i-1]=incs[i]-incs[i-1];
+                      tiempo_incs[i-1]=tiempo_incs[i]-tiempo_incs[i-1];
+                      flotar(con,incs[i-1],3);
+		      lineasinforme++;
+                      poneninforme(lineasinforme,8,con); /*escribo el incremento*/
+
+                   }
+                  else
+         	    {
+	              if (cual==CIN || cual==DIF || cual==FXT)
+                          {
+     	                      flotar(con,incs[i],3);
+		              lineasinforme++;
+		              poneninforme(lineasinforme,2,"ABS0:");
+                              poneninforme(lineasinforme,8,con);
+		              if (cual==CIN)
+		                  {apunta(pul,ABSORBLIMM);
+				   if (*pficher=='1')
+		                       {
+  		                           if (valabsorblim < incs[i])
+                                              poneninforme(lineasinforme,14,"FL");
+
+		                        }
+                                    else
+		                       {
+		                            if (valabsorblim > incs[i])
+                                                poneninforme(lineasinforme,14,"FL");
+
+		                        }
+                                      }
+
+	                         }
+	                     }
+	                  }
+
+
+        }
+
+
+
+
+
+
+     /*  HALLO ABSORCIONES TOTALES */
+
+
+     incabs=0.0;
+
+      switch (cual)
+      {
+	case ABS:
+         incabs=incs[0];
+	 break;
+
+	case CONC:
+         incabs=incs[0];
+	 break;
+
+	case MSTD:
+         incabs=incs[0];
+	 break;
+
+        case REL:
+         incabs=incs[0]/incs[1];
+         break;
+
+        default:
+	    for (i=0;i<(lecturas-1);i++)
+                 incabs=incs[i]+incabs;
+
+             if (lecturas > 1)
+               {
+                   incabs=(incabs/(lecturas-1));
+                   if (cual==CIN)
+                	{
+                          desv_std=0.0;
+	                  if (lecturas > 2)
+ 	                     {
+	                         for (i=0;i<(lecturas-1);i++)
+	                         desv_std=flotpower(incs[i]-incabs,2)+desv_std;
+                                 desv_std=desv_std/(lecturas-2);
+                                 if (desv_std==0.0 || desv_std <0.0)
+	                               desv_std=0.0;
+	                         else
+	                               desv_std=sqrt(desv_std);
+
+                               }
+
+
+                          }
+                 }
+
+               if (cual == CIN)
+                  incabs=incabs*(60.0/interv);
+               break;
+
+      }
+
+     /* HALLO CONCENTRACIONES */
+
+     if (cal > 0)
+     {
+
+        switch (cual)
+        {
+          case ABS:
+          conc=incabs;
+	  break;
+
+	  case MSTD:
+	  ji=0;
+
+/*	  conc=0;*/
+          conc=(incabs*m[fpuntos-1])+n[fpuntos-1];
+
+	  fuera_de_rango_max=1;
+	  fuera_de_rango_min=0;
+
+	  while (ji < fpuntos)
+	   {
+	    if (incabs < fpuntosx[ji])
+	    {
+              if (ji > 0)
+	      {
+	       conc=(incabs*m[ji])+n[ji];
+               fuera_de_rango_max=0;
+               fuera_de_rango_min=0;
+	      }
+	      else
+	      {
+		conc=0;
+               fuera_de_rango_max=0;
+               fuera_de_rango_min=1;
+	      }
+	       ji=fpuntos+4;
+
+
+	    }
+
+            ji++;
+	  }
+          break;
+
+        default:
+           conc=incabs*factor;
+           break;
+       }
+
+
+     /*  SACO EL VALOR SIEMPRE POSITIVO  EXCEPTO EN CIN DIF FXT*/
+
+     if (conc < 0 && (cual==CIN || cual==FXT || cual==DIF))
+	conc=conc * -1.0;
+
+
+        /* SACO RESULTADO POR PANTALLA */
+
+        flotar(con,conc,decimales);
+	say(3,5,"               ");
+        say(3,5,con);
+        if (cual != ABS)
+          {
+	   apunta(pul,UNITS);
+           go=arflot(pficher);
+           say(3,14,units[go]);
+          }
+        else
+	  go=99;
+
+        /* SACO RESULTADO POR CANAL_SERIE */
+
+         env_res(con,go);
+
+
+        /* SACO RESULTADO POR IMPRESORA */
+
+        if (cual==CIN)
+          {
+            flotar(con1,desv_std,3);
+	    lineasinforme++;
+	    lineasinforme++;
+	    strcpy(text,"D. S.:");
+            poneninforme(lineasinforme,1,textos[42+idioma_textos]);
+            poneninforme(lineasinforme,1+strlen(textos[42+idioma_textos]),con1);
+	  }
+
+       lineasinforme++;
+       poneninforme(lineasinforme,8,con);
+
+       if (cual != ABS)
+       {
+         strcpy(text,units[go]);
+         poneninforme(lineasinforme,1,text);
+
+
+        if (fuera_de_rango_max==1)
+	{lineasinforme++;
+	 poneninforme(lineasinforme,1,"AL.:");
+	 poneninforme(lineasinforme,6,"F.R. MAX");
+        }
+	else
+	{
+	if (fuera_de_rango_min==1)
+  	  {lineasinforme++;
+	   poneninforme(lineasinforme,1,"AL.:");
+	   poneninforme(lineasinforme,6,"F.R. MIN");
+          }
+
+	else
+	 {
+           lineasinforme++;
+	if (valsup < conc)
+	   {
+   	    poneninforme(lineasinforme,1,"AL.:");
+            poneninforme(lineasinforme,6,"A");
+	   }
+
+	if (vallimlin < conc)
+	   {
+   	    poneninforme(lineasinforme,1,"AL.:");
+            poneninforme(lineasinforme,9,"LL");
+           }
+
+	if (valinf > conc)
+	   {
+            poneninforme(lineasinforme,1,"AL.:");
+            poneninforme(lineasinforme,6,"B");
+	   }
+	}
+	}
+	}
+        impinforme(lineasinforme,12,30);
+
+
+      }
+     else
+     {
+
+       if (cual!=MSTD)
+       {
+       std=arflot(estan);
+
+       factor=std/incabs;
+       flotar(text,factor,2);
+       escribe(pul,FACTOR,text);
+       escribe(pul,STD,estan);
+
+       cal++;
+	 limpia_informe();
+	 lineasinforme=0;
+         apunta(pul,FACTOR);
+         strcpy(text,pficher);
+
+         poneninforme(lineasinforme,0,textos[8+idioma_textos]);
+         poneninforme(lineasinforme,8,text);
+         lineasinforme++;
+         poneninforme(lineasinforme,0,textos[9+idioma_textos]);
+         poneninforme(lineasinforme,8,estan);
+	 lineasinforme++;
+         impinforme(lineasinforme,12,40);
+        }
+	else
+	 {
+             cal++;
+             lecturas=1;
+	     apunta(pul,VARIOS_STD);
+             referencia=arint(pficher);
+	     apuntastd(referencia,0,0,0);
+	     fpuntos=arint(pficherstd);
+	 limpia_informe();
+	 lineasinforme=0;
+
+
+             for(ji=0;ji<fpuntos;ji++)
+	     {
+
+	     apuntastd(referencia,1,PX,ji);
+         	fpuntosx[ji]=arflot(pficherstd);
+  	       lineasinforme++;
+		poneninforme(lineasinforme,4,pficherstd);
+       	        apuntastd(referencia,1,PY,ji);
+        	fpuntosy[ji]=arflot(pficherstd);
+             }
+	     lineasinforme++;
+	     impinforme(lineasinforme);
+
+             for(ji=0;ji<fpuntos;ji++)
+	       { if (ji>0)
+          	 {
+                	 m[ji]=(fpuntosy[ji]-fpuntosy[ji-1])/(fpuntosx[ji]-fpuntosx[ji-1]);
+                	 n[ji]=(fpuntosy[ji])-(fpuntosx[ji]*m[ji]);
+        	 }
+               }
+
+/*             borrar();*/
+
+	 }
+
+    }
+  }
+ }
+
+
+
+
+
+form_pan(pul)
+int pul;
+{
+char text[12];
+int go;
+
+                        say(1,0,textos[18+idioma_textos]);
+                        intar(text,pul);
+                        say(1,0+strlen(textos[18+idioma_textos]),text);
+                        apunta(pul,IDEN);
+                        go=arint(pficher);
+                        strcpy(text,codigos[go]);
+                        say(1,10,text);
+
+			apunta(pul,TEMP);
+                        strcpy(temperat,pficher);
+			time_temp=0;
+			if (*pficher=='T')
+                         {
+			  display_temp=off;
+                          temp_alcanz=1;
+			 }
+			else
+			 {
+			  display_temp=on;
+ 			  temp_alcanz=0;
+                         }
+                        apunta(pul,TIPO);
+                        go=arint(pficher);
+                        strcpy(text,tipos[go]);
+                        say(2,0,text);
+
+
+   }

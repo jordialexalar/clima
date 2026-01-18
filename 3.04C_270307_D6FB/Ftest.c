@@ -1,0 +1,1046 @@
+     /*  MODULO FTEST.C               */
+
+      /*  Contiene funciones para testear diferentes partes del fotometro*/
+
+
+
+#include <io51.h>
+#include <stdio.h>
+#include <math.h>
+#include <ctype.h>
+
+
+#include <fdefines.h>
+
+
+
+
+#include <fexterns.h>
+
+extern long int tiempo_desc();
+
+      char se[5];
+      char mi[5];
+      char hr[5];
+
+
+ test()
+
+  {
+   int salir=0;
+   int ghj,i,j;
+   char ent[12];
+
+      for(;;)
+      { int sal=0;
+       unsigned char numix[10];
+       double j=0.00;
+       int pul=100;
+      borrar();
+      say(1,0,textos[50+idioma_textos]);
+      sal=get(1,0+strlen(textos[50+idioma_textos]),ent,3,1,0,0);
+      if (sal==novalid)
+    break;
+      if (lastkey==cr)
+      {
+    pul=arflot(ent);
+    if (con_peristaltica==0)
+     {
+      if (pul>=4 && pul<=8)
+        pul=0;
+     }
+
+       if (pul<1000)
+
+       { borrar();
+
+    switch(pul)
+     {int y,ty;
+      int err=0;
+      int pul=0;
+      long int cero,tiempo1;
+
+      char absor[6];
+      double abs,rt;
+      unsigned char sal;
+      int j;
+      unsigned char num,*p;
+      unsigned char numi[25];
+      unsigned char numix[25];
+      char nu[25];
+      int t1=0;
+      int t2=0;
+      double hi;
+
+
+     case 1:
+         test_filtros();
+         break;
+
+     case 2:
+         cal_temp();
+         break;
+
+     case 3:
+         test_temp();
+         break;
+
+     case 4:
+       get_vol_auto();
+       break;
+
+      case 5:
+        correc_carry();
+        break;
+
+      case 6:
+        get_t_esp_aut();
+        break;
+
+      case 7:
+        get_dif_carry();
+        break;
+
+       case 8:
+         get_fact_peris();
+         break;
+
+
+     case 9:
+          n_lecturas();
+          break;
+
+
+     case 10:
+        test_com(1);
+        break;
+
+     case 11:
+        test_com(2);
+        break;
+
+     case 12:       
+        salir=0; 
+        while (salir==0)
+        {
+          pita(40);
+          inkey(2);
+          if (lastkey==stop)
+            salir=1;
+        }  
+        break;
+
+
+
+     case 99:
+        print_test();
+        break;
+
+     case 600:
+      iniz_fab();
+      break;
+
+     case 601:
+      print_setup();
+      break;
+
+     case 700:
+       if (lee_bit(2,5)==0)  
+         get_password();
+       break;
+     
+     case 701:
+   strcpy(password,"201168");
+    desde_tecnica=0;
+    hasta_tecnica=50;
+        break;
+  
+     case 900:
+      test_no_init();
+      break;
+
+     }
+    }
+       }
+     }
+
+}
+
+
+
+
+
+
+ test_filtros()
+ {
+  int n;
+  double abs;
+  char absor[20];
+  char f[2];
+  f[1]='\0';
+  for (n=1;n<9;n++)
+   {f[0]=n+48;
+    say(2,1,"FILTRO:    ");
+    say(2,1+strlen("FILTRO:"),f);
+    pon_filtro(f);
+    espera(0,1);
+   halla_cero(f,"0");
+
+    lee_abs(0,f,"");
+    abs=tiempo_abs/(1000.0);
+    flotar(absor,abs,3);
+    strcat(absor,"     ");
+    say(3,4,absor);
+    espera(0,2);
+    lee_abs(0,f,"");
+    abs=tiempo_abs/(1000.0);
+    flotar(absor,abs,3);
+    strcat(absor,"     ");
+    say(4,4,absor);
+    espera(0,3);
+
+    if (mira_tec()!=100)
+       n=100;
+
+
+
+
+    }
+  }
+
+
+
+
+/* test_filtros_paso()
+{
+ int i=0;
+ double r=0;
+ char ri[8];
+ int z;
+ unsigned int n=0;
+ borrar();
+
+ if (posicion_inicial())
+   {
+     say(1,1,"TESTEANDO FILTROS:");
+
+    for (i=0;i<48;i++)
+    { paso_i(1);
+      r=i;
+      flotar(ri,r,0);
+      say (2,1,ri);
+      pita(20);
+      espera(0,3);
+
+     }
+
+
+   }
+   else
+   {aviso(1,1,"ERROR EN EL DISCO DE FILTROS");
+   }
+    return(z);
+ }
+
+
+  */
+
+
+   test_temp()
+   {
+     int err=0;
+      int salir=0;
+      int n;
+      unsigned char h=0x00;
+      char ent[12];
+
+            borrar();
+        say(1,0,"TEMPERATURA:      ");
+            err=get(1,0+strlen("TEMPERATURA:"),ent,3,1,1);
+        borrar();
+            if (err!=novalid)
+        {
+          pon_temp(ent);
+           say (1,5,ent);
+         }
+         n=arint(ent);
+        while (salir==0)
+        {
+         pon_temp(ent);
+             say(2,2,"  ");
+         say_int(2,2,wipers[n],"");
+
+
+         inkey(0);
+             if (lastkey==stop)
+           salir=1;
+             if (lastkey==6)
+           wipers[n]--;
+             if (lastkey==9)
+           wipers[n]++;
+
+             }
+      }
+
+
+
+
+/* test_display()
+     { int n;
+       borrar();
+       for (n=1;n<5;n++)
+       {
+       say(n,0,"ABCDEFGHIJKLMNOPQRST");
+       espera(0,1);
+       }
+
+     }
+
+
+
+ test_imp()
+     {
+      int n;
+       for (n=1;n<5;n++)
+       {
+         poneninforme(n,0,"ABCDEFGHIJKLMNOPQRST");
+       }
+       impinforme(5,1,1);
+     }
+
+
+ test_tecl()
+    {
+    }
+
+
+
+ test_com()
+    {
+    }
+
+        */
+
+
+/*
+ test_time_temp()
+     {
+      int err=0;
+      int salir=0;
+      int salir1=0;
+      int tem;
+      int sec;
+      unsigned char h=0x00;
+      char ent[12];
+      int salir2=0;
+
+            tem=0;
+
+
+
+            while (salir1==0)
+               {
+         borrar();
+         if (tem==0)
+           {
+            tem=1;
+            pon_temp("37");
+            say(1,1,"25   a   37");
+           }
+         else
+            {
+             tem=0;
+             pon_temp("25");
+             say(1,1,"37   a   25");
+            }
+            reloj_seg=0;
+            sec=0;
+            reloj_min=0;
+            reloj_hr=0;
+            reloj=on;
+
+                    salir=0;
+           while (salir==0)
+                 {
+               h=PA002;
+               h=h & 0x02;
+               if (h==0x02)
+                      {
+                     say(3,3,"TEMP. ALCANZADA");
+                if (tem==1)
+                  poneninforme(0,1,"25 - 37");
+                            else
+                  poneninforme(0,1,"37 - 25");
+
+                            if (strlen(hr)>1)
+                  poneninforme(1,1,hr);
+                else
+                 {
+                  poneninforme(1,1,"0");
+                  poneninforme(1,2,hr);
+                             }
+                poneninforme(1,3,":");
+
+                            if (strlen(mi)>1)
+                  poneninforme(1,4,mi);
+                else
+                 {
+                  poneninforme(1,4,"0");
+                  poneninforme(1,5,mi);
+                             }
+                poneninforme(1,6,":");
+
+                if (strlen(se)>1)
+                  poneninforme(1,7,se);
+                else
+                 {
+                  poneninforme(1,7,"0");
+                  poneninforme(1,8,se);
+                             }
+                lineasinforme=2;
+                impinforme(lineasinforme,1,1);
+                pon_time(3,0);
+                while (time==0x00 && mira_tec()==100)
+                 {
+                  sec=sec;
+                 }
+
+                            salir=1;
+                       }
+
+                         vis_rej(2,2);
+                   if (mira_tec()!=100)
+             {
+               salir=1;
+               salir2=1;
+              }
+
+              }
+                      if (salir2==1)
+            salir1=1;
+              }
+          reloj=off;
+     }
+
+
+
+
+vis_rej(lin,col)
+int lin,col;
+{
+
+
+
+intar(hr,reloj_hr);
+if (strlen(hr)>1)
+   say(lin,col,hr);
+else
+  {
+   say(lin,col,"0");
+   say(lin,col+1,hr);
+  }
+say(lin,col+2,":");
+
+
+intar(mi,reloj_min);
+col=col+3;
+if (strlen(mi)>1)
+   say(lin,col,mi);
+else
+  {
+   say(lin,col,"0");
+   say(lin,col+1,mi);
+  }
+say(lin,col+2,":");
+
+
+intar(se,reloj_seg);
+col=col+3;
+if (strlen(se)>1)
+   say(lin,col,se);
+else
+  {
+   say(lin,col,"0");
+   say(lin,col+1,se);
+  }
+
+
+}
+        */
+
+
+
+
+   n_lecturas()
+   {
+     int err=0;
+      int salir=0;
+      unsigned char h=0x00;
+      char ent[12];
+
+            borrar();
+            say(1,0,"LECTURAS:      ");
+        err=get(1,0+strlen("LECTURAS:"),ent,4,1,1);
+        borrar();
+        if (err!=novalid)
+        {
+          lects=arint(ent);
+             }
+      }
+
+
+/*   ret_per()
+   {
+     int err=0;
+      int salir=0;
+      unsigned char h=0x00;
+      char ent[12];
+
+            borrar();
+        say(1,0,"RETARDO:      ");
+        say(2,0,"250 valor normal");
+            err=get(1,0+strlen("RETARDO:"),ent,4,1,1);
+        borrar();
+            if (err!=novalid)
+        {
+          retardo_peristaltica=arint(ent);
+         }
+      }
+
+*/
+
+
+
+/*test_pos_ini()
+{
+ int i;
+ int ok=0;
+ char ri[25];
+ borrar();
+ for(i=1;i<=100;i++)
+  {
+     if (!pos_inicial())
+       {
+    ok=1;
+    i=200;
+       }
+  }
+  if (ok==1)
+    aviso(2,1,"HAY ANOMALIAS");
+  else
+    aviso(2,1,"TEST OK");
+
+}
+
+
+
+
+busca_pos_ini()
+{
+ int i;
+ int ok=0;
+ char ri[25];
+  if (!pos_inicial())
+    ok=1;
+  if (ok==1)
+    aviso(2,1,"POS. INIC. ERRONEA");
+  else
+    aviso(2,1,"POS. INICIAL  OK");
+
+}
+
+
+pos_inicial()
+{
+ int z;
+ unsigned int n=0;
+ int r;
+
+
+
+ z=PA002
+ z=z & 0x8;
+ if (z!=0)
+   paso_i(5);
+ z=PA002
+ z=z & 0x8;
+
+ while (z==0 && n<50)
+    {paso_i(1);
+     n++;
+
+     for (r=0;r<10;r++)
+     r=r;
+
+     z=PA002
+     z=z & 0x8;
+    }
+
+    return(z);
+ }
+
+
+*/
+
+
+/*
+
+
+ lavado()
+ {
+  int err;
+  int h;
+  char ent[8];
+  borrar();
+  say(1,1,"1. PRELAVADO");
+  say(2,1,"2. POSTLAVADO");
+
+   h=keyboard(0);
+  if (h>=1 && h<=2)
+   {
+       lavad1(h);
+   }
+
+ }
+
+
+lavad1(que)
+int que;
+{
+  int i;
+  char txt1[]={"PONGA AGUA ..."};
+  char txt2[]={"PONGA DETERGENTE"};
+
+  if (que==1)
+   {
+      for(i=0;i<6;i++)
+       {
+    if (i>=3)
+       say(2,1,txt2);
+    else
+      say(2,1,txt1);
+        h=keyboard(0);
+    borrar();
+    if (h==novalid)
+      i=7;
+       }
+   }
+  else
+   {
+      for(i=0;i<6;i++)
+       {
+    if (i>=3)
+     say(2,1,txt1);
+        else
+      say(2,1,txt2);
+        h=keyboard(0);
+    borrar();
+    if (h==novalid)
+      i=7;
+    }
+   }
+
+}
+
+  */
+
+
+
+cambio_peris()
+{
+char ent[6];
+borrar();
+intar(ent,tipo_peris);
+say(1,0,"T. PERIS:");
+say(2,0,"0. PASOS  1. TIEMPO");
+get(1,13,ent,2,1,1,1);
+tipo_peris=arint(ent);
+}
+
+
+ret_per(n)
+int n;
+{
+char ent[6];
+borrar();
+intar(ent,RET_MOT_PERISTALTICA);
+say(1,0,"RET. PASO.:");
+get(1,13,ent,3,1,1,1);
+RET_MOT_PERISTALTICA=arint(ent);
+}
+
+
+
+cal_temp()
+  {
+     int err=0;
+      int n;
+      int i;
+      char ent[12];
+            borrar();
+
+        if (temperatura_fija==2)
+          {
+            say_int(1,0,wipers[37],"37: ");
+            say_int(2,0,wipers[25],"TA: ");
+          }
+        else
+          {
+            say_int(1,0,wipers[37],"37: ");
+            say_int(2,0,wipers[30],"30: ");
+            say_int(3,0,wipers[25],"25: ");
+          }  
+
+           if (lastkey!=stop)
+            {
+              intar(ent,wipers[37]);
+              err=get(1,0+strlen("37:"),ent,3,1,1,1);
+              if (lastkey==cr)
+                wipers[37]=arint(ent);
+            }    
+             
+        if (temperatura_fija==2)
+         {
+            if (lastkey!=stop)
+            {
+              intar(ent,wipers[25]);
+              err=get(2,0+strlen("TA:"),ent,3,1,1,1);
+              if (lastkey==cr)
+                wipers[25]=arint(ent);
+            }    
+      
+         }
+        else
+         {
+          if (lastkey!=stop)
+            {
+              intar(ent,wipers[30]);
+              err=get(2,0+strlen("30:"),ent,3,1,1,1);
+              if (lastkey==cr)
+                wipers[30]=arint(ent);
+            }    
+            if (lastkey!=stop)
+            {
+              intar(ent,wipers[25]);
+              err=get(3,0+strlen("25:"),ent,3,1,1,1);
+              if (lastkey==cr)
+                wipers[25]=arint(ent);
+            }    
+            
+         } 
+        
+   }
+
+
+
+test_com(cual)
+int cual;
+{
+    unsigned char reg;
+    int i;
+    int comando;
+    char mon[5];
+    char mensaj[20];
+    char t[2];
+    int salir;
+    select_canal(cual);
+
+       ES=0;
+       t[1]=0x0;
+       for(i=0;i<200;i++)
+        mensaje[i]=0x00;
+        rec=0;
+       ocupado=0;
+
+       mensaje_recibido=0;
+       emp_com();
+       salir=0;
+       mensaj[0]=0x03;
+       mensaj[1]='T';
+       mensaj[2]='E';
+       mensaj[3]='S';
+       mensaj[4]='T';
+       mensaj[5]=' ';
+       mensaj[6]='O';
+       mensaj[7]='K';
+       mensaj[8]=0x00;
+       mensaj[9]=0x04;
+       i=0;
+       while (salir==0)
+        {
+         envia_car(mensaj[i]);
+          if (mensaj[i]==0x04)
+        salir=1;
+         i++;
+        }
+       salir=100;
+       say(1,1,"MENSAJE ENVIADO...");
+       while (mensaje_recibido==0 && salir==100)
+       {
+        salir=mira_tec();
+       }
+       say(2,1,"MENSAJE RECIBIDO...");
+       borrar();
+       REN=0;
+       ocupado=1;
+       mensaje[0]=' ';
+       activa_timer(1);
+       if (salir==100)
+        {
+         say(3,1,mensaje);
+         inkey(5);
+        }
+       borrar();
+       EA=1;
+
+ }
+
+
+
+
+
+
+/*  test_sip()
+{
+double s;
+char ent[6];
+borrar();
+say(1,0,"VOL.:");
+get(1,6,ent,5,1,1,0);
+s=arflot(ent);
+absorbe(s);
+}
+
+    */
+
+
+
+get_dif_carry()
+{
+double s;
+char ent[6];
+borrar();
+flotar(ent,dif_carry,2);
+getstr(0,1,ent,5,1,1,1,"DIF. CARRY:",BORRAR);
+dif_carry=arflot(ent);
+}
+ 
+
+print_test()
+  {
+    double j;
+    int h;
+    int i;
+    int t;
+    int y;
+    int hy;
+    int cuan=0;
+      hy=0;
+    lineasinforme = 0;
+    /*pongo linea de guiones*/
+
+
+    poneninforme(lineasinforme,0,"TESTS");
+    lineasinforme++;
+    poneninforme(lineasinforme,0,textos[6+idioma_textos]);
+    lineasinforme++;
+    for (i=0;i<11;i++)
+    {
+      if ((con_peristaltica==1) || ((con_peristaltica==0) && (i<3 || i>7)))
+       {
+     poneninforme(lineasinforme,0,textos[170+i+idioma_textos]);
+     lineasinforme++;
+       }
+
+      cuan++;
+
+       if (cuan>8)
+        {
+          hy=impinforme(lineasinforme,0,0);
+          lineasinforme=0;
+          cuan=0;
+        }
+
+    }
+       if (cuan>0)
+        {
+          hy=impinforme(lineasinforme,0,12);
+          lineasinforme=0;
+          cuan=0;
+        }
+
+
+ }
+
+
+iniz_fab()
+{
+ int i;
+ int p;
+    control_fabricacion=APARATO_INICIADO;
+    wipers[25]=14;
+    wipers[30]=44;
+    wipers[37]=80;
+    
+       if (con_peristaltica==1)
+       {
+         porcen_macro=0;
+         porcen_semimicro=0;
+         porcen_micro=2;
+         t_esp_aut=2;
+         vol_auto=150.0;
+         carry_over=1;
+         dif_carry=2.0;
+         fact_peris=0.0;
+       }
+}
+
+print_setup()
+{
+ int i;
+ int p;
+
+ lineasinforme=0;
+ if (con_peristaltica==1)
+  {
+   imp_int(lineasinforme,1,"PORCEN. MACRO:",porcen_macro);
+   lineasinforme++;
+   imp_int(lineasinforme,1,"PORCEN. SEMI:",porcen_semimicro);
+   lineasinforme++;
+   imp_int(lineasinforme,1,"PORCEN. MICRO:",porcen_micro);
+   lineasinforme++;
+   poneninforme(lineasinforme,1,"AUTOLAVADO:");
+
+   flotar(text,vol_auto,1);
+   poneninforme(lineasinforme,12,text);
+   lineasinforme++;
+
+   flotar(text,dif_carry,2);
+   poneninforme(lineasinforme,1,"DIF. CARRY:");
+   poneninforme(lineasinforme,12,text);
+   lineasinforme++;
+   intar(text,t_esp_aut);
+   poneninforme(lineasinforme,1,"T. ESP.:");
+   poneninforme(lineasinforme,12,text);
+   lineasinforme++;
+  }
+    imp_int(lineasinforme,1,"T 25 30 37:",wipers[25]);
+    imp_int(lineasinforme,15,"",wipers[30]);
+    imp_int(lineasinforme,18,"",wipers[37]);
+
+    lineasinforme++;
+
+    impinforme(lineasinforme,15,20);
+}
+
+
+test_no_init()
+{
+ 
+ int i;
+ unsigned int chk_file=0;
+ char h;
+ char *ph;
+ ph=&ficher[0];        
+ for (i=0;i<16100;i++)
+  {     
+      h=*ph; 
+     chk_file=chk_file + (int)h;
+     ph++;
+  }
+
+     intar(text,chk_file);
+     aviso(2,6,text);
+ 
+}
+
+
+
+ 
+get_password()
+{
+double s;
+char ent[6];
+int salir=0;
+borrar();
+ent[0]=0x0;
+getstr(1,0,ent,6,1,1,1,textos[190+idioma_textos],BORRAR);
+if (strcmp(ent,password)==0)
+  {   
+   if (get_tecnicas()==1)
+   { 
+   borrar(); 
+   while (salir==0)
+    {   
+      ent[0]=0x0; 
+      getstr(1,0,ent,6,1,1,1,textos[191+idioma_textos],BORRAR);    
+      if (lastkey==stop || arflot(ent)>0.0)
+        salir=1; 
+    }          
+
+    if (lastkey==stop)
+       return(0); 
+     salir=0;
+
+    while (salir==0)
+    {   
+      text[0]=0x0;
+      getstr(1,0,text,6,1,1,1,textos[192+idioma_textos],BORRAR);    
+      if (lastkey==stop || arflot(text)>0.0)
+       salir=1; 
+    }                                
+
+    if (lastkey==stop)
+       return(0); 
+     
+    if (strcmp(ent,text)==0)
+      { 
+        strcpy(password,text); 
+      }
+     else                     
+      {
+       aviso(2,0,textos[193+idioma_textos]);
+      } 
+   } 
+  }
+else   
+  {
+   aviso(2,0,textos[194+idioma_textos]);
+  } 
+}
+
+
+ 
+
+
+get_tecnicas()
+{
+double s;
+char tec1[6];
+char tec2[6];
+int pul1,pul2;
+borrar();
+say(1,0,textos[195+idioma_textos]);
+say(2,0,textos[45+idioma_textos]);
+err=get(2,strlen(textos[45+idioma_textos]),tec1,3,1,1,0);
+if (err==novalid)
+  return(0);
+ pul1=arflot(tec1);
+ if (pul1<0 || pul1>total_tecnicas)
+    return(0);
+ say(3,0,textos[46+idioma_textos]);
+ err=get(3,strlen(textos[46+idioma_textos]),tec2,3,1,1,0);
+ if (err==novalid)
+     return(0);
+  pul2=arflot(tec2);
+ if (pul2<0 || pul2>total_tecnicas)
+     return(0);
+ if (pul1>pul2)
+     return(0);
+  desde_tecnica=pul1;
+  hasta_tecnica=pul2;
+  return(1);
+}
+
+
+ 

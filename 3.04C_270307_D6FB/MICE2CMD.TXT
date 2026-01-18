@@ -1,0 +1,1057 @@
+;M2_8051.HLP /*--------------------------  MICE-II 8051  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K : K
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 249 123 124 125 126
+E : 249
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K : 37
+L : 11 131 130
+M : 250 0 147
+N : 121
+O : 33 132
+P :
+Q : 133	0
+R : 251
+S : 35 134 126 126 135
+T : 252
+U : 136 142 138 138
+V :
+W :
+X : 20
+Y :
+Z : 253
+? : 261
+! : 262
+* : 0 0 265 266 0 0 0
+
+;M2_Z80.HLP /*--------------------------  MICE-II Z80  ---------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 231 123 124 125 126
+E : 231
+F : 4 125
+G : 225
+H : 8 127
+I : 31 128 129
+J : 227 130
+K :
+L : 11 131 130
+M : 32 0 143
+N : 121
+O : 232 132
+P :
+Q : 133	0
+R : 229
+S : 35 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 0
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_8085.HLP /*--------------------------  MICE-II 8085  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 257 123 124 125 126
+E : 257
+F : 4 125
+G : 225
+H : 8 127
+I : 31 128 129
+J : 227 130
+K :
+L : 11 131 130
+M : 228 0 143
+N : 121
+O : 222 132
+P :
+Q : 133	0
+R : 258
+S : 35 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 0
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_68000.HLP /*-------------------------  MICE-II 68000  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : N NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 5 121 122
+D : 19 123 124 125 126
+E : 19
+F : 4 125
+G : 20
+H : 8 127
+I : 21 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 23 0 143
+N : 24 127
+O : 25 132
+P :
+Q : 133	0
+R : 26
+S : 15 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 28
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_80286.HLP /*--------------------------  MICE-II 80286  -------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K : K
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 3
+B : 4 120
+C : 5 121 122
+D : 242 123 124 125 126
+E : 243
+F : 4 125
+G : 7
+H : 8 127
+I : 244 128 129
+J : 10 130
+K : 37
+L : 11 131 130
+M : 245 0 143
+N : 121
+O : 13 132
+P :
+Q : 133	0
+R : 246
+S : 15 134 126 126 135
+T : 16
+U : 136 137 138 138
+V :
+W :
+X : 7
+Y :
+Z : 17
+? : 263
+! : 264
+* : 0 0 265 266 0 0 0
+
+;M2_8048.HLP /*--------------------------  MICE-II 8048  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 220 123 124 125 126
+E : 220
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 221 0 143
+N : 121
+O : 222 132
+P :
+Q : 133	0
+R : 223
+S : 35 134 126 126 135
+T : 224
+U : 136 137 138 138
+V :
+W :
+X : 0
+Y :
+Z : 28
+? : 259
+! : 260
+* : 0 0 265 266 0 0 0
+
+;M2_80186.HLP /*-------------------------  MICE-II 80186  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 239
+B : 4 120
+C : 5 121 122
+D : 240 123 124 125 126
+E : 240
+F : 4 125
+G : 7
+H : 8 127
+I : 9 128 129
+J : 10 130
+K :
+L : 11 131 130
+M : 12 0 143
+N : 121
+O : 13 132
+P :
+Q : 133	0
+R : 241
+S : 35 134 126 126 135
+T : 16
+U : 136 137 138 138
+V :
+W :
+X : 7
+Y :
+Z : 17
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_68H11.HLP /*--------------------------  MICE-II 68HC11  ------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K : K 
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 36 123 124 125 126
+E : 36
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K : 37
+L : 11 131 130
+M : 38 0 143
+N : 121
+O : 33 132
+P :
+Q : 133	0
+R : 39
+S : 35 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 20
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_6809.HLP /*--------------------------  MICE-II 6809  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 237 123 124 125 126
+E : 237
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 32 0 143
+N : 121
+O : 33 132
+P :
+Q : 133	0
+R : 238
+S : 35 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 20
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_8086.HLP /*--------------------------  MICE-II 8086  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 3
+B : 4 120
+C : 5 121 122
+D : 6 123 124 125 126
+E : 6
+F : 4 125
+G : 7
+H : 8 127
+I : 9 128 129
+J : 10 130
+K :
+L : 11 131 130
+M : 12 0 143
+N : 121
+O : 13 132
+P :
+Q : 133	0
+R : 14
+S : 35 134 126 126 135
+T : 16
+U : 136 137 138 138
+V :
+W :
+X : 7
+Y :
+Z : 17
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_6502.HLP /*--------------------------  MICE-II 6502  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 30 123 124 125 126
+E : 30
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 32 0 143
+N : 121
+O : 33 132
+P :
+Q : 133	0
+R : 34
+S : 35 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 20
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_80515.HLP /*--------------------------  MICE-II 80515  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 254 123 124 125 126
+E : 255
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 250 0 143
+N : 121
+O : 33 132
+P :
+Q : 133	0
+R : 256
+S : 35 134 126 126 135
+T : 252
+U : 136 137 138 138
+V :
+W :
+X : 20
+Y :
+Z : 253
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_Z8.HLP /*--------------------------  MICE-II Z8    --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 247 123 124 125 126
+E : 247
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 234 0 143
+N : 121
+O : 33 132
+P :
+Q : 133	0
+R : 248
+S : 35 134 126 126 135
+T : 236
+U : 136 137 138 138
+V :
+W :
+X : 20
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_68008.HLP /*-------------------------  MICE-II 68008  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : N NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 5 121 122
+D : 19 123 124 125 126
+E : 19
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 32 0 143
+N : 24 127
+O : 33 132
+P :
+Q : 133	0
+R : 26
+S : 35 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 28
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_NS800.HLP /*-------------------------  MICE-II NS800  --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 226 123 124 125 126
+E : 226
+F : 4 125
+G : 225
+H : 8 127
+I : 31 128 129
+J : 227 130
+K :
+L : 11 131 130
+M : 228 0 143
+N : 121
+O : 222 132
+P :
+Q : 133	0
+R : 229
+S : 230 134 126 126 135
+T : 27
+U : 136 137 138 138
+V :
+W :
+X : 0
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+;M2_ZS8.HLP /*--------------------------  MICE-II ZS8   --------------------------*/
+
+*COMMAND_WORD
+
+A : A
+B : B BREakpoint
+C : C CLEar CReate
+D : D DELete DOS DOUble DOwnload
+E : E
+F : F FLoat
+G : G
+H : H HIStory
+I : I INClude IStep
+J : J JOurnal
+K :
+L : L LOAd LOG
+M : M MODUle MONitor
+N : NOMon
+O : O OPTions
+P :
+Q : QUEry QUIt
+R : R
+S : S SOFtkey SRecall SSave SYMbol
+T : T
+U : UPDate UPload URECall USAVe
+V :
+W :
+X : X
+Y :
+Z : Z
+? : ?
+! : !
+* : *D *Load *Map *Range *REcall *Save *?
+
+*COMMAND_ARGUMENT_INDEX
+
+A : 18
+B : 4 120
+C : 29 121 122
+D : 233 123 124 125 126
+E : 233
+F : 4 125
+G : 20
+H : 8 127
+I : 31 128 129
+J : 22 130
+K :
+L : 11 131 130
+M : 234 0 143
+N : 121
+O : 33 132
+P :
+Q : 133	0
+R : 235
+S : 35 134 126 126 135
+T : 236
+U : 136 137 138 138
+V :
+W :
+X : 20
+Y :
+Z : 28
+? : 259
+! : 0
+* : 0 0 265 266 0 0 0
+
+

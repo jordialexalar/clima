@@ -1,0 +1,14 @@
+####################################################################################################
+#                                                                                                  #
+#     Micro Series 8051 C-Compiler V4.01A/DOS                              16/Feb/93  23:46:10     #
+#                                                                                                  #
+#           Memory model  =  large                                                                 #
+#           Source file   =  fstr.c                                                                #
+#           List file     =  fstr.lst                                                              #
+#           Object file   =  fstr.r03                                                              #
+#           ASM file      =  fstr.s03                                                              #
+#           Command line  =  fstr.c -ml -A -L -q                                                   #
+#                                                                                                  #
+#                                                                   (c) Copyright IAR Systems 1990 #
+####################################################################################################
+
