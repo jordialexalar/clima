@@ -5,7 +5,7 @@
 
       #define MARGEN      2
 
-      #define VELOCIDAD_LF       3
+      #define VELOCIDAD_LF       7
       #define TIEMPO_IMPRESION   2
 
 
